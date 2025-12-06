@@ -11,7 +11,9 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.86.2",
     "@types/leaflet": "^1.9.21",
+    "framer-motion": "^12.23.25",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.556.0",
     "next": "16.0.7",
     "react": "19.2.0",
     "react-dom": "19.2.0",

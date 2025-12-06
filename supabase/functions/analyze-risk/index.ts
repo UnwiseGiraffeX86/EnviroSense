@@ -2,6 +2,44 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 import OpenAI from 'jsr:@openai/openai'
 import { Redactor } from 'npm:redact-pii'
 
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
+/**
+ * Air Quality Data object containing pollution metrics
+ */
+interface PollutionData {
+  pm25: number
+  pm10: number
+  sector: string
+}
+
+/**
+ * Risk Assessment Response from the Neuro-Symbolic Agent
+ * Enforces strict JSON schema for triage output
+ */
+interface RiskAssessment {
+  risk_level: 'Low' | 'Medium' | 'High'
+  advisory: string
+  relevant_regulation: string
+  confidence_score?: number
+  environmental_factor?: string
+}
+
+/**
+ * Structured response for the Edge Function
+ */
+interface EdgeFunctionResponse {
+  risk_assessment: RiskAssessment
+  timestamp: string
+  location?: {
+    lat: number
+    long: number
+    sector: string
+  }
+}
+
 // CORS headers for browser access
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -118,37 +156,147 @@ Deno.serve(async (req) => {
       : 'Air quality data unavailable for this location.'
 
     // --------------------------------------------------------------------------
-    // 4. Neuro-Symbolic Inference
+    // 4. Neuro-Symbolic Inference (Triage Workflow - Step 4)
     // --------------------------------------------------------------------------
-    const systemPrompt = `You are an expert medical triage assistant using EU Air Quality regulations. You must analyze the patient's symptoms in the context of the provided pollution levels and regulations. Output a JSON object with keys: 'risk_level' (Low/Medium/High), 'advisory' (Actionable advice), and 'relevant_regulation' (Citation from context).`
     
+    /**
+     * Construct the System Prompt with strict safety guardrails
+     * This defines the AI's persona as an Expert Medical Triage Assistant
+     * while explicitly forbidding definitive medical diagnoses
+     */
+    const systemPrompt = `You are an Expert Medical Triage Assistant specialized in environmental health monitoring. You analyze patient symptoms in correlation with air quality metrics and EU Air Quality Directives.
+
+CRITICAL SAFETY GUARDRAILS:
+1. YOU MUST NEVER provide definitive medical diagnoses or replace professional medical consultation.
+2. This assessment is ADVISORY ONLY and should trigger professional medical evaluation if risk_level is High or Medium.
+3. Always emphasize that users should consult healthcare professionals for diagnosis and treatment.
+4. Base your risk assessment ONLY on the provided pollution data, symptoms, and regulatory guidance.
+5. DO NOT make assumptions beyond the provided context.
+
+TRIAGE LOGIC:
+- Correlate symptom severity with air quality metrics (PM2.5, PM10)
+- Reference EU Air Quality Directive thresholds and guidelines
+- Assign risk_level based on: (symptom severity + pollution level + regulatory context)
+- Provide actionable environmental health advice
+
+OUTPUT REQUIREMENTS:
+Return ONLY valid JSON matching this exact schema:
+{
+  "risk_level": "Low" | "Medium" | "High",
+  "advisory": "Actionable health advice (max 200 chars)",
+  "relevant_regulation": "Citation or excerpt from EU Air Quality Directive",
+  "confidence_score": 0.0-1.0,
+  "environmental_factor": "Primary pollution driver (PM2.5/PM10/NO2/etc or None)"
+}`
+
+    /**
+     * Construct the User Prompt by dynamically injecting all context
+     * This ensures the AI has all necessary information for risk assessment
+     */
     const userPrompt = `
-    Pollution Context: ${airQuality}
-    Regulation Context: ${regulatoryContext}
-    Patient Symptoms (Redacted): ${redacted_symptoms}
-    `
+ENVIRONMENTAL DATA:
+- ${airQuality}
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      response_format: { type: 'json_object' },
-    })
+REGULATORY CONTEXT (EU Air Quality Directive):
+${regulatoryContext}
 
-    const result = JSON.parse(completion.choices[0].message.content || '{}')
+PATIENT SYMPTOMS (Redacted of PII):
+${redacted_symptoms}
+
+---
+Perform a triage assessment based on the above context. Respond with valid JSON only.`
+
+    /**
+     * Execute Neuro-Symbolic Inference with OpenAI gpt-4o
+     * Use structured JSON output format to ensure valid response schema
+     */
+    let riskAssessment: RiskAssessment
+    
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3, // Lower temperature for more consistent triage decisions
+        max_tokens: 500,
+      })
+
+      const responseContent = completion.choices[0].message.content
+      
+      if (!responseContent) {
+        throw new Error('Empty response from OpenAI API')
+      }
+
+      // Parse and validate the JSON response
+      const parsedResponse = JSON.parse(responseContent)
+      
+      // Validate required fields
+      if (!parsedResponse.risk_level || !parsedResponse.advisory || !parsedResponse.relevant_regulation) {
+        throw new Error('Invalid response schema: missing required fields')
+      }
+
+      // Validate risk_level enum
+      if (!['Low', 'Medium', 'High'].includes(parsedResponse.risk_level)) {
+        throw new Error(`Invalid risk_level: ${parsedResponse.risk_level}`)
+      }
+
+      riskAssessment = {
+        risk_level: parsedResponse.risk_level,
+        advisory: parsedResponse.advisory.substring(0, 200), // Enforce max length
+        relevant_regulation: parsedResponse.relevant_regulation,
+        confidence_score: parsedResponse.confidence_score || 0.75,
+        environmental_factor: parsedResponse.environmental_factor || 'Unknown',
+      }
+
+    } catch (inferenceError) {
+      console.error('Neuro-Symbolic Inference Error:', inferenceError)
+      
+      // Graceful fallback to conservative risk assessment
+      riskAssessment = {
+        risk_level: 'Medium',
+        advisory: 'Unable to complete AI assessment. Please consult a healthcare professional.',
+        relevant_regulation: 'EU Air Quality Directive assessment temporarily unavailable.',
+        confidence_score: 0.0,
+        environmental_factor: 'Error',
+      }
+    }
+
+    // Add advisory footer emphasizing professional consultation
+    const advisoryWithDisclaimer = `${riskAssessment.advisory}\n\n⚠️ IMPORTANT: This is an advisory tool only. Always consult a qualified healthcare professional for diagnosis and treatment.`
 
     // --------------------------------------------------------------------------
-    // 5. Response
+    // 5. Construct Final Response
     // --------------------------------------------------------------------------
-    return new Response(JSON.stringify(result), {
+    const response: EdgeFunctionResponse = {
+      risk_assessment: {
+        ...riskAssessment,
+        advisory: advisoryWithDisclaimer,
+      },
+      timestamp: new Date().toISOString(),
+      location: {
+        lat: user_lat,
+        long: user_long,
+        sector: (airQualityData && airQualityData[0]?.sector_name) || 'Unknown',
+      },
+    }
+
+    return new Response(JSON.stringify(response), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
 
   } catch (error) {
     console.error('Edge Function Error:', error)
-    return new Response(JSON.stringify({ error: error.message }), {
+    
+    const errorResponse = {
+      error: error instanceof Error ? error.message : 'An unexpected error occurred',
+      timestamp: new Date().toISOString(),
+      advisory: 'An error occurred during risk assessment. Please try again or contact support.',
+    }
+    
+    return new Response(JSON.stringify(errorResponse), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })

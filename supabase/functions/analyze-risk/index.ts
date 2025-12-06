@@ -1,5 +1,5 @@
-import { createClient } from 'jsr:@supabase/supabase-js@2'
-import OpenAI from 'jsr:@openai/openai'
+import { createClient } from 'npm:@supabase/supabase-js@2'
+import OpenAI from 'npm:openai'
 
 // CORS headers for browser access
 const corsHeaders = {
@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-Deno.serve(async (req) => {
+Deno.serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -162,9 +162,9 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Edge Function Error:', error)
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })

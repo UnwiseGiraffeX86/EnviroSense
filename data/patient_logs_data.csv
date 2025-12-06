@@ -1,201 +1,201 @@
 log_id,patient_id,timestamp,severity_score,symptom_text,pm25_at_logging,heart_rate,temperature,blood_pressure
-2e7f1eda-b957-4a8b-9f1f-0ec66a06716d,PAT-A248FCD1,2025-09-01 17:21:56.778151,7,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,71,38.1,116/62
-ab2b0e64-503f-48ff-92db-60dcc0e26840,PAT-4858D3AE,2025-07-06 17:21:56.778151,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,106,38.8,127/98
-dbd866a2-393e-49b0-9f67-57cbf6541318,PAT-8E56AEFE,2025-10-17 17:21:56.778151,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 4.0),3.96,72,37.0,145/87
-4abeebf3-eb95-47c7-be89-2c7b8b79bdf7,PAT-45282930,2025-06-09 17:21:56.778151,3,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 1.5),1.54,106,39.3,147/72
-cb018246-b535-4f78-a6af-e276e47afa3b,PAT-24EF1D88,2025-09-10 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,99,37.2,154/67
-e17d688e-66b6-4460-b271-3edd50eeb1bb,PAT-6C6FC677,2025-08-24 17:21:56.778151,9,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,80,37.5,118/95
-a69ff0ef-65b2-48a3-806d-8d9e3b106b3f,PAT-5B5C44DF,2025-07-11 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,102,39.3,143/71
-b9b8f056-e8d7-4fe8-9efa-dfa3609939b2,PAT-EF2348C0,2025-11-13 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,85,38.0,100/79
-336126e3-3512-4ab4-80f0-4b7e15dee0f1,PAT-ED7DEAFF,2025-08-21 17:21:56.778151,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,89,37.6,143/73
-07ff4080-74b9-4463-9019-e2f4b1fb508b,PAT-4CF86129,2025-10-17 17:21:56.778151,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 7.3),7.27,102,36.4,132/100
-d0503c4a-c987-4044-9da9-6251d051fbab,PAT-D863DA8C,2025-11-14 17:21:56.778151,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,103,37.2,151/72
-fab09897-210e-432c-99e3-06b47f8272ed,PAT-04E380D7,2025-07-16 17:21:56.778151,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,90,38.2,149/64
-97c5aaa4-b4b4-4345-8157-27fb37dd6603,PAT-67838543,2025-10-03 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,96,36.8,144/84
-0ffff833-2127-428e-981a-0614dbc5bd8f,PAT-5817F489,2025-10-13 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,69,38.3,100/66
-20678f2e-e4e8-4549-ad32-ab6d4129e6c0,PAT-12D81885,2025-09-25 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,111,39.4,133/89
-d7e4d9ad-8e91-465e-b36a-7665cf1aeee0,PAT-813CECC5,2025-06-21 17:21:56.778151,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.1),3.12,67,37.7,151/89
-cf2b19b0-ca67-488b-8662-8556d0427ef4,PAT-0813150D,2025-11-26 17:21:56.778151,3,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 1.5),1.54,80,39.3,157/88
-6b65aca7-3b37-4f3b-8ef0-3a053ac3eb93,PAT-8AB0AE2F,2025-11-12 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,117,36.6,155/90
-1606e65e-2f81-4919-9046-abffd0bd56f9,PAT-431824DD,2025-10-02 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 17.6,17.62,113,38.3,149/93
-099d11b3-ea3d-40bb-874c-b4e446349226,PAT-843481F8,2025-10-11 17:21:56.778151,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,88,36.4,118/75
-7d70322d-a87f-4cb9-aee2-8ca1d1b85653,PAT-07B4AC1D,2025-08-17 17:21:56.778151,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,68,36.6,124/69
-0a437dd1-eef3-453d-9c5c-3543d906197e,PAT-F63FD97E,2025-12-06 17:21:56.778151,7,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,86,37.2,129/86
-e4862abd-e0f5-4edb-b130-3990ff6a8bb0,PAT-576CE2C1,2025-06-24 17:21:56.778151,10,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,117,38.7,160/61
-925438da-c8a9-4d5b-9198-84cb7b3aad5f,PAT-36CA853B,2025-11-03 17:21:56.778151,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,120,37.3,148/84
-1a0750c6-5919-40ad-96d0-426ec952df0c,PAT-B1F07867,2025-09-24 17:21:56.778151,3,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 1.7),1.66,94,38.8,157/74
-f382494e-0df8-4432-a86c-eec2efd16b2c,PAT-7E871038,2025-10-11 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,87,37.8,124/81
-bf7eba55-e005-4b22-b1d0-8f433e028669,PAT-FB3E26F1,2025-11-27 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,106,36.7,129/68
-c358afd1-5711-4a64-8d8c-4ad5f3875928,PAT-AC569B93,2025-11-15 17:21:56.778151,1,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 1.7),1.66,97,38.0,101/65
-00e975c8-9396-45d1-991b-d073aa71aeb8,PAT-32BD49B9,2025-11-20 17:21:56.778151,8,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,71,36.3,124/80
-7a0d6d4d-592e-4e89-b219-97732cfd4178,PAT-5748F221,2025-08-02 17:21:56.778151,9,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,108,39.1,117/86
-237147b4-1189-4706-a2c4-54e386ab53d4,PAT-6DD89923,2025-08-12 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,61,38.6,103/82
-0ee6c15f-08d4-4d2b-b506-941b33258ede,PAT-29510073,2025-08-05 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,109,39.4,102/61
-b6d867c3-8f15-48c2-b744-d667e2fd06e8,PAT-ECEBF6D6,2025-08-11 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,99,36.6,108/90
-30ab9e1c-b310-47ab-aaa7-67585ab9d784,PAT-7939812F,2025-11-27 17:21:56.778151,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 4.0),3.96,89,38.5,149/83
-9ff58f70-98a3-4a99-b449-75579d5af292,PAT-BF62271E,2025-07-21 17:21:56.778151,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,79,36.5,101/79
-a7c44991-6d3b-40f5-b64b-ace74d8cee2d,PAT-1FA64F73,2025-11-03 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,85,39.3,112/64
-294e55af-66d2-4a99-ab7a-3af51fcba455,PAT-9C7ACA7F,2025-11-07 17:21:56.778151,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,104,38.7,154/98
-30921c0f-36b1-4815-8101-62f142ae0695,PAT-A406E223,2025-07-09 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,82,37.9,142/83
-21ae6a71-91b1-4b74-a161-e54f58811593,PAT-119DA032,2025-06-26 17:21:56.778151,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,114,37.5,131/66
-bccf6cd1-9821-4f93-91b4-cbdea62b85b4,PAT-C3D0225A,2025-09-27 17:21:56.778151,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,87,36.7,133/77
-287d9b4d-2337-4c87-a3d2-bb397122234d,PAT-4613BB81,2025-11-13 17:21:56.778151,2,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 1.7),1.66,87,38.9,137/77
-e36d42fb-f16e-4cc1-8988-778e1b2d6aba,PAT-29A0CCCC,2025-08-30 17:21:56.778151,1,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 3.4),3.35,116,37.6,148/89
-a64d1382-1419-4f79-91d4-3ae8d8ef0d2a,PAT-8A00F8B3,2025-11-01 17:21:56.778151,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,61,37.8,120/71
-e95100fd-c96c-4567-85ea-4d4fd4e71a0f,PAT-C24ACFB5,2025-10-11 17:21:56.778151,9,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,81,37.1,138/77
-5e361d45-97b7-4b92-9dc6-4ba2eac38393,PAT-026A1068,2025-10-29 17:21:56.778151,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,75,38.5,131/95
-b345ceb7-a8e9-4e84-b4c9-844eb57bc316,PAT-FBA4CA67,2025-08-09 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,88,38.8,105/78
-822cd054-b3f6-4fc3-808e-0417e0742289,PAT-80D44E30,2025-08-04 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,75,37.1,137/83
-72a9266c-1493-4006-814f-719c2e037635,PAT-8137A1CE,2025-10-08 17:21:56.778151,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 3.1),3.12,87,39.5,135/81
-33546545-87d2-4ab8-95e5-525652eafac6,PAT-D822E1FC,2025-09-07 17:21:56.778151,10,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,79,37.0,107/72
-68a3bf01-3336-4a33-ada8-5bf1a76994c6,PAT-C0CB841A,2025-08-28 17:21:56.778151,3,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 4.0),3.96,120,38.7,111/72
-68944aa7-9925-4d33-bf98-dac4ab3635e5,PAT-A27B80E3,2025-08-03 17:21:56.778151,10,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,106,38.1,148/93
-a9d8b75e-27af-4063-9bf9-25d4511bcb0c,PAT-8C69D90C,2025-11-08 17:21:56.778151,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 8.4),8.43,72,37.1,123/71
-e2f5eacb-f7b6-4a3d-92df-a119d61e7405,PAT-9A15D8AC,2025-08-25 17:21:56.778151,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,62,39.4,135/78
-d3d2b2f2-bbcb-4c81-ad13-9706ab558373,PAT-2819F607,2025-12-04 17:21:56.778151,3,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 6.8),6.83,108,37.8,155/60
-25c25f4a-5a56-4504-a9f9-d038f2847164,PAT-0C9D97F8,2025-11-02 17:21:56.778151,2,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 8.4),8.43,88,37.3,103/76
-e67cdb83-de41-4095-b35a-4d95278e6228,PAT-D2974653,2025-10-09 17:21:56.778151,1,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 4.0),3.96,91,36.4,140/63
-0f5b4dff-03a8-415f-962b-0958619b74e9,PAT-516988EC,2025-07-17 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,120,37.1,115/67
-d4c5d1d4-218e-4329-8443-e12e7019a187,PAT-441850B6,2025-10-29 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 14.6,14.58,98,38.1,139/74
-94c817a0-2d16-4cee-bf5c-12c3e86f3de6,PAT-05DED946,2025-10-20 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,79,39.0,127/79
-73f9d019-2c42-48ac-b3f6-978c9013ed81,PAT-E8C7F638,2025-11-01 17:21:56.778151,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,120,38.7,140/73
-6daf6cda-0de6-4eac-90f1-8a18c1e83742,PAT-BEEDB79C,2025-08-15 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,70,36.9,135/64
-782a8ab1-e002-442d-98e7-e2c6b0919be9,PAT-489908C5,2025-07-19 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,104,38.1,118/62
-05a6a908-9fb2-4fec-a15a-89d999d30e34,PAT-10FDCAD2,2025-08-07 17:21:56.778151,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 8.4),8.43,104,39.0,104/74
-29852612-ad10-40da-b004-6f893e62be6e,PAT-88CD45E2,2025-08-15 17:21:56.778151,8,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,67,38.0,141/69
-ee1d9e57-c1e3-44b3-af94-a04697a006d6,PAT-4E243198,2025-08-16 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,63,36.7,119/98
-683c1644-c568-4c58-bd66-d0a2f74fb6d3,PAT-9739C3B8,2025-11-01 17:21:56.778151,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 8.4),8.43,89,38.4,144/85
-5609e3a4-2bb9-48bc-a279-0b74847a66ad,PAT-1BEA6483,2025-08-17 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,65,38.1,156/87
-55afd008-7f5d-4206-973c-6991cd5a937c,PAT-188E8703,2025-08-30 17:21:56.778151,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,65,36.9,143/96
-a883013f-32d4-4141-a46c-8349c12cbee2,PAT-2BA506D0,2025-11-06 17:21:56.778151,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,108,38.7,130/93
-148e0d1c-d3b2-4758-bee9-c7c9f021a5ce,PAT-B02C5D2D,2025-11-22 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,71,39.5,127/100
-2fea2f3b-bb04-4f1e-8cf3-a71667d21b11,PAT-257EC4A4,2025-10-12 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,82,37.5,120/66
-4e4da1c1-d91f-4fd0-bcc6-b863bf044487,PAT-18E7618A,2025-07-20 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,78,38.4,125/95
-60371f4b-acd6-462d-9d8e-fcfa607e171e,PAT-DA8243E8,2025-06-18 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,76,37.2,149/85
-99b1aedd-99d5-4492-80df-e9051b3cd303,PAT-DBC65414,2025-10-18 17:21:56.778151,10,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,63,36.7,123/99
-fbf56300-3656-45fb-8f47-5f248c3f8496,PAT-14A483F5,2025-10-14 17:21:56.778151,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,73,37.0,108/78
-5cc8c901-48ea-4563-b342-13ea06be606c,PAT-918E4BB0,2025-09-29 17:21:56.778151,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,61,39.4,138/75
-2dc8136a-a5f1-443e-a1c9-0edb21f8fd3a,PAT-BDF6838E,2025-07-19 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,60,38.0,105/74
-a3ef7a1d-5da4-4f68-b71a-8764522d8f21,PAT-324D820F,2025-07-08 17:21:56.778151,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,91,39.3,118/92
-d99388f0-9d60-4570-b788-01d5c2ba7c9c,PAT-BFA64345,2025-12-06 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 35.0),34.97,90,36.9,135/69
-4e4f6c32-2873-48ad-92ba-523e2b7edad6,PAT-0C8CD779,2025-09-15 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,92,38.6,108/64
-dfb4e2a7-2be3-4ec0-bf32-a0d87385740e,PAT-C1519999,2025-08-18 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,81,39.3,132/77
-ce773ffc-783e-4df7-8781-f3702f85254e,PAT-6D3E3901,2025-06-09 17:21:56.778151,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 8.4),8.43,113,38.1,142/91
-515ce8ee-f5f0-4858-8724-a67bae383310,PAT-5F626468,2025-07-17 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,90,37.3,135/94
-a1191d15-0f6a-4dfb-8d8d-cca5b9a02ef0,PAT-6FA9EB4B,2025-09-13 17:21:56.778151,9,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,104,36.9,124/74
-767d12a0-1210-43fd-92da-64d8dea80912,PAT-76AF6346,2025-09-22 17:21:56.778151,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.6),41.6,105,39.2,124/84
-8ba76f28-5dae-4fc8-b545-c684e9fcb5ec,PAT-5B85F966,2025-11-25 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,91,39.4,108/92
-a424d453-95df-4cdf-8823-29849a1476f6,PAT-3AF0E881,2025-11-07 17:21:56.778151,7,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,66,37.9,129/60
-3abc679d-acb7-4ea5-9682-efdbb5566b01,PAT-91D4A062,2025-07-15 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,69,36.4,150/76
-6dec0da5-e2ef-49a9-b2cc-53d733d89a26,PAT-B2AA3C0A,2025-09-03 17:21:56.778151,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,114,37.2,143/94
-11142846-6cfb-4161-ba39-5aa2ba5fb714,PAT-9DA6DFD1,2025-09-14 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,105,39.1,131/94
-2c414d64-ae91-48e9-82ee-cace4a141ef3,PAT-201B251D,2025-06-18 17:21:56.778151,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,100,38.4,118/74
-c7fd6cbb-1f37-464a-83f9-e056fa5cb66b,PAT-52ADC8C9,2025-07-02 17:21:56.778151,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,88,36.7,119/61
-8c9986cc-e47b-449c-aded-360491b7317d,PAT-185F60D4,2025-06-20 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,78,37.3,127/69
-69daae12-68bb-4fff-bf9e-50c7276c6580,PAT-CF7B0E19,2025-08-10 17:21:56.778151,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 1.5),1.54,103,38.8,110/71
-c0bbc285-8be0-42ef-951c-df19bd2d0a14,PAT-7EA6B606,2025-06-29 17:21:56.778151,10,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,91,39.2,109/74
-beac689c-5a47-45ee-9636-5121d0c57750,PAT-DE323855,2025-10-05 17:21:56.778151,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,76,38.4,157/89
-0e9173cb-59cb-4b1e-a5fc-5f5cbafb3f74,PAT-BF7CC80B,2025-08-21 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,70,36.4,160/82
-5cb96674-6349-47f3-aa67-f89fe95dfbcb,PAT-2179708F,2025-11-06 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,87,38.4,129/79
-a4318718-e16a-478b-b619-894787ad2a10,PAT-93CB5FA7,2025-07-29 17:21:56.778151,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,75,37.4,122/96
-cd62b470-160f-428e-b69f-aa74e64368aa,PAT-8BC57B9F,2025-08-23 17:21:56.778151,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,113,38.3,117/60
-ecd326c3-bf40-4340-b668-7f9f83e7afb0,PAT-86D40CF2,2025-10-31 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,63,39.2,147/91
-7e6028da-9d49-48eb-b333-ab7f59ca0696,PAT-B7F842B2,2025-08-21 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,98,38.8,114/100
-cfcee537-b5db-4035-9881-bd6a8c8bdcc8,PAT-6659ADD2,2025-07-27 17:21:56.778151,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,100,36.4,140/62
-38ed2c91-feb1-49f6-96db-a2f739a676de,PAT-328E9DF9,2025-08-27 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,97,37.3,108/65
-bb7e67e5-ed86-49b4-a99c-78fc1c6bb57a,PAT-632E0099,2025-08-23 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,86,36.7,108/94
-e34e4d85-978b-4eab-8618-be09483a5588,PAT-12181E2E,2025-09-10 17:21:56.778151,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 1.5),1.54,113,36.7,158/90
-02253ae0-4b4a-49bd-9fe1-2c0d6bf4e8c2,PAT-9619566A,2025-08-23 17:21:56.778151,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,89,39.4,109/74
-79c080dc-638f-4d88-bf86-9c54a75da6e1,PAT-7A138C67,2025-11-29 17:21:56.778151,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,65,38.8,100/76
-c2f06c59-a8cc-4d62-aabe-9113312e8bb2,PAT-3730852E,2025-10-24 17:21:56.778151,2,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 4.0),3.96,103,38.6,116/97
-cc10e393-a29d-4619-9986-eac482beb1f2,PAT-0F0E0D6B,2025-09-14 17:21:56.778151,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,103,36.9,101/99
-6ba9843b-91a7-4044-890d-ea5ffc450789,PAT-186C67F0,2025-10-30 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,74,38.3,140/89
-f595cc08-916a-4ac3-b7f4-8c9393381039,PAT-F155CC11,2025-12-05 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,86,36.5,102/62
-96084713-2baa-407b-b491-49ffe70b1e03,PAT-D5799657,2025-08-25 17:21:56.778151,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.4),3.37,75,39.1,108/84
-2c248041-034a-4773-8fda-407b2d9b5e75,PAT-14487685,2025-10-03 17:21:56.778151,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,116,37.5,106/91
-ff63e386-b9c6-4021-a9ee-c45c6fa14722,PAT-08428473,2025-11-13 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,62,38.4,113/88
-adfe3c80-d576-4dba-9335-39ed4c4a2c24,PAT-B2396A95,2025-09-30 17:21:56.778151,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.4),3.35,103,37.3,157/82
-dc430503-427f-4c4a-a78a-7b30edcc2513,PAT-5FD3C6B7,2025-06-24 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,72,39.4,160/89
-de990351-741f-44f6-8daa-a2b65272179a,PAT-75CC3F5F,2025-07-02 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,101,38.3,101/63
-3bed5224-e8a5-484f-9739-54d0d3c87c01,PAT-7A6A7C64,2025-09-02 17:21:56.778151,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.4),3.35,96,36.8,153/95
-50ac59b3-d705-4678-80b6-a4b6fbdc18a1,PAT-C920F431,2025-08-01 17:21:56.778151,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 2.3),2.26,115,36.9,149/69
-aadda1ea-445f-4c47-84cc-5f303fb4bcc6,PAT-ECC70FF9,2025-11-08 17:21:56.778151,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,68,37.9,151/71
-86f09280-6d51-43ec-b701-6d0a9ac7a29f,PAT-ACF124D8,2025-07-07 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,68,36.2,150/75
-c71d8650-87a6-45bf-ba38-4f2e28657a40,PAT-A16F5BCF,2025-11-06 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,71,37.0,108/86
-22786732-f7ee-4345-a944-c0d636d52353,PAT-D08C0041,2025-10-21 17:21:56.778151,3,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 4.0),3.96,90,37.6,123/92
-e14b3020-22dd-4a3d-80d6-a28d02f09dd2,PAT-FC941389,2025-11-07 17:21:56.778151,10,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.0),32.95,120,38.2,146/93
-dafa73b0-93b4-424f-a2b2-555c46b7a819,PAT-F538532F,2025-08-25 17:21:56.778151,7,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,90,39.0,127/66
-93c8d5ef-59d0-440c-86d4-ee9f6a615a3b,PAT-7A303B3A,2025-10-12 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 13.6,13.55,64,39.2,120/98
-337e3a58-cfd8-447a-bb5d-cd5a05f52fa3,PAT-F7E75887,2025-07-16 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,77,38.2,137/95
-04e56d62-1072-4cfb-a988-b237dc557842,PAT-85205FAF,2025-08-31 17:21:56.778151,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,92,38.2,106/67
-34654f7c-01bf-4a38-aaaf-85c0206a2e9f,PAT-C760E6AE,2025-11-23 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,106,39.0,127/88
-1bed8d54-80b5-4f81-8330-723fd2ef9a17,PAT-D1CB8D3D,2025-08-06 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,112,37.6,126/66
-5477c7f3-2ca4-4a81-be84-499e87f9eabf,PAT-5AF6079A,2025-08-28 17:21:56.778151,9,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,83,39.3,143/90
-b57e85f9-3c99-46ed-bb1d-029a03c9ffa9,PAT-20E4BC0D,2025-06-26 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,65,37.6,147/83
-317ed043-9c68-42bd-badf-5087c047c5d4,PAT-E06BF259,2025-07-12 17:21:56.778151,1,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 3.1),3.12,95,38.0,142/67
-0931c83b-e196-4569-b9a3-41479e9506ac,PAT-5351A8F5,2025-09-22 17:21:56.778151,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,78,38.1,122/66
-945b5a94-11eb-4b7d-9da3-8810799ec275,PAT-B71748BF,2025-11-03 17:21:56.778151,8,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,102,37.7,154/66
-0047aa19-274b-41de-b618-f3cdce074781,PAT-21E908F4,2025-09-06 17:21:56.778151,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.1),3.12,108,37.0,114/87
-c6163e4e-3096-4c7f-bc8c-aa40940f66e5,PAT-07ED3F53,2025-10-30 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,99,38.4,135/61
-5e79d52e-98ef-4fa3-a6b8-a17179a200e4,PAT-77C6534A,2025-11-11 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,77,36.2,117/79
-8d1aa0bc-4f57-4b62-bc98-0301081bdc86,PAT-BB69CB3A,2025-09-03 17:21:56.778151,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,115,36.6,142/85
-42614320-078f-44a4-98cf-3dbd19d7d898,PAT-010784BA,2025-06-26 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,100,39.4,105/93
-c195b9dd-0b9d-44af-9806-786c183750ee,PAT-D3F9A243,2025-08-03 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,81,36.6,119/80
-8f8421eb-ea37-4326-8b57-97ac1bf449cc,PAT-47F3AE05,2025-11-01 17:21:56.778151,7,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,69,36.6,139/63
-3d9a8282-e2af-47fa-b729-94821be07569,PAT-CE056145,2025-11-28 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,88,38.4,131/98
-374ae3b8-576c-40ac-8cd3-9ccaa8140397,PAT-1424A472,2025-09-30 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,73,38.7,107/82
-4327740e-9ba0-4e17-80cf-051ce66b44d0,PAT-F564239F,2025-09-27 17:21:56.778151,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 4.0),3.96,103,38.1,133/79
-d5b688c3-d046-4406-8c5b-00eecfb51522,PAT-D507F84B,2025-06-20 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,98,36.3,113/79
-49a6f1cd-3f19-4658-9945-5055daff561e,PAT-B647BA95,2025-08-02 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,108,37.0,120/67
-2acac3dd-7825-4e23-963b-63243d743f34,PAT-11699F47,2025-06-10 17:21:56.778151,3,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 3.4),3.37,71,36.5,134/74
-9ae19d55-0b86-40be-b73b-285aada1ab81,PAT-18821CAF,2025-10-15 17:21:56.778151,3,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.1),3.12,82,36.3,155/62
-b20ec764-d6b4-4eb9-9865-0c230ee23782,PAT-82EBC278,2025-09-28 17:21:56.778151,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,115,37.2,127/96
-7b5b3a98-18f0-44bd-80f3-f9b66441396a,PAT-12D1F0D2,2025-09-20 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 13.6,13.55,86,37.1,125/61
-6862fc10-8e83-4ec7-a1ec-1232cb6aa5aa,PAT-580A0E69,2025-08-31 17:21:56.778151,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.1),31.06,65,37.6,106/75
-c45e3ec4-2391-4082-8cba-f506d55d1310,PAT-B230D22F,2025-09-28 17:21:56.778151,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 2.3),2.26,65,37.4,119/81
-43c0025b-0c1b-4500-b773-7b6f1d472111,PAT-8DD49335,2025-08-04 17:21:56.778151,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,92,38.3,133/92
-202d593c-3a3a-4ee6-a011-21a2770c5e11,PAT-3D48A305,2025-07-28 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,82,38.6,152/69
-97771d1d-36a0-40fb-896e-dd6ed1517516,PAT-42A01AEE,2025-08-08 17:21:56.778151,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.0),32.95,72,36.7,109/64
-cc050c53-5217-4d80-81ea-d456a10c47bb,PAT-EE24FBF6,2025-07-24 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,91,37.7,136/97
-88e36abe-4daf-4b26-b111-e75f954f733f,PAT-551291BC,2025-10-01 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,101,38.3,139/80
-48c13cf9-25c4-413e-94a5-2610b4b296ac,PAT-3ABD069C,2025-11-16 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,88,36.3,128/100
-8387bea5-a108-4719-945b-e4a9a7775553,PAT-6BAFE57E,2025-08-25 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 35.0),34.97,92,36.4,129/88
-e6f429bd-492a-42cf-864c-de7a26695f68,PAT-11F20FB2,2025-06-18 17:21:56.778151,2,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 2.2),2.24,78,36.4,155/65
-1d251584-5d96-48fa-96a3-35679c7813ff,PAT-511CA47E,2025-11-13 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,97,38.0,150/62
-dfaf2f79-92c9-4fb2-97a2-3d4927c73481,PAT-58469D3C,2025-10-02 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,72,37.2,130/92
-64420718-e1bd-4c13-8cb9-855794ec8da3,PAT-90AA3560,2025-07-17 17:21:56.778151,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 2.2),2.24,111,39.2,121/65
-3950d4e2-d1a1-43d4-93fd-0da563345cba,PAT-69C0D624,2025-10-16 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,62,36.9,128/88
-e259d0c6-2423-4427-a8c0-8c7516f113dc,PAT-A866F519,2025-10-21 17:21:56.778151,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 1.5),1.54,83,37.4,118/84
-081e751f-0ec1-434c-9294-d12181dfac33,PAT-E3EA2753,2025-09-21 17:21:56.778151,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,103,38.1,150/100
-7cd8cd84-b559-4cd3-b491-b05caccca2fa,PAT-68A8EAF7,2025-11-21 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,66,38.0,124/78
-1b5d4160-a2d7-4c93-9045-1e8d8ad0b2df,PAT-2137D33A,2025-08-12 17:21:56.778151,8,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,65,38.1,109/82
-a6e018a9-3fc6-4323-ac7a-1a482588f228,PAT-14C21D8C,2025-08-27 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,102,37.4,138/65
-4e93e532-f83e-4821-9636-96d02c2b7b8d,PAT-3808D744,2025-08-27 17:21:56.778151,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 3.1),3.12,110,37.2,108/93
-01efff47-d881-4617-96cf-3b52c0e40d97,PAT-3FE61A73,2025-07-02 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,87,37.8,101/83
-ccb13db9-9a6e-4965-b005-5c772e058e8f,PAT-B3A029E6,2025-08-27 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 16.9,16.88,81,39.3,131/72
-612939a8-fd10-464a-8c17-14a8191698cc,PAT-B45BD71D,2025-08-05 17:21:56.778151,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 6.8),6.83,78,39.0,106/92
-0ccc5473-c703-4503-a500-8a30c9bb4418,PAT-6BEAF77C,2025-10-25 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,116,38.7,108/98
-4c31eef6-01be-4b6d-8b63-32a4c85e1768,PAT-4583A4AD,2025-09-13 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,71,38.9,149/99
-62a0ea5d-c21f-4c80-83e2-5ca53aaecc9f,PAT-7756190B,2025-07-21 17:21:56.778151,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,86,37.3,146/75
-f255344a-e40a-4bfe-8cc8-e33bb19ff806,PAT-9C61C90E,2025-09-30 17:21:56.778151,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,74,37.9,119/90
-ef458e61-d41f-420e-a285-d92c2104bec1,PAT-8A05259C,2025-07-28 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,109,37.1,124/92
-b1b1d1a1-a6dd-49a5-aeec-05068a47d87a,PAT-72C4C01C,2025-10-22 17:21:56.778151,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,112,36.8,138/68
-717a3bfa-17f3-448b-9f4d-706211007d94,PAT-5F31F608,2025-08-12 17:21:56.778151,3,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 2.2),2.24,115,37.4,159/66
-229c3311-49a9-4ddb-a15b-6ae0143dd3d9,PAT-25FDC00C,2025-10-19 17:21:56.778151,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 4.0),3.96,108,36.6,128/92
-b159b1e5-bc89-4980-9746-5733aa6d3b7c,PAT-6ECCAC4A,2025-07-16 17:21:56.778151,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,112,37.6,122/61
-d6d43d2c-21fa-4924-99d5-dc066c5bab10,PAT-5BEBE259,2025-09-23 17:21:56.778151,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 2.2),2.24,83,36.9,105/83
-a00f0dc2-1c71-441b-91ca-b8e479979b17,PAT-265F7AEA,2025-08-05 17:21:56.778151,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,113,38.5,121/69
-cd6f86d8-ccb5-48bd-bd97-fccbe56c1e3a,PAT-614311BA,2025-07-14 17:21:56.778151,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.6),41.6,104,38.9,148/90
-d446858e-0476-49fd-b334-5548daaabce1,PAT-53638CB9,2025-10-01 17:21:56.778151,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,61,37.0,153/69
-9f2fb5a1-9fe5-4018-a753-d52e2c99c9c0,PAT-38D4ABAB,2025-10-27 17:21:56.778151,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,109,37.1,119/67
-4c8d66ff-8dce-46b2-9a6b-9dc8d6323cb4,PAT-FC538DB3,2025-06-21 17:21:56.778151,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 3.4),3.35,110,38.2,104/67
-f4322261-6c66-4a2c-a0bc-1423cf6efc4d,PAT-6186ED8D,2025-10-14 17:21:56.778151,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,105,36.6,127/60
-2d07fd7b-be23-4c95-8d1d-2c678dece379,PAT-67B5272B,2025-11-13 17:21:56.778151,8,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,71,38.4,105/93
-45d03cc7-b6c3-4279-adbe-a3b43a7726c3,PAT-933C1E0B,2025-09-09 17:21:56.778151,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,94,37.8,132/95
-bf73e111-0862-4b14-9504-45dfb24e260f,PAT-BE77F483,2025-06-14 17:21:56.778151,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,100,37.4,123/76
-6233c933-5ad6-461c-a934-25a0ffdaf87f,PAT-0AE82919,2025-06-13 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,75,38.6,140/66
-b18ce083-77d0-4837-8a0d-3031f9605dc6,PAT-92BC2653,2025-11-04 17:21:56.778151,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,62,37.3,121/71
-1edffce1-0482-48bf-b1fc-acc9e1291377,PAT-D235B0E3,2025-12-01 17:21:56.778151,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,111,36.6,145/89
-fcc1870a-9213-4afb-a3d2-88fc41d0c73c,PAT-4DBDB4E4,2025-06-18 17:21:56.778151,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 8.4),8.43,110,36.8,102/80
-a7e26cb3-27c4-400d-b02d-4a3ec8e7c334,PAT-A855B544,2025-08-27 17:21:56.778151,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,76,36.2,141/72
-a3fb3229-b265-4e51-94eb-b464f58e4e5d,PAT-00CF8B92,2025-08-21 17:21:56.778151,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,77,36.5,123/87
+fdcbdf10-0f82-4faa-aefe-ab668c212edc,PAT-866B859F,2025-09-01 20:01:37.710339,7,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,71,38.1,116/62
+ca81a419-ee24-4509-bfcd-a9c07c3e5e49,PAT-12808A48,2025-07-06 20:01:37.710339,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,106,38.8,127/98
+df1dafbf-8999-4463-af5e-490b33b20266,PAT-DA65BF88,2025-10-17 20:01:37.710339,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 4.0),3.96,72,37.0,145/87
+3689875f-fab3-40ac-9234-3425b5123cc7,PAT-6A10ABFA,2025-06-09 20:01:37.710339,3,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 1.5),1.54,106,39.3,147/72
+9fb49ee7-708a-49d6-97b8-e1b0c1e87c98,PAT-0FB73760,2025-09-10 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,99,37.2,154/67
+e63c045d-4247-4baf-bb13-036f804e17b6,PAT-BAEE52C5,2025-08-24 20:01:37.710339,9,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,80,37.5,118/95
+76b85226-d10b-4bf0-8b38-c2467416c925,PAT-886EDA12,2025-07-11 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,102,39.3,143/71
+6e2e4bf1-c5bf-4a0b-9175-b00d006d1985,PAT-E427EA86,2025-11-13 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,85,38.0,100/79
+38621e1e-8ed7-4663-8660-c1ca5bdb0b5e,PAT-AAB8A5A1,2025-08-21 20:01:37.710339,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,89,37.6,143/73
+952656f2-5521-467a-83b4-3129533d5284,PAT-D762E610,2025-10-17 20:01:37.710339,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 7.3),7.27,102,36.4,132/100
+671bf155-707b-4bee-a55e-5aae4dc8035f,PAT-AF434244,2025-11-14 20:01:37.710339,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,103,37.2,151/72
+e1fb4cc5-20da-4f2d-8cba-9f56034c8788,PAT-0F7BE13A,2025-07-16 20:01:37.710339,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,90,38.2,149/64
+7f462722-3b5f-4b55-9305-3dd71f88c715,PAT-A76A62D0,2025-10-03 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,96,36.8,144/84
+e236ae53-29cc-4eaf-8d2d-e2419d2965c2,PAT-753E9E52,2025-10-13 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,69,38.3,100/66
+ce73519d-4947-404d-aff4-b7b9a918f228,PAT-375D56DE,2025-09-25 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,111,39.4,133/89
+1b756e99-7043-439f-a93d-51466ca1b036,PAT-A47B76F7,2025-06-21 20:01:37.710339,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.1),3.12,67,37.7,151/89
+6dcd1fdf-d913-4596-9348-dd1c8be7b106,PAT-7F73D370,2025-11-26 20:01:37.710339,3,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 1.5),1.54,80,39.3,157/88
+eee9f198-047b-48fc-b787-85762c80e609,PAT-9A1408DC,2025-11-12 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,117,36.6,155/90
+2943d0cf-59e9-482f-aa97-bae0e13c7c6c,PAT-A50AD799,2025-10-02 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 17.6,17.62,113,38.3,149/93
+3a938d0d-f209-4a16-b7d4-227d93df01b6,PAT-B9709C06,2025-10-11 20:01:37.710339,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,88,36.4,118/75
+9e184d1f-0082-4237-8543-84a7b9f2dfb1,PAT-415D26DF,2025-08-17 20:01:37.710339,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,68,36.6,124/69
+e881bc62-b11f-4e53-869a-37980018d618,PAT-1F98F418,2025-12-06 20:01:37.710339,7,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,86,37.2,129/86
+848aad94-b115-46ae-8e54-f379687eb607,PAT-CE122857,2025-06-24 20:01:37.710339,10,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,117,38.7,160/61
+405fc661-8f9e-4fe7-a7bc-257815e87c79,PAT-7A67E0B8,2025-11-03 20:01:37.710339,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,120,37.3,148/84
+4a9de417-b974-466b-bba0-874f20e2ef92,PAT-916374CB,2025-09-24 20:01:37.710339,3,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 1.7),1.66,94,38.8,157/74
+96b754f0-feab-4c24-a610-1ef5195b1c72,PAT-63058DEA,2025-10-11 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,87,37.8,124/81
+5c8bd53b-2647-426c-94aa-eb1174acb560,PAT-5FA9CC99,2025-11-27 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,106,36.7,129/68
+012f2dfe-2f57-4a5f-abc7-006cd44c0c7e,PAT-D0CD4376,2025-11-15 20:01:37.710339,1,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 1.7),1.66,97,38.0,101/65
+f35dcaab-e9f7-4d64-b0c5-12bdf5494ee2,PAT-9C2033C9,2025-11-20 20:01:37.710339,8,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,71,36.3,124/80
+e1784251-92c6-44f1-b988-4d8315da6631,PAT-A3B14E95,2025-08-02 20:01:37.710339,9,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,108,39.1,117/86
+05cb183e-e6bd-44c1-badf-ef78ddde7a1b,PAT-A3989D42,2025-08-12 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,61,38.6,103/82
+416b629d-dbde-4cf6-b278-fd9160b4de7d,PAT-6661D44B,2025-08-05 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,109,39.4,102/61
+6bca7a87-f929-4fd5-80ff-424bfdbb314d,PAT-31111E76,2025-08-11 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,99,36.6,108/90
+093b3c06-2a32-4a5b-8628-6711b7a17bf2,PAT-1F7C7EF8,2025-11-27 20:01:37.710339,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 4.0),3.96,89,38.5,149/83
+3ee89d81-419d-4083-9f3d-a1f15f903e7a,PAT-6A843B0E,2025-07-21 20:01:37.710339,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,79,36.5,101/79
+32155c3c-e85c-4d33-94c9-fa8e8d06de1c,PAT-01CC6C80,2025-11-03 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,85,39.3,112/64
+5515f87c-d64b-4a20-96db-f92fe5195707,PAT-DDE1FB18,2025-11-07 20:01:37.710339,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,104,38.7,154/98
+89fe60a4-9b47-49e9-a792-514a3f1f2e5d,PAT-991458B1,2025-07-09 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,82,37.9,142/83
+3b6372c2-01e3-4fe4-9894-17b790d9f298,PAT-CFA4955A,2025-06-26 20:01:37.710339,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,114,37.5,131/66
+a3c9f8b8-b4df-4b82-9a37-ce8d2e0b6527,PAT-501CAC41,2025-09-27 20:01:37.710339,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,87,36.7,133/77
+179c50b5-a065-4370-aceb-1ad24431e35b,PAT-BE027463,2025-11-13 20:01:37.710339,2,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 1.7),1.66,87,38.9,137/77
+a1ade6a7-cb63-435a-8648-3a06f61508c0,PAT-BBC1D448,2025-08-30 20:01:37.710339,1,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 3.4),3.35,116,37.6,148/89
+0eea2540-03fb-448a-a581-87475307dc6a,PAT-3785B3D9,2025-11-01 20:01:37.710339,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,61,37.8,120/71
+262038fc-8181-43b4-8f90-fa799716dd90,PAT-1EDAB676,2025-10-11 20:01:37.710339,9,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 29.8),29.84,81,37.1,138/77
+c516ed9c-dafb-4ad7-9a44-ee2aecbca5da,PAT-780F3753,2025-10-29 20:01:37.710339,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,75,38.5,131/95
+a3b147ba-bb23-4511-b315-f034eaf0848a,PAT-34063CFC,2025-08-09 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,88,38.8,105/78
+024d8ca2-aa7e-4b6e-824d-39e58a475f91,PAT-E4194110,2025-08-04 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,75,37.1,137/83
+d1f65380-6d39-4080-b777-bd5c5cda2592,PAT-AA5A31F1,2025-10-08 20:01:37.710339,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 3.1),3.12,87,39.5,135/81
+4d77133f-885c-4106-aead-853839b578e2,PAT-799B58D0,2025-09-07 20:01:37.710339,10,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,79,37.0,107/72
+28a9dee2-34f9-4eaa-ab53-8b673136d49e,PAT-A2F37E46,2025-08-28 20:01:37.710339,3,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 4.0),3.96,120,38.7,111/72
+16666481-c674-434b-b3c0-3dcd3a9fcb6b,PAT-109AFF01,2025-08-03 20:01:37.710339,10,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,106,38.1,148/93
+9c5d4ce2-be40-4b7a-b999-d507cb3c3fb6,PAT-5F382BC6,2025-11-08 20:01:37.710339,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 8.4),8.43,72,37.1,123/71
+e0f26aa7-809f-4672-90ff-1b52910237ad,PAT-A18502A1,2025-08-25 20:01:37.710339,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,62,39.4,135/78
+6aac6a7b-b87d-4094-8c53-0667e5af9170,PAT-27C11C4C,2025-12-04 20:01:37.710339,3,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 6.8),6.83,108,37.8,155/60
+b29640de-991f-4d5e-805d-dd721d1e311d,PAT-A3B1CAAD,2025-11-02 20:01:37.710339,2,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 8.4),8.43,88,37.3,103/76
+e7c3a4a6-a67d-430b-be1b-6aa59c3a475d,PAT-A871D4C3,2025-10-09 20:01:37.710339,1,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 4.0),3.96,91,36.4,140/63
+cf23249b-d335-4187-83df-af8f552bdc0a,PAT-72652EFE,2025-07-17 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,120,37.1,115/67
+904e3fcc-207c-478c-bcce-3aaa03ed397f,PAT-068C1B5B,2025-10-29 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 14.6,14.58,98,38.1,139/74
+8e108f2c-7ccf-460f-af97-beb3280b0973,PAT-F7D0CEE6,2025-10-20 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,79,39.0,127/79
+25016ce8-e8fc-4a05-b78c-1f4553a8b069,PAT-8BAD4861,2025-11-01 20:01:37.710339,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,120,38.7,140/73
+d5b5d637-ef9e-442f-b5a1-041e16421353,PAT-760754C7,2025-08-15 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,70,36.9,135/64
+16f75d85-c0f4-4ba2-a65a-4a89d6e9c7eb,PAT-93958E79,2025-07-19 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,104,38.1,118/62
+e2f11409-5315-446c-bcdb-51db99061195,PAT-D3A9849E,2025-08-07 20:01:37.710339,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 8.4),8.43,104,39.0,104/74
+9938ea12-43a6-4b77-9997-800c56c1ab79,PAT-046105B0,2025-08-15 20:01:37.710339,8,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,67,38.0,141/69
+f7ec8163-0842-44b0-a4dc-c026dee1b21b,PAT-27D75E3D,2025-08-16 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,63,36.7,119/98
+ee742e33-7741-4894-8005-03954bc7691f,PAT-8929B1F5,2025-11-01 20:01:37.710339,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 8.4),8.43,89,38.4,144/85
+280a6c99-59e4-4938-893d-a141cfa123a7,PAT-D4C83786,2025-08-17 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,65,38.1,156/87
+d4760f4b-e86e-4a57-9a78-a775544c5b20,PAT-E7BECF60,2025-08-30 20:01:37.710339,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,65,36.9,143/96
+316d5919-6f19-45ff-9a8a-b9823f154d36,PAT-29BDB06C,2025-11-06 20:01:37.710339,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,108,38.7,130/93
+6393f5c0-9c52-4cd5-8f83-d4078e23829b,PAT-4F6CC959,2025-11-22 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,71,39.5,127/100
+ac55cb70-762e-41a1-9699-78d0a307fb4d,PAT-0BE2DD0F,2025-10-12 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,82,37.5,120/66
+940e712e-6bdb-476c-a54f-bd04dab1583c,PAT-199742F3,2025-07-20 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,78,38.4,125/95
+3f391ad4-1bd7-46a7-a808-87134d50b2fc,PAT-31325769,2025-06-18 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,76,37.2,149/85
+bd7c917b-0054-4b34-8fc1-7625ccce349e,PAT-65F109EC,2025-10-18 20:01:37.710339,10,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,63,36.7,123/99
+3aff7724-a70d-46b4-84c4-07a3894b7f66,PAT-F539D635,2025-10-14 20:01:37.710339,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,73,37.0,108/78
+fdf4c4d8-12ad-445f-a998-c133139aac4f,PAT-10394542,2025-09-29 20:01:37.710339,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,61,39.4,138/75
+0357a053-22ff-4f54-a622-2908f89b7612,PAT-1D63B754,2025-07-19 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,60,38.0,105/74
+d9e2d3e6-0324-4ef5-8a6b-cf77cc94f101,PAT-A4CC3EEF,2025-07-08 20:01:37.710339,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,91,39.3,118/92
+e97606b3-8bfa-4b15-9e40-c33fa7af5a15,PAT-824FB6AB,2025-12-06 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 35.0),34.97,90,36.9,135/69
+ae3e2bd8-98d4-41b8-b2d6-597500d0f0e4,PAT-D13A0B75,2025-09-15 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 15.4,15.43,92,38.6,108/64
+80d97498-11fc-4a5f-b603-72110a05068d,PAT-E408F7F5,2025-08-18 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,81,39.3,132/77
+1fcb1985-3d88-4083-a711-3a6859d44b0f,PAT-C72C58AA,2025-06-09 20:01:37.710339,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 8.4),8.43,113,38.1,142/91
+c6577b73-6324-4b48-832b-dc22e1c5a8f3,PAT-61F1E74B,2025-07-17 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,90,37.3,135/94
+201301b0-09cb-4d3e-8c26-ff1ae6371d05,PAT-EFE59B8E,2025-09-13 20:01:37.710339,9,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,104,36.9,124/74
+1e25f53e-b29b-4826-aea0-b7992152a8ac,PAT-2FFEBD1D,2025-09-22 20:01:37.710339,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.6),41.6,105,39.2,124/84
+d3e34807-16c7-4db0-b6a0-b32e37e84bb1,PAT-803718DD,2025-11-25 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,91,39.4,108/92
+e66b6333-2c32-4626-920a-9644aef4600c,PAT-F4529ABE,2025-11-07 20:01:37.710339,7,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,66,37.9,129/60
+3d33f695-8aee-478f-a298-b90f170b0177,PAT-A4ECDBD1,2025-07-15 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,69,36.4,150/76
+bd3c14ef-aacf-46ee-bf68-0371da548f5c,PAT-CB0D42E9,2025-09-03 20:01:37.710339,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,114,37.2,143/94
+03500ec6-c547-4594-9aba-c633c0cea9cb,PAT-612B073E,2025-09-14 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,105,39.1,131/94
+07ffa723-484e-4967-8c14-c927dd3a312b,PAT-1CE67587,2025-06-18 20:01:37.710339,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,100,38.4,118/74
+cb251b5d-45fd-4442-ba83-d328c997705f,PAT-176564C3,2025-07-02 20:01:37.710339,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,88,36.7,119/61
+9679f218-34da-4222-9291-45a67db06173,PAT-58C8C280,2025-06-20 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,78,37.3,127/69
+3db40430-6f78-43ba-8ada-e2eee857ae0a,PAT-85BFE6EB,2025-08-10 20:01:37.710339,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 1.5),1.54,103,38.8,110/71
+52138533-f68a-4769-8f32-7459dbdbcfda,PAT-ED49DAB9,2025-06-29 20:01:37.710339,10,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,91,39.2,109/74
+77bc366c-225d-4f10-8035-7b08dc206595,PAT-99336C28,2025-10-05 20:01:37.710339,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,76,38.4,157/89
+f776b41c-e748-49e4-a116-53274f8aac95,PAT-15B1AB38,2025-08-21 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,70,36.4,160/82
+3d26cf03-1540-41d0-aae8-d63fb9c0d85b,PAT-73FF297B,2025-11-06 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,87,38.4,129/79
+c3685cf7-4bcb-4725-bb2f-beb2a30dd38d,PAT-EC49B02A,2025-07-29 20:01:37.710339,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,75,37.4,122/96
+b2c84071-94a4-4a06-ac6f-9a469507f217,PAT-FEFC6239,2025-08-23 20:01:37.710339,9,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 32.0),31.99,113,38.3,117/60
+de044ec2-f36a-4d2e-b5eb-1ec620680d57,PAT-7B040FA4,2025-10-31 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,63,39.2,147/91
+e952937e-8e93-44e1-a6bd-44881560d365,PAT-87AD38A9,2025-08-21 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,98,38.8,114/100
+e91d5399-d7ab-4713-9d87-98a7f6d37e10,PAT-0F271CCA,2025-07-27 20:01:37.710339,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,100,36.4,140/62
+f99d400a-9685-4e5f-98b7-7a3cbd88362d,PAT-68C45B83,2025-08-27 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 18.2,18.25,97,37.3,108/65
+986fc299-ed9a-4330-bf61-808d9b2e1928,PAT-87DDDF7F,2025-08-23 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,86,36.7,108/94
+0bb20dd1-5257-451f-a93d-95df58ee4612,PAT-399AABFE,2025-09-10 20:01:37.710339,3,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 1.5),1.54,113,36.7,158/90
+57ad365f-f585-4c74-9c7a-3cc9eb6cf037,PAT-12EE6E43,2025-08-23 20:01:37.710339,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,89,39.4,109/74
+b5c407ca-bf2f-40d2-a6b1-ab591df9fd48,PAT-EABA2DFF,2025-11-29 20:01:37.710339,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,65,38.8,100/76
+820e403a-2014-4795-a6c2-7144172c6086,PAT-6E03AD0F,2025-10-24 20:01:37.710339,2,Patient reports minor congestion. Minimal environmental pollution influence (PM2.5: 4.0),3.96,103,38.6,116/97
+566a0fa9-4081-469e-a3d3-004f3b09a9e4,PAT-3C21B5FA,2025-09-14 20:01:37.710339,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.2),41.22,103,36.9,101/99
+ab33271a-b551-4e4a-a63b-78035385677f,PAT-B683F7B8,2025-10-30 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,74,38.3,140/89
+05940bac-577d-4a66-b7ab-5f6e84785287,PAT-F797DC68,2025-12-05 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 11.3,11.28,86,36.5,102/62
+8b30526a-f8b1-49ea-9403-235ff52c2afb,PAT-60279330,2025-08-25 20:01:37.710339,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.4),3.37,75,39.1,108/84
+d75c00f4-de0d-41ac-9a21-8e5fe0bce4eb,PAT-C82A9B24,2025-10-03 20:01:37.710339,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,116,37.5,106/91
+dd07a379-8862-4327-bf7e-6a36d50c8c41,PAT-2DF62507,2025-11-13 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,62,38.4,113/88
+0ecbc953-3f4a-4f95-b5c8-0675868af382,PAT-AC80CA51,2025-09-30 20:01:37.710339,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.4),3.35,103,37.3,157/82
+89d15c61-5173-4a5f-a3c0-e1bcc8e2e44d,PAT-363D26E6,2025-06-24 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,72,39.4,160/89
+a02709ec-16e4-4c01-82a4-35d42e6ab3a1,PAT-BEAAA97B,2025-07-02 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,101,38.3,101/63
+b3cf9db5-fbdb-4d12-8288-b818b50e9059,PAT-BCDE0F3C,2025-09-02 20:01:37.710339,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.4),3.35,96,36.8,153/95
+85457b9d-c66e-4020-ba12-67fdf94e8a04,PAT-D90A06F4,2025-08-01 20:01:37.710339,1,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 2.3),2.26,115,36.9,149/69
+1c4635e0-975a-4405-b236-d48ecfff0011,PAT-84C190E8,2025-11-08 20:01:37.710339,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 43.8),43.8,68,37.9,151/71
+5854c377-4c9c-49ff-b274-6755a3ed8cbd,PAT-399022BD,2025-07-07 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,68,36.2,150/75
+8f3df582-9f89-49f9-b088-426e556e110b,PAT-E23B69CB,2025-11-06 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,71,37.0,108/86
+a07b2ff2-342a-42b9-8770-5d378ed53a02,PAT-14518E10,2025-10-21 20:01:37.710339,3,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 4.0),3.96,90,37.6,123/92
+d1ad6622-c83d-4120-954d-65ca3b50a206,PAT-32DC5460,2025-11-07 20:01:37.710339,10,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.0),32.95,120,38.2,146/93
+1d50000a-9be8-4827-9d6a-af2dad0a58c7,PAT-42631166,2025-08-25 20:01:37.710339,7,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,90,39.0,127/66
+767ead86-ef4b-4f4a-8b56-a2286b19b256,PAT-BB1414EF,2025-10-12 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 13.6,13.55,64,39.2,120/98
+917ee02d-84ea-4ee9-8bf8-2af4b821619a,PAT-2787107C,2025-07-16 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,77,38.2,137/95
+4ac28790-7a67-497b-af34-81d3a6524f0b,PAT-31E1E96B,2025-08-31 20:01:37.710339,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,92,38.2,106/67
+f93fa48b-f147-47f7-bf8b-14167646f547,PAT-8D899CC5,2025-11-23 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,106,39.0,127/88
+6c9cf398-caa6-484c-a50e-80f8c4233007,PAT-37E78DB4,2025-08-06 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,112,37.6,126/66
+bf6d92e7-5c91-48fd-88ec-f88b208c0e5e,PAT-5EAEEFE4,2025-08-28 20:01:37.710339,9,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,83,39.3,143/90
+9482154f-1855-4abc-b81f-f0eeb40c48b5,PAT-E8406673,2025-06-26 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,65,37.6,147/83
+6fdeedc4-6b29-4e28-84fb-70bfd2bca0bb,PAT-E73CDF4B,2025-07-12 20:01:37.710339,1,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 3.1),3.12,95,38.0,142/67
+3076a82d-ecdc-4d9a-999c-109da9c5dab0,PAT-E99D8261,2025-09-22 20:01:37.710339,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,78,38.1,122/66
+a9440e7a-2d2e-4a95-9a59-d8e78e42cd46,PAT-E892EDD3,2025-11-03 20:01:37.710339,8,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,102,37.7,154/66
+9a400b0b-54db-426c-99bc-321109e536b5,PAT-B348BF3E,2025-09-06 20:01:37.710339,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 3.1),3.12,108,37.0,114/87
+183fcf6f-87db-40c2-aafb-000c780553a2,PAT-091C5A48,2025-10-30 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,99,38.4,135/61
+48eac773-2e74-4712-addf-29566a7cc3ce,PAT-5DE95FAC,2025-11-11 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.2,10.15,77,36.2,117/79
+dae7ce2a-365c-4890-bd3a-8bade5fceeab,PAT-29BC85B5,2025-09-03 20:01:37.710339,7,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,115,36.6,142/85
+59d457e8-cb31-48ac-bc58-7a7fd1efa65c,PAT-FD55E243,2025-06-26 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,100,39.4,105/93
+6701e660-f22c-46d8-bd77-a8b3c68be185,PAT-37DC426B,2025-08-03 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,81,36.6,119/80
+4df0af75-5e50-4cba-a245-f3d59ca09709,PAT-5DE508C9,2025-11-01 20:01:37.710339,7,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,69,36.6,139/63
+2e25f3ce-6887-4274-bfaf-cb4b644f91ee,PAT-5EDF7F7A,2025-11-28 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 19.3,19.28,88,38.4,131/98
+cf413319-18a7-4597-a376-3e7eab3a60b1,PAT-5F8C7395,2025-09-30 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,73,38.7,107/82
+b997aad1-9fbe-4dcc-8244-432852add24c,PAT-4ED68DA9,2025-09-27 20:01:37.710339,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 4.0),3.96,103,38.1,133/79
+9498b84a-ae04-4203-b4ba-876583437921,PAT-915A2D02,2025-06-20 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.9,22.91,98,36.3,113/79
+b895b92d-3e60-4b55-980d-3ddd115ec385,PAT-B094B98C,2025-08-02 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,108,37.0,120/67
+883d0301-17ee-4940-b7ff-5a36027c6468,PAT-92A6C2A9,2025-06-10 20:01:37.710339,3,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 3.4),3.37,71,36.5,134/74
+0d568677-b577-472a-95a0-4d21dfd602a2,PAT-F594ECC9,2025-10-15 20:01:37.710339,3,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 3.1),3.12,82,36.3,155/62
+5458755f-2be4-481a-ba28-ad02600afe2d,PAT-F676B113,2025-09-28 20:01:37.710339,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,115,37.2,127/96
+225d0107-12a1-4644-a5ec-705e6a0ef476,PAT-FD2758E2,2025-09-20 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 13.6,13.55,86,37.1,125/61
+705cc198-a2b7-4b62-b94f-f3adaebe00d6,PAT-E52B4D88,2025-08-31 20:01:37.710339,10,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.1),31.06,65,37.6,106/75
+9363a341-8d5c-47d4-b135-de4602aefbf1,PAT-E31EB592,2025-09-28 20:01:37.710339,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 2.3),2.26,65,37.4,119/81
+b702d457-cec1-485a-999f-38ac1fc7be28,PAT-CB92251B,2025-08-04 20:01:37.710339,8,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,92,38.3,133/92
+2fa78ba6-4297-4493-848b-4c77d6e6bbf5,PAT-5B7A94A2,2025-07-28 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,82,38.6,152/69
+c979f7d6-4490-4ea2-97a5-838cc13594e8,PAT-F56BB1D8,2025-08-08 20:01:37.710339,8,Patient reports difficulty breathing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.0),32.95,72,36.7,109/64
+e3cf587c-8b9b-49e8-87b8-6c83916ce235,PAT-E8EAAA87,2025-07-24 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,91,37.7,136/97
+65e6a0d7-3f24-4044-bf4a-8c60ee0e7a1b,PAT-CB0EFE16,2025-10-01 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.2,12.22,101,38.3,139/80
+6fff3e6e-0262-49a3-82d4-a7c5dc87d5d5,PAT-23B57DCB,2025-11-16 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 12.5,12.48,88,36.3,128/100
+b18931b4-d0cb-43c0-b16c-f954d29616e1,PAT-D0CDA5CF,2025-08-25 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 35.0),34.97,92,36.4,129/88
+8c81a847-356b-4d6f-a53a-3486ea0d1d7d,PAT-A5F784A7,2025-06-18 20:01:37.710339,2,Patient reports tiredness. Minimal environmental pollution influence (PM2.5: 2.2),2.24,78,36.4,155/65
+b121d871-5cfd-4d9a-8afb-5fc723d835ce,PAT-2DE51575,2025-11-13 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,97,38.0,150/62
+6edbd9b1-056d-423e-9f44-e3ce428c7768,PAT-0843924B,2025-10-02 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.9,24.94,72,37.2,130/92
+658ce9d0-a5a5-4510-bcc4-9b3aba4f7f7b,PAT-F0F7999A,2025-07-17 20:01:37.710339,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 2.2),2.24,111,39.2,121/65
+a3added0-4975-4628-b904-5460f721e79e,PAT-459B2B96,2025-10-16 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,62,36.9,128/88
+f93f26f0-3c48-4cef-89b1-49f3855e1c57,PAT-AFBFDCF0,2025-10-21 20:01:37.710339,3,Patient reports light fatigue. Minimal environmental pollution influence (PM2.5: 1.5),1.54,83,37.4,118/84
+4098c95d-5b70-4070-89f8-442f6a2d448b,PAT-5302351C,2025-09-21 20:01:37.710339,5,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 24.5,24.5,103,38.1,150/100
+fea33cf8-8caf-4ff6-b5bd-d6c8592fb81d,PAT-9F2CC379,2025-11-21 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 33.5),33.48,66,38.0,124/78
+86811ed0-903a-43ac-9549-1a7ed296d3de,PAT-115CB9E6,2025-08-12 20:01:37.710339,8,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,65,38.1,109/82
+5e60daf0-5ba4-4a47-9e68-23e79e56733a,PAT-78AFEE2D,2025-08-27 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,102,37.4,138/65
+8b7763a8-bd64-4e95-b298-03e3a4f192b4,PAT-91E79F3D,2025-08-27 20:01:37.710339,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 3.1),3.12,110,37.2,108/93
+275570a8-ca19-48ce-95ce-08fa9b0986ad,PAT-F9F409C5,2025-07-02 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 10.7,10.66,87,37.8,101/83
+e0e71a80-1dc7-4855-9744-641633de922c,PAT-65B6D50A,2025-08-27 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 16.9,16.88,81,39.3,131/72
+edbf62f6-d0da-4111-b2ab-f996ce959bc6,PAT-A89C4C06,2025-08-05 20:01:37.710339,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 6.8),6.83,78,39.0,106/92
+251c6b32-1e33-4a27-8ce7-c903666de0a8,PAT-F88787DC,2025-10-25 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,116,38.7,108/98
+76ebfcd8-7c2a-4b1a-8e00-65f0d7c70244,PAT-101522A0,2025-09-13 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.6,22.64,71,38.9,149/99
+35051821-77b9-462b-8926-96513e3ce77a,PAT-CBE00B0B,2025-07-21 20:01:37.710339,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,86,37.3,146/75
+2b20c518-78d0-413d-a36b-419e833df215,PAT-196D695E,2025-09-30 20:01:37.710339,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,74,37.9,119/90
+bd6c9067-42a0-4124-91b8-7b6503b7e82d,PAT-A2FDB71F,2025-07-28 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.1),41.15,109,37.1,124/92
+a61748e0-8894-41ed-83b7-dd40310ba142,PAT-6F6FB18B,2025-10-22 20:01:37.710339,4,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 20.1,20.1,112,36.8,138/68
+40a14db1-b69a-4210-af37-83090b190b11,PAT-3188B750,2025-08-12 20:01:37.710339,3,Patient reports seasonal allergies. Minimal environmental pollution influence (PM2.5: 2.2),2.24,115,37.4,159/66
+85cc00e9-8ff4-4ce6-aaa1-b31fab55b304,PAT-276772D6,2025-10-19 20:01:37.710339,2,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 4.0),3.96,108,36.6,128/92
+ab717c3b-d1a2-4a6c-9ffe-5d6f40e93a0e,PAT-030B4F86,2025-07-16 20:01:37.710339,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 30.6),30.57,112,37.6,122/61
+4f9ff450-3382-4fe1-af58-3374826e0fcd,PAT-BCC95CD4,2025-09-23 20:01:37.710339,2,Patient reports normal cold symptoms. Minimal environmental pollution influence (PM2.5: 2.2),2.24,83,36.9,105/83
+2d0f64f0-a0e6-4d83-a090-f11db2714c7a,PAT-BBE7A7F7,2025-08-05 20:01:37.710339,9,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 36.1),36.13,113,38.5,121/69
+5cb761c6-41f3-4681-8008-f1c79a98654f,PAT-AE73631C,2025-07-14 20:01:37.710339,9,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 41.6),41.6,104,38.9,148/90
+82dda049-5416-4fd4-a8f5-fccc0420456a,PAT-2C207B06,2025-10-01 20:01:37.710339,7,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 28.6),28.57,61,37.0,153/69
+61bce2b2-e4b4-4947-9635-0ed39bb3fc24,PAT-9C9155D4,2025-10-27 20:01:37.710339,10,Patient reports choking and respiratory distress. Exposure likely due to high air pollution (PM2.5: 48.2),48.19,109,37.1,119/67
+a722eca6-3d9f-4219-bef2-7754a63ef8f9,PAT-90664690,2025-06-21 20:01:37.710339,2,Patient reports slight discomfort. Minimal environmental pollution influence (PM2.5: 3.4),3.35,110,38.2,104/67
+523c1d77-c32f-4461-b288-7695bc46f614,PAT-C552325D,2025-10-14 20:01:37.710339,7,Patient reports dyspnea and respiratory distress. Exposure likely due to high air pollution (PM2.5: 45.6),45.61,105,36.6,127/60
+d486d1a1-2512-44f0-bd08-9cd834ed8330,PAT-4016CE4F,2025-11-13 20:01:37.710339,8,Patient reports throat irritation and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,71,38.4,105/93
+0bbf5702-91a7-4d7e-a214-e091c71dc01c,PAT-20164A3D,2025-09-09 20:01:37.710339,6,Patient reports mixed symptoms with moderate environmental influence. PM2.5 levels: 22.1,22.11,94,37.8,132/95
+88d65264-1766-4bcd-8bf3-a485ebf0a8b8,PAT-9A1D3547,2025-06-14 20:01:37.710339,10,Patient reports asthma and respiratory distress. Exposure likely due to high air pollution (PM2.5: 42.1),42.06,100,37.4,123/76
+01fe3752-e3cb-4337-b5b4-57dbd9134c9e,PAT-5B52186E,2025-06-13 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,75,38.6,140/66
+f8f27124-a39f-4810-82be-7120a6e0b736,PAT-912DB1FD,2025-11-04 20:01:37.710339,9,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 44.9),44.9,62,37.3,121/71
+8d3dfca1-eb08-49fe-bc72-10aea4d9534f,PAT-60184485,2025-12-01 20:01:37.710339,10,Patient reports cough and respiratory distress. Exposure likely due to high air pollution (PM2.5: 37.7),37.66,111,36.6,145/89
+ad4d3449-758f-4181-bb2f-69aa42e7d02c,PAT-ADF54E4C,2025-06-18 20:01:37.710339,1,Patient reports mild headache. Minimal environmental pollution influence (PM2.5: 8.4),8.43,110,36.8,102/80
+5a5694a8-dd43-4d9c-937c-d1f783920420,PAT-45F12B2C,2025-08-27 20:01:37.710339,10,Patient reports wheezing and respiratory distress. Exposure likely due to high air pollution (PM2.5: 40.0),40.02,76,36.2,141/72
+2e9f29da-4396-404d-9c0f-17551d97e39c,PAT-9F1D131A,2025-08-21 20:01:37.710339,7,Patient reports respiratory distress and respiratory distress. Exposure likely due to high air pollution (PM2.5: 31.4),31.39,77,36.5,123/87

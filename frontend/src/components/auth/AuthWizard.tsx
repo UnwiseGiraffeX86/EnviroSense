@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
@@ -8,14 +10,25 @@ import StepCalibration from "./StepCalibration";
 import LoginForm from "./LoginForm";
 import { ChevronLeft } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Create a single instance of the Supabase client
+let supabase: ReturnType<typeof createClient>;
+
+if (typeof window !== 'undefined') {
+  supabase = createClient(supabaseUrl, supabaseKey);
+} else {
+  // Server-side fallback (though this component is client-side only)
+  supabase = createClient(supabaseUrl, supabaseKey);
+}
 
 export type AuthMode = "LOGIN" | "SIGNUP";
 
 const AuthWizard = () => {
+  const router = useRouter();
   const [mode, setMode] = useState<AuthMode>("LOGIN");
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -66,8 +79,6 @@ const AuthWizard = () => {
 
       if (authData.user) {
         // 2. Create Profile Record
-        // Note: This assumes you have a 'profiles' table with these columns.
-        // If not, you might need to adjust this or create the table.
         const { error: profileError } = await supabase
           .from("profiles")
           .insert([
@@ -81,19 +92,17 @@ const AuthWizard = () => {
               inhaler_usage_frequency: formData.inhalerUsage,
               activity_level: formData.activityLevel,
               pollution_sensitivity: formData.pollutionSensitivity,
-            },
-          ]);
+            } as any,
+          ] as any);
 
         if (profileError) {
-            // If profile creation fails, we might want to warn the user 
-            // but the auth account is already created.
-            console.error("Profile creation failed:", profileError);
-            // Ideally, you'd have a retry mechanism or a way to complete profile later.
+            // If profile creation fails, we throw so it's caught below and displayed
+            throw new Error(`Profile creation failed: ${profileError.message}`);
         }
       }
 
       // Redirect to dashboard or onboarding success
-      window.location.href = "/chat"; 
+      router.push("/chat");
 
     } catch (err: any) {
       console.error("Signup error:", err);
@@ -129,14 +138,14 @@ const AuthWizard = () => {
           {step > 1 ? (
             <button
               onClick={prevStep}
-              className="p-2 hover:bg-brand-brown/5 rounded-full transition-colors text-brand-brown/60"
+              className="p-2 hover:bg-[#562C2C]/5 rounded-full transition-colors text-[#562C2C]/60"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
           ) : (
             <button
               onClick={() => setMode("LOGIN")}
-              className="p-2 hover:bg-brand-brown/5 rounded-full transition-colors text-brand-brown/60"
+              className="p-2 hover:bg-[#562C2C]/5 rounded-full transition-colors text-[#562C2C]/60"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -147,7 +156,7 @@ const AuthWizard = () => {
               <div
                 key={i}
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  i <= step ? "w-8 bg-brand-green" : "w-2 bg-brand-brown/10"
+                  i <= step ? "w-8 bg-[#00A36C]" : "w-2 bg-[#562C2C]/10"
                 }`}
               />
             ))}
@@ -156,10 +165,10 @@ const AuthWizard = () => {
         </div>
       )}
 
-      <div className="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 relative overflow-hidden">
+      <div className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 relative overflow-hidden">
         {/* Decorative background blobs */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-brand-brown/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#00A36C]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[#562C2C]/10 rounded-full blur-3xl pointer-events-none" />
 
         <AnimatePresence mode="wait" custom={1}>
           {mode === "LOGIN" ? (

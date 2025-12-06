@@ -29,9 +29,9 @@ const Navbar = () => (
         <Link href="#mission" className="hover:text-brand-green transition-colors">Mission</Link>
         <Link href="#map" className="hover:text-brand-green transition-colors">Live Map</Link>
         <Link href="#doctors" className="hover:text-brand-green transition-colors">For Doctors</Link>
-        <Link href="/login" className="hover:text-brand-green transition-colors">Login</Link>
+        <Link href="/auth" className="hover:text-brand-green transition-colors">Login</Link>
       </div>
-      <Link href="/chat">
+      <Link href="/auth?mode=signup">
         <button className="bg-brand-green text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-brand-brown transition-colors shadow-lg shadow-brand-green/20">
           Check My Risk
         </button>

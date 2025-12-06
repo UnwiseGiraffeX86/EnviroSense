@@ -19,14 +19,14 @@ const StepCalibration: React.FC<StepCalibrationProps> = ({ formData, updateField
       className="space-y-6"
     >
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-brand-brown">Final Calibration</h3>
-        <p className="text-brand-brown/60 text-sm">Personalizing your digital twin.</p>
+        <h3 className="text-2xl font-light text-[#562C2C]">Final Calibration</h3>
+        <p className="text-[#562C2C]/60 text-sm">Personalizing your digital twin.</p>
       </div>
 
       <div className="space-y-6">
         {/* Activity Level */}
         <div className="space-y-2">
-          <label className="text-xs font-bold text-brand-brown/60 uppercase tracking-wider ml-1">Daily Activity Level</label>
+          <label className="text-xs font-bold text-[#562C2C]/60 uppercase tracking-wider ml-1">Daily Activity Level</label>
           <div className="grid grid-cols-3 gap-2">
             {["Low", "Moderate", "High"].map((level) => (
               <button
@@ -34,8 +34,8 @@ const StepCalibration: React.FC<StepCalibrationProps> = ({ formData, updateField
                 onClick={() => updateFields({ activityLevel: level })}
                 className={`py-3 rounded-xl text-sm font-medium transition-all border ${
                   formData.activityLevel === level
-                    ? "bg-brand-green text-white border-brand-green shadow-md"
-                    : "bg-white/50 text-brand-brown/60 border-brand-brown/10 hover:bg-brand-brown/5"
+                    ? "bg-[#00A36C] text-white border-[#00A36C] shadow-md"
+                    : "bg-white/50 text-[#562C2C]/60 border-[#562C2C]/10 hover:bg-[#562C2C]/5"
                 }`}
               >
                 {level}
@@ -47,8 +47,8 @@ const StepCalibration: React.FC<StepCalibrationProps> = ({ formData, updateField
         {/* Pollution Sensitivity */}
         <div className="space-y-4">
           <div className="flex justify-between items-end">
-            <label className="text-xs font-bold text-brand-brown/60 uppercase tracking-wider ml-1">Pollution Sensitivity</label>
-            <span className="text-2xl font-bold text-brand-green">{formData.pollutionSensitivity}/10</span>
+            <label className="text-xs font-bold text-[#562C2C]/60 uppercase tracking-wider ml-1">Pollution Sensitivity</label>
+            <span className="text-2xl font-light text-[#00A36C]">{formData.pollutionSensitivity}/10</span>
           </div>
           <input
             type="range"
@@ -57,9 +57,9 @@ const StepCalibration: React.FC<StepCalibrationProps> = ({ formData, updateField
             step="1"
             value={formData.pollutionSensitivity}
             onChange={(e) => updateFields({ pollutionSensitivity: parseInt(e.target.value) })}
-            className="w-full h-2 bg-brand-brown/10 rounded-lg appearance-none cursor-pointer accent-brand-green"
+            className="w-full h-2 bg-[#562C2C]/10 rounded-lg appearance-none cursor-pointer accent-[#00A36C]"
           />
-          <div className="flex justify-between text-xs text-brand-brown/40">
+          <div className="flex justify-between text-xs text-[#562C2C]/40">
             <span>Resilient</span>
             <span>Sensitive</span>
           </div>
@@ -70,16 +70,22 @@ const StepCalibration: React.FC<StepCalibrationProps> = ({ formData, updateField
         <button
           onClick={onBack}
           disabled={loading}
-          className="flex-1 py-3 rounded-xl font-bold text-brand-brown/60 hover:bg-brand-brown/5 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          className="flex-1 py-3 border border-[#562C2C]/10 text-[#562C2C] rounded-xl font-medium hover:bg-[#562C2C]/5 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
         >
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
         <button
           onClick={onSubmit}
-          disabled={loading || !formData.activityLevel}
-          className="flex-[2] bg-brand-green text-white py-3 rounded-xl font-bold hover:bg-brand-brown transition-colors shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={loading}
+          className="flex-[2] py-3 bg-[#00A36C] text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-[#00A36C]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#00A36C]/20"
         >
-          {loading ? "Creating Twin..." : "Complete Setup"} <Check className="w-4 h-4" />
+          {loading ? (
+            <span className="animate-pulse">Calibrating...</span>
+          ) : (
+            <>
+              Complete Setup <Check className="w-4 h-4" />
+            </>
+          )}
         </button>
       </div>
     </motion.div>

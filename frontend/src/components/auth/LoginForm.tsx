@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
@@ -57,14 +59,56 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       className="space-y-6"
     >
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-brand-brown mb-2">Welcome Back</h2>
-        <p className="text-brand-brown/60">Access your Sentinel dashboard.</p>
+        <h3 className="text-2xl font-light text-[#562C2C]">Welcome Back</h3>
+        <p className="text-[#562C2C]/60 text-sm">Access your neuro-optimization dashboard.</p>
       </div>
 
-      {/* Google Login */}
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#562C2C]/40" />
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-[#562C2C]/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A36C]/50 text-[#562C2C] placeholder:text-[#562C2C]/30 transition-all"
+            required
+          />
+        </div>
+
+        <div className="relative">
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#562C2C]/40" />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-[#562C2C]/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A36C]/50 text-[#562C2C] placeholder:text-[#562C2C]/30 transition-all"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 bg-[#00A36C] text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-[#00A36C]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#00A36C]/20"
+        >
+          {loading ? "Signing in..." : "Sign In"} <ArrowRight className="w-4 h-4" />
+        </button>
+      </form>
+
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-[#562C2C]/10"></div>
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-[#FAF3DD] px-2 text-[#562C2C]/40">Or continue with</span>
+        </div>
+      </div>
+
       <button
         onClick={handleGoogleLogin}
-        className="w-full flex items-center justify-center gap-3 bg-white border border-brand-brown/10 py-3 rounded-xl text-brand-brown font-medium hover:bg-brand-cream/50 transition-colors shadow-sm"
+        className="w-full py-3 bg-white/50 border border-[#562C2C]/10 text-[#562C2C] rounded-xl font-medium hover:bg-white/80 transition-colors flex items-center justify-center gap-2"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
           <path
@@ -76,7 +120,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             fill="#34A853"
           />
           <path
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.84z"
             fill="#FBBC05"
           />
           <path
@@ -84,66 +128,25 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
             fill="#EA4335"
           />
         </svg>
-        Continue with Google
+        Google
       </button>
 
-      <div className="relative flex items-center justify-center my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-brand-brown/10"></div>
+      {error && (
+        <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg animate-pulse">
+          {error}
         </div>
-        <span className="relative bg-brand-cream px-4 text-xs text-brand-brown/40 uppercase tracking-wider">
-          Or continue with email
-        </span>
-      </div>
+      )}
 
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-brown/40" />
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-brand-brown/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-brand-brown placeholder:text-brand-brown/30"
-            required
-          />
-        </div>
-
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-brown/40" />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-brand-brown/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-brand-brown placeholder:text-brand-brown/30"
-            required
-          />
-        </div>
-
-        {error && (
-          <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg">
-            {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-brand-green text-white py-3 rounded-xl font-bold hover:bg-brand-brown transition-colors shadow-lg shadow-brand-green/20 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? "Signing In..." : "Sign In"}
-        </button>
-      </form>
-
-      <div className="text-center pt-4">
-        <button
-          onClick={onSwitchToSignup}
-          className="text-brand-brown/60 hover:text-brand-green transition-colors text-sm font-medium flex items-center justify-center gap-2 mx-auto group"
-        >
-          Don't have an account? <span className="text-brand-brown font-bold group-hover:underline">Create Account</span>
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </button>
+      <div className="text-center mt-6">
+        <p className="text-[#562C2C]/60 text-sm">
+          Don't have an account?{" "}
+          <button
+            onClick={onSwitchToSignup}
+            className="text-[#00A36C] font-medium hover:underline"
+          >
+            Start Assessment
+          </button>
+        </p>
       </div>
     </motion.div>
   );

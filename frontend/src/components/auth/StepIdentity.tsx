@@ -24,43 +24,43 @@ const StepIdentity: React.FC<StepIdentityProps> = ({ formData, updateFields, onN
       className="space-y-4"
     >
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-brand-brown">Identity</h3>
-        <p className="text-brand-brown/60 text-sm">Let's secure your data vault.</p>
+        <h3 className="text-2xl font-light text-[#562C2C]">Identity</h3>
+        <p className="text-[#562C2C]/60 text-sm">Let's secure your data vault.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-brown/40" />
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#562C2C]/40" />
           <input
             type="text"
             placeholder="Full Name"
             value={formData.fullName}
             onChange={(e) => updateFields({ fullName: e.target.value })}
-            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-brand-brown/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-brand-brown placeholder:text-brand-brown/30"
+            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-[#562C2C]/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A36C]/50 text-[#562C2C] placeholder:text-[#562C2C]/30 transition-all"
             required
           />
         </div>
 
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-brown/40" />
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#562C2C]/40" />
           <input
             type="email"
             placeholder="Email Address"
             value={formData.email}
             onChange={(e) => updateFields({ email: e.target.value })}
-            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-brand-brown/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-brand-brown placeholder:text-brand-brown/30"
+            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-[#562C2C]/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A36C]/50 text-[#562C2C] placeholder:text-[#562C2C]/30 transition-all"
             required
           />
         </div>
 
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-brown/40" />
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#562C2C]/40" />
           <input
             type="password"
             placeholder="Password"
             value={formData.password}
             onChange={(e) => updateFields({ password: e.target.value })}
-            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-brand-brown/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-brand-brown placeholder:text-brand-brown/30"
+            className="w-full pl-10 pr-4 py-3 bg-white/50 border border-[#562C2C]/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A36C]/50 text-[#562C2C] placeholder:text-[#562C2C]/30 transition-all"
             required
           />
         </div>
@@ -68,9 +68,9 @@ const StepIdentity: React.FC<StepIdentityProps> = ({ formData, updateFields, onN
         <button
           type="submit"
           disabled={!isValid}
-          className="w-full mt-6 bg-brand-green text-white py-3 rounded-xl font-bold hover:bg-brand-brown transition-colors shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-[#00A36C] text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-[#00A36C]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#00A36C]/20"
         >
-          Next Step <ArrowRight className="w-4 h-4" />
+          Continue <ArrowRight className="w-4 h-4" />
         </button>
       </form>
     </motion.div>

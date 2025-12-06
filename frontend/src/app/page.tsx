@@ -119,7 +119,7 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 0.5 }}
-          className="absolute z-20 w-full h-full flex items-center justify-center"
+          className="absolute z-20 w-full h-full flex items-center justify-center -mt-48"
         >
           <NeuroTree />
         </motion.div>
@@ -156,7 +156,7 @@ const Mission = () => (
           transition={{ delay: 0.1 }}
           className="bg-white/50 backdrop-blur-sm border border-brand-brown/5 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group"
         >
-          <div className="w-12 h-12 bg-brand-brown/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
+          <div className="w-12 h-12 bg-brand-brown/10 text-brand-brown rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
             <Brain className="w-6 h-6" />
           </div>
           <h3 className="text-xl font-bold text-brand-brown mb-3">Neuro-Symbolic AI</h3>
@@ -195,7 +195,7 @@ const Mission = () => (
           transition={{ delay: 0.3 }}
           className="bg-white/50 backdrop-blur-sm border border-brand-brown/5 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group"
         >
-          <div className="w-12 h-12 bg-brand-brown/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
+          <div className="w-12 h-12 bg-brand-brown/10 text-brand-brown rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
             <Lock className="w-6 h-6" />
           </div>
           <h3 className="text-xl font-bold text-brand-brown mb-3">Zero Trust Architecture</h3>
@@ -209,7 +209,7 @@ const Mission = () => (
 );
 
 const LiveMapSection = () => (
-  <section id="map" className="py-20 px-6 lg:px-20 bg-brand-cream relative">
+  <section id="map" className="py-20 px-6 lg:px-20 bg-brand-cream relative overflow-hidden">
     <div className="max-w-7xl mx-auto">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ const LiveMapSection = () => (
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-brand-brown/10 relative z-10"
+        className="h-[500px] w-full rounded-3xl overflow-hidden shadow-2xl border border-brand-brown/10 relative z-10"
       >
         <MapCaller />
       </motion.div>
@@ -244,7 +244,7 @@ const FeatureShowcase = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start 0.4", "end 0.7"]
   });
 
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);

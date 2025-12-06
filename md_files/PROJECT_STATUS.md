@@ -46,6 +46,13 @@ A serverless function that orchestrates the entire analysis workflow:
 4.  **Environmental Lookup:** Fetches real-time PM2.5/PM10 data for the user's location.
 5.  **Inference:** GPT-4o synthesizes the medical symptoms, environmental data, and legal regulations into a risk assessment.
 
+### E. Frontend Visual Overhaul (Organic Futurism)
+*   **NeuroTree Hero Component:** A recursive fractal generation engine (`NeuroTree.tsx`) that renders a "breathing" neural network. It features:
+    *   **Generative Geometry:** Randomized branching factors and Bezier curves for organic growth.
+    *   **Data Visualization:** 500+ leaf nodes and floating particles representing data points.
+    *   **Performance:** Client-side generation with `framer-motion` for smooth, non-blocking animations.
+*   **Live Map Integration:** React-Leaflet implementation with custom circular zones (`Circle` components) replacing standard polygons for a softer, more organic aesthetic.
+
 ---
 
 ## 4. Technical Deep Dive

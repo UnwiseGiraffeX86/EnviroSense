@@ -1,6 +1,5 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 import OpenAI from 'jsr:@openai/openai'
-import { Redactor } from 'npm:redact-pii'
 
 // CORS headers for browser access
 const corsHeaders = {
@@ -44,37 +43,28 @@ Deno.serve(async (req) => {
     // --------------------------------------------------------------------------
     let redacted_symptoms = symptom_description
 
-    try {
-      const redactor = new Redactor({
-        builtInRedactors: {
-          names: { enabled: true },
-          emailAddress: { enabled: true },
-          phoneNumber: { enabled: true },
-        },
-      })
-      redacted_symptoms = await redactor.redact(symptom_description)
-    } catch (err) {
-      console.error('Redact-pii failed, using fallback regex:', err)
-      // Fallback Regex for Emails and Phone Numbers
-      const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g
-      const phoneRegex = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g
-      redacted_symptoms = symptom_description.replace(emailRegex, '[EMAIL]').replace(phoneRegex, '[PHONE]')
-    }
+    // Simple Regex for Emails and Phone Numbers (removing npm:redact-pii to fix boot errors)
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g
+    const phoneRegex = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g
+    redacted_symptoms = symptom_description.replace(emailRegex, '[EMAIL]').replace(phoneRegex, '[PHONE]')
 
     // --------------------------------------------------------------------------
     // 2. Context Retrieval (RAG)
     // --------------------------------------------------------------------------
-    // Generate embedding for the redacted symptoms
+    // Enhance query to bridge the gap between "symptoms" and "regulations/studies"
+    const searchQuery = `${redacted_symptoms} health risks air pollution EU regulations particulate matter`
+
+    // Generate embedding for the enhanced query
     const embeddingResponse = await openai.embeddings.create({
       model: 'text-embedding-3-small',
-      input: redacted_symptoms,
+      input: searchQuery,
     })
     const symptomEmbedding = embeddingResponse.data[0].embedding
 
     // Query Knowledge Base via RPC
     const { data: documents, error: matchError } = await supabase.rpc('match_documents', {
       query_embedding: symptomEmbedding,
-      match_threshold: 0.5, // Adjust threshold as needed
+      match_threshold: 0.4, // Lowered threshold for broader matching
       match_count: 3,
     })
 
@@ -84,7 +74,7 @@ Deno.serve(async (req) => {
     }
 
     const regulatoryContext = documents
-      ?.map((doc: any) => doc.content_chunk)
+      ?.map((doc: any) => doc.content)
       .join('\n---\n') || 'No specific regulation found.'
 
     // --------------------------------------------------------------------------

@@ -5,7 +5,10 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center p-8 bg-white text-black">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex mb-8">
         <h1 className="text-4xl font-bold text-green-700">Eco-Neuro Sentinel</h1>
-        <p className="text-gray-600">Real-time Environmental Health Monitoring</p>
+        <div className="flex flex-col items-end">
+          <p className="text-gray-600">Real-time Environmental Health Monitoring</p>
+          <a href="/patients" className="text-xs text-blue-500 hover:underline mt-1">Debug: View Patients</a>
+        </div>
       </div>
       
       <div className="w-full max-w-5xl h-[600px] border-2 border-gray-200 rounded-xl overflow-hidden shadow-lg">

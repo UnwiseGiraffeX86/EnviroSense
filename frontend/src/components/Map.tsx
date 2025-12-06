@@ -60,11 +60,17 @@ const Map = () => {
       .channel("air_quality_changes")
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "air_quality" },
+        { event: "*", schema: "public", table: "air_quality" },
         async (payload) => {
           console.log("Realtime update received:", payload);
-          // Since payload.new has WKB boundary, we might need to re-fetch or handle it.
-          // For simplicity, let's just re-fetch the specific row from the view to get GeoJSON
+          
+          if (payload.eventType === "DELETE") {
+             setSectors((prev) => prev.filter((s) => s.id !== payload.old.id));
+             return;
+          }
+
+          // For INSERT or UPDATE, we need to fetch the GeoJSON from the view
+          // because the payload only has the raw table data (WKB boundary)
           const { data } = await supabase
             .from("air_quality_public")
             .select("*")
@@ -72,11 +78,14 @@ const Map = () => {
             .single();
             
           if (data) {
-            setSectors((prev) =>
-              prev.map((sector) =>
-                sector.id === data.id ? { ...sector, ...data } : sector
-              )
-            );
+            setSectors((prev) => {
+              const exists = prev.find((s) => s.id === data.id);
+              if (exists) {
+                return prev.map((s) => (s.id === data.id ? { ...s, ...data } : s));
+              } else {
+                return [...prev, data];
+              }
+            });
           }
         }
       )

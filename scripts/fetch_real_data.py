@@ -167,18 +167,29 @@ def update_db_with_real_data(stations):
         buffer = 0.015
         wkt_polygon = f"POLYGON(({lon-buffer} {lat-buffer}, {lon+buffer} {lat-buffer}, {lon+buffer} {lat+buffer}, {lon-buffer} {lat+buffer}, {lon-buffer} {lat-buffer}))"
         
+        sector_name = f"{name} (Station)"
         data = {
-            "sector_name": f"{name} (Station)",
+            "sector_name": sector_name,
             "pm25": pm25,
             "pm10": pm10,
             "boundary": wkt_polygon,
             "last_updated": "now()"
         }
         
-        supabase.table("air_quality").insert(data).execute()
-        count += 1
+        # Manual Upsert: Check if exists by sector_name
+        try:
+            existing = supabase.table("air_quality").select("id").eq("sector_name", sector_name).execute()
+            if existing.data:
+                # Update existing record
+                supabase.table("air_quality").update(data).eq("id", existing.data[0]['id']).execute()
+            else:
+                # Insert new record
+                supabase.table("air_quality").insert(data).execute()
+            count += 1
+        except Exception as e:
+            print(f"Error upserting {sector_name}: {e}")
         
-    print(f"Successfully inserted {count} real stations into DB.")
+    print(f"Successfully processed {count} real stations into DB.")
     return count
 
 def generate_synthetic_people_near_stations(stations):

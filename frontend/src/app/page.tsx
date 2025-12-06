@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import MapCaller from "@/components/MapCaller";
+import NeuroTree from "@/components/NeuroTree";
 
 // --- Components ---
 
@@ -82,26 +84,26 @@ const Hero = () => {
       </div>
 
       {/* Visual Composition */}
-      <div className="flex-1 relative h-[500px] w-full flex items-center justify-center mt-10 lg:mt-0">
+      <div className="flex-1 relative h-[600px] w-full flex items-center justify-center mt-10 lg:mt-0">
         {/* Circle 1: Environment (Pollution) */}
         <motion.div
           animate={{ 
             scale: [1, 1.1, 1],
-            opacity: [0.6, 0.8, 0.6]
+            opacity: [0.4, 0.6, 0.4]
           }}
           transition={{ 
             duration: 4, 
             repeat: Infinity, 
             ease: "easeInOut" 
           }}
-          className="absolute w-64 h-64 rounded-full bg-brand-orange/30 blur-3xl -translate-x-10"
+          className="absolute w-[500px] h-[500px] rounded-full bg-brand-orange/20 blur-3xl -translate-x-10 -translate-y-10"
         />
         
         {/* Circle 2: You (Health) */}
         <motion.div
           animate={{ 
             scale: [1, 1.2, 1],
-            opacity: [0.6, 0.8, 0.6]
+            opacity: [0.4, 0.6, 0.4]
           }}
           transition={{ 
             duration: 5, 
@@ -109,30 +111,17 @@ const Hero = () => {
             ease: "easeInOut",
             delay: 1
           }}
-          className="absolute w-64 h-64 rounded-full bg-brand-green/30 blur-3xl translate-x-10"
+          className="absolute w-[500px] h-[500px] rounded-full bg-brand-green/20 blur-3xl translate-x-10 translate-y-10"
         />
 
         {/* The Neuro Connection (Intersection) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="absolute z-20"
+          transition={{ duration: 2, delay: 0.5 }}
+          className="absolute z-20 w-full h-full flex items-center justify-center"
         >
-          <div className="relative">
-            <div className="absolute inset-0 bg-brand-brown/10 blur-xl rounded-full" />
-            <svg width="300" height="300" viewBox="0 0 300 300" className="relative z-10">
-              <motion.path
-                d="M150,50 Q250,150 150,250 Q50,150 150,50"
-                fill="none"
-                stroke="#562C2C"
-                strokeWidth="2"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 3, ease: "easeInOut" }}
-              />
-            </svg>
-          </div>
+          <NeuroTree />
         </motion.div>
       </div>
     </section>
@@ -140,8 +129,12 @@ const Hero = () => {
 };
 
 const Mission = () => (
-  <section id="mission" className="py-24 px-6 lg:px-20">
-    <div className="max-w-7xl mx-auto">
+  <section id="mission" className="py-24 px-6 lg:px-20 relative overflow-hidden">
+    {/* Background Specs */}
+    <div className="absolute top-20 left-10 w-72 h-72 bg-brand-green/5 rounded-full blur-3xl" />
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-brand-orange/5 rounded-full blur-3xl" />
+
+    <div className="max-w-7xl mx-auto relative z-10">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -215,6 +208,38 @@ const Mission = () => (
   </section>
 );
 
+const LiveMapSection = () => (
+  <section id="map" className="py-20 px-6 lg:px-20 bg-brand-cream relative">
+    <div className="max-w-7xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-12"
+      >
+        <h2 className="text-4xl font-bold text-brand-brown mb-4">Live Environmental Pulse</h2>
+        <p className="text-brand-brown/60 max-w-2xl mx-auto">
+          Real-time air quality data mapped to your exact location. See what you're breathing, right now.
+        </p>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-brand-brown/10 relative z-10"
+      >
+        <MapCaller />
+      </motion.div>
+      
+      {/* Decorative Elements */}
+      <div className="absolute top-1/2 left-0 w-64 h-64 bg-brand-green/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+    </div>
+  </section>
+);
+
 const FeatureShowcase = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -226,7 +251,11 @@ const FeatureShowcase = () => {
 
   return (
     <section className="py-32 px-6 lg:px-20 relative overflow-hidden" ref={containerRef}>
-      <div className="max-w-5xl mx-auto relative">
+      {/* Background Specs */}
+      <div className="absolute top-1/3 right-0 w-64 h-64 bg-brand-yellow/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-brand-green/5 rounded-full blur-3xl" />
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="absolute left-8 top-0 bottom-0 w-1 bg-brand-brown/10 hidden md:block">
           <motion.div 
             style={{ height: lineHeight }}
@@ -392,6 +421,7 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Mission />
+      <LiveMapSection />
       <FeatureShowcase />
       <TrustBadge />
       <Footer />

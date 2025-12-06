@@ -1,11 +1,11 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, Polygon, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, Tooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-// import { parse } from "wellknown"; // Removed as we use GeoJSON from View
+import { Loader2, Navigation } from "lucide-react";
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -20,15 +20,50 @@ interface AirQualityData {
   boundary_geojson: any; // GeoJSON object
 }
 
+// Brand Palette
+const BRAND_COLORS = {
+  green: "#00A36C",
+  yellow: "#FFE6A7",
+  orange: "#E07A5F",
+  brown: "#562C2C",
+};
+
 const getColor = (pm25: number) => {
-  if (pm25 < 10) return "#22c55e"; // Green
-  if (pm25 < 25) return "#eab308"; // Yellow
-  if (pm25 < 50) return "#f97316"; // Orange
-  return "#ef4444"; // Red
+  if (pm25 < 10) return BRAND_COLORS.green;
+  if (pm25 < 25) return BRAND_COLORS.yellow;
+  if (pm25 < 50) return BRAND_COLORS.orange;
+  return BRAND_COLORS.brown;
+};
+
+// Helper to calculate centroid of a polygon
+const getCentroid = (coordinates: number[][]): [number, number] => {
+  let latSum = 0;
+  let lngSum = 0;
+  const numPoints = coordinates.length;
+  
+  coordinates.forEach(coord => {
+    lngSum += coord[0]; // GeoJSON is [lng, lat]
+    latSum += coord[1];
+  });
+  
+  return [latSum / numPoints, lngSum / numPoints]; // Leaflet is [lat, lng]
+};
+
+// Component to handle map view updates
+const MapController = ({ center }: { center: [number, number] | null }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.flyTo(center, 13, { duration: 2 });
+    }
+  }, [center, map]);
+  return null;
 };
 
 const Map = () => {
   const [sectors, setSectors] = useState<AirQualityData[]>([]);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   // Fix for default marker icon in Next.js
   useEffect(() => {
@@ -44,7 +79,6 @@ const Map = () => {
   // Fetch Data & Subscribe
   useEffect(() => {
     const fetchData = async () => {
-      // Query the VIEW 'air_quality_public' which returns GeoJSON
       const { data, error } = await supabase
         .from("air_quality_public")
         .select("*");
@@ -55,22 +89,16 @@ const Map = () => {
 
     fetchData();
 
-    // Realtime Subscription (Listen to the underlying TABLE 'air_quality')
     const channel = supabase
       .channel("air_quality_changes")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "air_quality" },
         async (payload) => {
-          console.log("Realtime update received:", payload);
-          
           if (payload.eventType === "DELETE") {
              setSectors((prev) => prev.filter((s) => s.id !== payload.old.id));
              return;
           }
-
-          // For INSERT or UPDATE, we need to fetch the GeoJSON from the view
-          // because the payload only has the raw table data (WKB boundary)
           const { data } = await supabase
             .from("air_quality_public")
             .select("*")
@@ -96,57 +124,115 @@ const Map = () => {
     };
   }, []);
 
-  // Bucharest coordinates
-  const position: [number, number] = [44.4268, 26.1025];
+  // Get User Location
+  const handleLocateMe = () => {
+    setLoadingLocation(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation([position.coords.latitude, position.coords.longitude]);
+          setLoadingLocation(false);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setLoadingLocation(false);
+          // Fallback to Bucharest center if denied
+          setUserLocation([44.4268, 26.1025]); 
+        }
+      );
+    } else {
+      setLoadingLocation(false);
+    }
+  };
+
+  // Auto-locate on mount
+  useEffect(() => {
+    handleLocateMe();
+  }, []);
+
+  // Default Bucharest coordinates
+  const defaultPosition: [number, number] = [44.4268, 26.1025];
 
   return (
-    <MapContainer center={position} zoom={11} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      
-      {sectors.map((sector) => {
-        try {
-          const geoJson = sector.boundary_geojson;
-          if (geoJson && geoJson.type === "Polygon") {
-            // Convert GeoJSON [lng, lat] to Leaflet [lat, lng]
-            // @ts-ignore
-            const positions: L.LatLngExpression[] = geoJson.coordinates[0].map((coord) => [coord[1], coord[0]]);
-            
-            return (
-              <Polygon
-                key={sector.id}
-                positions={positions}
-                pathOptions={{
-                  color: getColor(sector.pm25),
-                  fillColor: getColor(sector.pm25),
-                  fillOpacity: 0.4,
-                  weight: 2
-                }}
-              >
-                <Tooltip sticky>
-                  <div className="text-sm">
-                    <p className="font-bold">{sector.sector_name}</p>
-                    <p>PM2.5: {sector.pm25.toFixed(1)} µg/m³</p>
-                    <p>PM10: {sector.pm10.toFixed(1)} µg/m³</p>
-                  </div>
-                </Tooltip>
-              </Polygon>
-            );
-          }
-        } catch (e) {
-          console.error("Error parsing boundary for sector:", sector.sector_name, e);
-        }
-        return null;
-      })}
+    <div className="relative w-full h-full">
+      <MapContainer 
+        center={defaultPosition} 
+        zoom={11} 
+        scrollWheelZoom={false} 
+        style={{ height: "100%", width: "100%", background: "#FAF3DD" }} // Cream background for loading
+        className="z-0"
+      >
+        {/* CartoDB Positron (Light/Clean) Tiles */}
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        />
+        
+        <MapController center={userLocation} />
 
-      <Marker position={position}>
-        <Popup>Bucharest Center</Popup>
-      </Marker>
-    </MapContainer>
+        {sectors.map((sector) => {
+          try {
+            const geoJson = sector.boundary_geojson;
+            if (geoJson && geoJson.type === "Polygon") {
+              // Calculate centroid for circular representation
+              const coordinates = geoJson.coordinates[0];
+              const center = getCentroid(coordinates);
+              
+              return (
+                <Circle
+                  key={sector.id}
+                  center={center}
+                  radius={1500} // Fixed radius for visual consistency (1.5km)
+                  pathOptions={{
+                    color: getColor(sector.pm25),
+                    fillColor: getColor(sector.pm25),
+                    fillOpacity: 0.4,
+                    weight: 0, // No border for softer look
+                  }}
+                >
+                  <Tooltip sticky className="bg-brand-cream text-brand-brown border-brand-brown/10 shadow-xl rounded-lg font-mono">
+                    <div className="p-2">
+                      <p className="font-bold text-sm mb-1">{sector.sector_name}</p>
+                      <div className="flex items-center gap-2 text-xs">
+                        <div className="w-2 h-2 rounded-full" style={{ background: getColor(sector.pm25) }} />
+                        <span>PM2.5: {sector.pm25.toFixed(1)}</span>
+                      </div>
+                    </div>
+                  </Tooltip>
+                </Circle>
+              );
+            }
+          } catch (e) {
+            console.error("Error parsing boundary for sector:", sector.sector_name, e);
+          }
+          return null;
+        })}
+
+        {userLocation && (
+          <Marker position={userLocation}>
+            <Popup className="font-sans text-brand-brown">
+              <span className="font-bold">You are here</span>
+              <br />
+              Monitoring local air quality...
+            </Popup>
+          </Marker>
+        )}
+      </MapContainer>
+
+      {/* Floating Locate Button */}
+      <button 
+        onClick={handleLocateMe}
+        className="absolute bottom-6 right-6 z-[400] bg-white text-brand-brown p-3 rounded-full shadow-xl hover:bg-brand-cream transition-colors border border-brand-brown/10"
+        title="Locate Me"
+      >
+        {loadingLocation ? (
+          <Loader2 className="w-5 h-5 animate-spin" />
+        ) : (
+          <Navigation className="w-5 h-5" />
+        )}
+      </button>
+    </div>
   );
 };
 
 export default Map;
-

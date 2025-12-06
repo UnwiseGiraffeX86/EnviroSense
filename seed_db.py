@@ -59,8 +59,8 @@ def seed_data():
         
         # Create user via Admin API (requires Service Role Key)
         user = supabase.auth.admin.create_user({
-            "email": fake_email,
-            "password": "password123",
+            "email": "stefan.geala@stud.fils.upb.ro",
+            "password": "Stefan1Mihai2!",
             "email_confirm": True
         })
         

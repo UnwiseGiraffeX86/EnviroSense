@@ -26,7 +26,8 @@ export default function Home() {
         </div>
         <div className="p-6 border rounded-lg shadow-sm bg-gray-50">
           <h2 className="text-xl font-semibold mb-2">Symptom Analysis</h2>
-          <p className="text-sm text-gray-600">AI-powered risk assessment based on your symptoms and location.</p>
+          <p className="text-sm text-gray-600 mb-4">AI-powered risk assessment based on your symptoms and location.</p>
+          <a href="/chat" className="text-sm text-white bg-green-600 px-4 py-2 rounded hover:bg-green-700 inline-block">Start Consultation</a>
         </div>
         <div className="p-6 border rounded-lg shadow-sm bg-gray-50">
           <h2 className="text-xl font-semibold mb-2">Regulatory Context</h2>

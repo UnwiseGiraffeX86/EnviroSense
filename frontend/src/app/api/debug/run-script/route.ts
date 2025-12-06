@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { exec } from "child_process";
 import path from "path";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
 
 export async function POST(req: Request) {
   try {
@@ -20,24 +23,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid script name" }, { status: 400 });
     }
 
-    return new Promise((resolve) => {
-      exec(`${pythonPath} ${scriptPath}`, { cwd: projectRoot }, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          resolve(NextResponse.json({ 
-            success: false, 
-            output: stdout, 
-            error: stderr || error.message 
-          }, { status: 500 }));
-          return;
-        }
-        resolve(NextResponse.json({ 
-          success: true, 
-          output: stdout,
-          error: stderr 
-        }));
+    try {
+      const { stdout, stderr } = await execAsync(`${pythonPath} ${scriptPath}`, { cwd: projectRoot });
+      return NextResponse.json({ 
+        success: true, 
+        output: stdout,
+        error: stderr 
       });
-    });
+    } catch (error: any) {
+      console.error(`exec error: ${error}`);
+      return NextResponse.json({ 
+        success: false, 
+        output: error.stdout || "", 
+        error: error.stderr || error.message 
+      }, { status: 500 });
+    }
 
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });

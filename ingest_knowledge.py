@@ -31,6 +31,7 @@ from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_core.documents import Document
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
+from langchain_community.callbacks import get_openai_callback
 
 # ------------------------------------------------------------------------------
 # 1. Configuration
@@ -226,15 +227,29 @@ def run_pipeline():
                 if chunks:
                     try:
                         print("  Upserting to Supabase...")
-                        SupabaseVectorStore.from_documents(
-                            documents=chunks,
-                            embedding=embeddings,
-                            client=supabase,
-                            table_name="knowledge_base",
-                            query_name="match_documents",
-                            chunk_size=100
-                        )
-                        print("  [+] Success!")
+                        with get_openai_callback() as cb:
+                            SupabaseVectorStore.from_documents(
+                                documents=chunks,
+                                embedding=embeddings,
+                                client=supabase,
+                                table_name="knowledge_base",
+                                query_name="match_documents",
+                                chunk_size=100
+                            )
+                            print(f"  [+] Success! Tokens Used: {cb.total_tokens}")
+                            
+                            # Log to DB
+                            try:
+                                supabase.table("token_usage_logs").insert({
+                                    "source": "ingest_knowledge_script",
+                                    "model": "text-embedding-3-small",
+                                    "prompt_tokens": cb.prompt_tokens,
+                                    "completion_tokens": cb.completion_tokens,
+                                    "total_tokens": cb.total_tokens
+                                }).execute()
+                            except Exception as log_err:
+                                print(f"  [!] Warning: Could not log token usage: {log_err}")
+
                     except Exception as e:
                         print(f"  [!] Error upserting to Supabase: {e}")
 

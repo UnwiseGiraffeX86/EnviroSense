@@ -4,7 +4,8 @@ from supabase import create_client
 
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_SERVICE_KEY")
+# key = os.getenv("SUPABASE_SERVICE_KEY") 
+key = os.getenv("SUPABASE_ANON_KEY") # Switch to ANON key to test public access
 
 if not url or not key:
     print("Error: Missing API keys")

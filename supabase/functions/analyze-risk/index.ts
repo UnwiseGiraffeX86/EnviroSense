@@ -130,7 +130,33 @@ Deno.serve(async (req) => {
     const result = JSON.parse(completion.choices[0].message.content || '{}')
 
     // --------------------------------------------------------------------------
-    // 5. Response
+    // 5. Token Usage Logging
+    // --------------------------------------------------------------------------
+    try {
+      const usageLogs = [
+        {
+          source: 'analyze-risk-function',
+          model: 'text-embedding-3-small',
+          prompt_tokens: embeddingResponse.usage.prompt_tokens,
+          completion_tokens: 0,
+          total_tokens: embeddingResponse.usage.total_tokens,
+        },
+        {
+          source: 'analyze-risk-function',
+          model: 'gpt-4o',
+          prompt_tokens: completion.usage?.prompt_tokens || 0,
+          completion_tokens: completion.usage?.completion_tokens || 0,
+          total_tokens: completion.usage?.total_tokens || 0,
+        }
+      ]
+      
+      await supabase.from('token_usage_logs').insert(usageLogs)
+    } catch (logError) {
+      console.error('Failed to log token usage:', logError)
+    }
+
+    // --------------------------------------------------------------------------
+    // 6. Response
     // --------------------------------------------------------------------------
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

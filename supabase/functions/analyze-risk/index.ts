@@ -28,6 +28,15 @@ Deno.serve(async (req: Request) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
     const openai = new OpenAI({ apiKey: openaiApiKey })
 
+    // Get user from Auth header
+    const authHeader = req.headers.get('Authorization')
+    let userId = null
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '')
+      const { data: { user } } = await supabase.auth.getUser(token)
+      userId = user?.id
+    }
+
     // Parse request body
     const { symptom_description, user_lat, user_long } = await req.json()
 
@@ -59,6 +68,19 @@ Deno.serve(async (req: Request) => {
       model: 'text-embedding-3-small',
       input: searchQuery,
     })
+
+    // Log embedding usage
+    if (embeddingResponse.usage) {
+      await supabase.from('token_usage').insert({
+        user_id: userId,
+        feature_name: 'risk_analysis_embedding',
+        model: 'text-embedding-3-small',
+        input_tokens: embeddingResponse.usage.prompt_tokens,
+        output_tokens: 0,
+        total_tokens: embeddingResponse.usage.total_tokens
+      })
+    }
+
     const symptomEmbedding = embeddingResponse.data[0].embedding
 
     // Query Knowledge Base via RPC
@@ -126,6 +148,18 @@ Deno.serve(async (req: Request) => {
       ],
       response_format: { type: 'json_object' },
     })
+
+    // Log completion usage
+    if (completion.usage) {
+      await supabase.from('token_usage').insert({
+        user_id: userId,
+        feature_name: 'risk_analysis_completion',
+        model: completion.model,
+        input_tokens: completion.usage.prompt_tokens,
+        output_tokens: completion.usage.completion_tokens,
+        total_tokens: completion.usage.total_tokens
+      })
+    }
 
     const result = JSON.parse(completion.choices[0].message.content || '{}')
 

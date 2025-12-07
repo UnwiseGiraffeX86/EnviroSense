@@ -1,8 +1,40 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+
+    // Client for Auth context (getting the user)
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value, ...options });
+            } catch (error) {
+            }
+          },
+          remove(name: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value: "", ...options });
+            } catch (error) {
+            }
+          },
+        },
+      }
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+
     const apiKey = process.env.OPENAI_API_KEY;
     
     if (!apiKey) {
@@ -59,6 +91,34 @@ export async function POST(req: Request) {
 
     const content = completion.choices[0].message.content;
     console.log("OpenAI Response:", content); // Debug log
+
+    // Log token usage
+    if (completion.usage) {
+      const { prompt_tokens, completion_tokens, total_tokens } = completion.usage;
+      
+      // Use Service Role client to bypass RLS for logging
+      const supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_KEY!
+      );
+
+      const { error: usageError } = await supabaseAdmin
+        .from('token_usage')
+        .insert({
+          user_id: user?.id, // Can be null if not logged in
+          feature_name: 'profile_analysis',
+          model: completion.model,
+          input_tokens: prompt_tokens,
+          output_tokens: completion_tokens,
+          total_tokens: total_tokens
+        });
+      
+      if (usageError) {
+        console.error("Failed to log token usage:", usageError);
+      } else {
+        console.log("Token usage logged successfully.");
+      }
+    }
 
     const result = JSON.parse(content || "{}");
     return NextResponse.json(result);

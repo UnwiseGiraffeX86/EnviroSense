@@ -51,25 +51,24 @@ export default function DoctorDashboard() {
           .order('created_at', { ascending: false })
           .limit(20); 
 
-        // 3. Fetch a real patient for Triage (Real/Fake Mix)
-        const { data: randomPatient } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('role', 'patient')
-          .limit(1)
-          .single();
+        // 3. Fetch Triage Requests (Real from Logs)
+        const { data: triageLogs } = await supabase
+          .from('daily_logs')
+          .select('*, profiles(full_name)')
+          .ilike('transcript', 'TRIAGE REQUEST%')
+          .order('created_at', { ascending: false });
 
         setStats({
           total: totalPatients || 0,
           new: 3, // Fake
-          pending: 12 // Fake
+          pending: (triageLogs?.length || 0) + 12 // Real + Fake
         });
 
         // Process Watchlist - Filter for "Critical" conditions
         let formattedWatchlist: any[] = [];
         if (recentLogs) {
            formattedWatchlist = recentLogs
-            .filter(log => log.breathing_status === 'Severe' || log.focus_level <= 3)
+            .filter(log => (log.breathing_status === 'Severe' || log.focus_level <= 3) && !log.transcript?.startsWith('TRIAGE REQUEST')) // Exclude triage requests from watchlist to avoid duplication if desired, or keep them. Let's keep them separate.
             .map(log => ({
               id: log.id,
               patientId: log.user_id,
@@ -94,21 +93,31 @@ export default function DoctorDashboard() {
         setWatchlist(formattedWatchlist);
 
         // Process Triage - Mix of Fake and Real
-        const initialTriage = [
-          { id: 101, name: "Stefan Geala", type: "Consultation Request", status: "Pending" },
-          { id: 102, name: "Elena Dumitrescu", type: "Prescription Renewal", status: "Pending" },
-          { id: 103, name: "Andrei Radu", type: "Symptom Escalation", status: "Urgent" },
-        ];
-
-        if (randomPatient) {
-            // Add a "Real" patient to the triage list if found
-            initialTriage.unshift({
-                id: 999,
-                name: randomPatient.full_name || "Real Patient",
-                type: "Lab Results Review",
-                status: "Pending"
-            });
+        let initialTriage: any[] = [];
+        
+        if (triageLogs && triageLogs.length > 0) {
+          initialTriage = triageLogs.map(log => {
+            // Extract symptom from "TRIAGE REQUEST: Symptom - Description"
+            const parts = log.transcript.split(' - ');
+            const type = parts[0].replace('TRIAGE REQUEST: ', '');
+            
+            return {
+              id: log.id,
+              name: log.profiles?.full_name || "Unknown Patient",
+              type: type,
+              status: "Urgent" // All triage requests are urgent
+            };
+          });
         }
+
+        // Add some fake ones if list is short
+        if (initialTriage.length < 3) {
+          initialTriage.push(
+            { id: 101, name: "Stefan Geala", type: "Consultation Request", status: "Pending" },
+            { id: 102, name: "Elena Dumitrescu", type: "Prescription Renewal", status: "Pending" }
+          );
+        }
+        
         setTriageRequests(initialTriage);
 
       } catch (error) {

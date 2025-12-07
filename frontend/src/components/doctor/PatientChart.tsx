@@ -27,6 +27,10 @@ interface PatientChartProps {
 
 const CustomDot = (props: any) => {
   const { cx, cy, payload } = props;
+  
+  // Guard against NaN coordinates which can happen during initial render or if data is missing
+  if (isNaN(cx) || isNaN(cy)) return null;
+
   if (payload.breathing_status === 'Severe' || payload.breathing_status === 'Wheezing') {
     return (
       <svg x={cx - 6} y={cy - 6} width={12} height={12} fill="red" viewBox="0 0 1024 1024">

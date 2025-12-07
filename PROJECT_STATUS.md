@@ -23,7 +23,8 @@
     *   **Visuals:** "Fireflies" particle background, Glassmorphism cards.
 
 *   **Authentication & Onboarding:**
-    *   **Auth Wizard:** Multi-step onboarding flow (Identity -> Biometrics -> Respiratory -> Calibration).
+    *   **Auth Wizard:** 5-step onboarding flow (Identity -> Biometrics -> Respiratory -> Neuro -> Calibration).
+    *   **Neuro-Sensitivity Step:** Added tracking for Brain Fog, Sleep Type, and Eco-Anxiety triggers.
     *   **Security:** Row Level Security (RLS) policies implemented and verified.
     *   **Database:** `profiles` table structure finalized and secured.
     *   **Edge Case Handling:** Session detection for email confirmation flows.
@@ -31,6 +32,7 @@
 *   **Infrastructure:**
     *   Supabase Client configuration.
     *   Database reset and migration scripts (`fix_profile_rls.sql`, `reset_db.sql`).
+    *   **Schema Update:** Added `neuro_profile` JSONB column for flexible cognitive data storage.
 
 ### ⚠️ In Progress / Needs Refactoring
 *   **Chat Interface (`/chat`):**

@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import StepIdentity from "./StepIdentity";
 import StepBiometrics from "./StepBiometrics";
 import StepRespiratory from "./StepRespiratory";
+import StepNeuro from "./StepNeuro";
 import StepCalibration from "./StepCalibration";
 import LoginForm from "./LoginForm";
 import { ChevronLeft } from "lucide-react";
@@ -47,6 +48,12 @@ const AuthWizard = () => {
     // Respiratory
     conditions: [] as string[],
     inhalerUsage: 0,
+    // Neuro
+    neuro: {
+      focusIndex: 5,
+      sleepType: "",
+      stressTriggers: [] as string[],
+    },
     // Calibration
     activityLevel: "",
     pollutionSensitivity: 5,
@@ -79,11 +86,6 @@ const AuthWizard = () => {
 
       // Check if session exists (required for RLS)
       if (authData.user && !authData.session) {
-        // Email confirmation is enabled, so we can't insert into profiles yet.
-        // We'll just redirect to a "Check your email" page or let them know.
-        // For now, we'll just skip the profile creation and let them do it later or 
-        // rely on them confirming email first.
-        // Ideally, we should show a message.
         alert("Please check your email to confirm your account. You can complete your profile after logging in.");
         router.push("/login");
         return;
@@ -102,6 +104,11 @@ const AuthWizard = () => {
               sector: formData.sector,
               respiratory_conditions: formData.conditions,
               inhaler_usage_frequency: formData.inhalerUsage,
+              neuro_profile: {
+                focus_index: formData.neuro.focusIndex,
+                sleep_type: formData.neuro.sleepType,
+                stress_triggers: formData.neuro.stressTriggers,
+              },
               activity_level: formData.activityLevel,
               pollution_sensitivity: formData.pollutionSensitivity,
             } as any,
@@ -146,7 +153,7 @@ const AuthWizard = () => {
     <div className="w-full max-w-md mx-auto">
       {/* Header / Navigation for Wizard */}
       {mode === "SIGNUP" && (
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           {step > 1 ? (
             <button
               onClick={prevStep}
@@ -164,7 +171,7 @@ const AuthWizard = () => {
           )}
           
           <div className="flex gap-2">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
                 className={`h-1.5 rounded-full transition-all duration-500 ${
@@ -177,7 +184,7 @@ const AuthWizard = () => {
         </div>
       )}
 
-      <div className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 relative overflow-hidden">
+      <div className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-6 relative overflow-hidden">
         {/* Decorative background blobs */}
         <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#00A36C]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[#562C2C]/10 rounded-full blur-3xl pointer-events-none" />
@@ -222,6 +229,14 @@ const AuthWizard = () => {
                 />
               )}
               {step === 4 && (
+                <StepNeuro
+                  formData={formData}
+                  updateFields={updateFields}
+                  onNext={nextStep}
+                  onBack={prevStep}
+                />
+              )}
+              {step === 5 && (
                 <StepCalibration
                   formData={formData}
                   updateFields={updateFields}

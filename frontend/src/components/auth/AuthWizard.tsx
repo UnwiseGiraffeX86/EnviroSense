@@ -121,7 +121,7 @@ const AuthWizard = () => {
       }
 
       // Redirect to dashboard or onboarding success
-      router.push("/chat");
+      router.push("/dashboard");
 
     } catch (err: any) {
       console.error("Signup error:", err);

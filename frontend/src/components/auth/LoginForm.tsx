@@ -34,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       if (error) throw error;
       
       // Redirect or handle success (usually handled by auth state listener or router)
-      window.location.href = "/chat"; // Simple redirect for now
+      window.location.href = "/dashboard"; // Simple redirect for now
     } catch (err: any) {
       setError(err.message);
     } finally {

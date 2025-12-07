@@ -1,195 +1,92 @@
-#BESTEM
-Here is a comprehensive `README.md` file tailored for a GitHub repository, based strictly on the provided technical specification and implementation report.
+# EnviroSense: Eco-Neuro Sentinel
 
------
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![Supabase](https://img.shields.io/badge/Supabase-Postgres-green?style=flat-square&logo=supabase)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-blue?style=flat-square&logo=openai)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Prototype-orange?style=flat-square)
 
-# Eco-Neuro Sentinel: Bucharest
+**A Neuro-Symbolic health monitoring platform that correlates real-time environmental telemetry with biological response.**
 
-**A Privacy-First Platform correlating Ambient Air Quality with Neuropsychiatric Health.**
+EnviroSense bridges the gap between Environmental Science and Clinical Medicine by creating a dynamic "Digital Twin" of the patient. It utilizes Agentic AI to autonomously triage high-risk patients based on hyper-local air quality data.
 
-## 📖 Project Overview
+---
 
-The **Eco-Neuro Sentinel** is a digital platform designed to interrogate the causal links between environmental stressors—specifically particulate matter and atmospheric toxins—and the prevalence of mental health disorders.Operating within the specific urban context of Bucharest, Romania, the system serves as a precision diagnostic tool that correlates high-resolution environmental data with subjective neuropsychiatric reporting.
+## 📉 The Problem: The Invisible Crisis
 
-The project is grounded in the "neuro-inflammatory hypothesis," which posits that chronic exposure to fine particulate matter ($PM2.5$) and nitrogen oxides ($NO_x$) precipitates systemic inflammation that affects the central nervous system.
+Modern healthcare treats symptoms (anxiety, asthma, cognitive fog) in isolation, ignoring environmental root causes. Conversely, environmental science tracks pollution (PM2.5, NO2) but lacks biological context.
 
-### Key Objectives
+**The Consequence:** Patients are medicated for symptoms that are actually triggered by their environment, leading to reactive rather than predictive care.
 
-  * **Monitor Correlations:** Track the relationship between air quality spikes and mental health indicators (depression, anxiety).
-  * **Regulatory Compliance:** Adhere to the revised **EU Directive 2024/2881**, which lowers the annual $PM2.5$ target to $10~\mu g/m^{3}$ by 2030.
-  * **Privacy Sovereignty:** Implement a Zero-Trust, Edge-First architecture to ensure no PII reaches third-party AI processors.
+---
 
------
+## 🛡️ The Solution: Agentic Digital Twin Architecture
 
-## 🏗️ Technical Architecture
+EnviroSense operationalizes the **"Digital Twin"**—a dynamic JSON profile tracking `respiratory_sensitivity` and `focus_index`.
 
-The architecture prioritizes data privacy and GDPR compliance by prohibiting direct client-side calls to AI services.
+The system functions as an autonomous **Neuro-Symbolic Agent** that:
+1.  **Perceives:** Ingests real-time environmental telemetry via OpenWeatherMap.
+2.  **Reasons:** Uses RAG-grounded LLMs (OpenAI GPT-4o) to analyze health risks against EU Directives.
+3.  **Acts:** Executes SQL actions to triage high-risk patients to specialists without human intervention.
 
-### The "Sanitization Airlock" Pattern
+---
 
-To protect user privacy, we utilize Supabase Edge Functions as a secure gateway.
+## 🛠️ Technology Stack
 
-1.  **Ingestion:** Client sends encrypted journal entries to the Edge Function.
-2.  **Scrubbing:** The function decrypts the payload and uses libraries like `redact-pii` to strip names, locations, and identifiers.
-3. **Inference:** Only sanitized text is sent to the OpenAI API for embedding and sentiment analysis.
-4.  **Persistence:** Original (encrypted) text and anonymized embeddings are stored in Supabase.
+### Frontend (Client Layer)
+* **Next.js 14 (App Router):** React Server Components for minimized bundle size.
+* **Tailwind CSS:** Utility-first styling for the "Organic Futurism" design system.
+* **Recharts:** Time-series visualization for symptom/pollution correlation.
 
-### Tech Stack
+### Backend (Infrastructure Layer)
+* **Supabase (BaaS):**
+    * **Database:** PostgreSQL 15 with `pgvector` (Embeddings) and `PostGIS` (Geolocation).
+    * **Auth:** Row Level Security (RLS) policies for Zero-Trust data isolation.
+    * **Realtime:** WebSocket subscriptions for immediate doctor alerts.
+    * **Edge Functions:** Deno runtime for secure AI proxying.
 
-| Component | Technology | Rationale |
-| :--- | :--- | :--- |
-| **Database** | PostgreSQL + `pgvector` | Native vector storage for relational and semantic queries. |
-| **Backend** | Supabase Edge Functions (Deno) | Low-latency, EU-hosted, TypeScript-first environment. |
-| **AI Model** | OpenAI `gpt-4o` & `text-embedding-3-small` |State-of-the-art triage reasoning and efficient 1536-dim embeddings. |
-| **Frontend** | React + `react-leaflet` | Geospatial visualization of Bucharest's administrative sectors. |
-| **External Data** | OpenAQ API v3 | Standardized aggregation of real-time sensor data. |
+### AI & ML Pipeline
+* **Reasoning:** OpenAI `gpt-4o` (Agentic Logic).
+* **Embeddings:** `text-embedding-3-small` (RAG Knowledge Base).
+* **Validation:** Python/Scikit-Learn (Synthetic Data Generation).
 
------
+---
 
-## 📂 Project Structure
+## 🚀 Key Features
 
-The repository is organized as follows:
+### 1. Privacy-First Architecture
+We utilize a "Zero-Trust" model. Raw PII is stripped at the Edge layer before inference. Database access is governed strictly by RLS policies—patients can only access their own rows.
 
-```
-BESTEM/
-├── backend/               # Python backend logic and utilities
-│   ├── models/            # Machine Learning models (.pkl)
-│   ├── scripts/           # Data ingestion and maintenance scripts
-│   └── tests/             # Validation and testing scripts
-├── database/              # PostgreSQL schemas and migrations
-│   ├── migrations/        # Incremental database updates
-│   └── init_db.sql        # Core database initialization
-├── docs/                  # Project documentation and assets
-│   ├── assets/            # Images and graphics
-│   └── knowledge_base/    # RAG source documents
-├── frontend/              # Next.js React application
-│   ├── src/               # Source code
-│   └── public/            # Static assets
-└── supabase/              # Supabase configuration and Edge Functions
-```
+### 2. Neuro-Symbolic Reasoning
+To prevent hallucinations in a medical context, we fuse two paradigms:
+* **Neural:** LLMs handle natural language parsing and probabilistic reasoning.
+* **Symbolic:** Deterministic SQL constraints and Vector Search ground the AI in facts.
 
------
+### 3. Synthetic Validation
+The risk-scoring logic was stress-tested against **10,000 rows of synthetic patient data** generated via our custom `validator.py` script. This ensures the correlation algorithm holds up under diverse environmental scenarios.
 
-## 🗄️ Database Design
+---
 
-The schema is designed to handle high-frequency time-series data, geospatial polygons, and high-dimensional vectors.
+## 🏆 AI Challenge Compliance
 
-### Required Extensions
+EnviroSense was architected specifically to meet the challenge requirements:
 
-Run the following in the Supabase SQL Editor:
+| Requirement | Implementation Details |
+| :--- | :--- |
+| **Agentic AI** | The system **executes actions**. If a risk threshold is breached, the Agent autonomously writes a summary to the `consultations` table and alerts a doctor. |
+| **RAG Component** | The AI is grounded in the **EU Air Quality Directive 2024/2881**, utilizing vector search to retrieve safety thresholds. |
+| **Text-to-SQL** | The Agent dynamically queries the `doctors` database table to find available specialists based on symptom keywords. |
+| **Unstructured Data** | We implemented a PDF ingestion pipeline that scrapes and chunks regulatory documents for the Knowledge Base. |
 
-```sql
--- Geospatial querying
-CREATE EXTENSION IF NOT EXISTS postgis;
--- Vector embeddings
-CREATE EXTENSION IF NOT EXISTS vector;
--- Encryption functions
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-```
+---
 
-### Core Tables
-
-#### 1\. `bucharest_sectors`
-
-Maps the six administrative sectors of Bucharest using OpenStreetMap data.
-
-  * **geometry:** Polygon/MultiPolygon defining the boundary.
-
-#### 2\. `air_quality_logs`
-
-Stores sensor readings.Includes a computed `sector_id` based on spatial joins.
-
-  * **pm25:** Concentration in $\mu g/m^{3}$.
-  * **Indexing:** Uses BRIN index for efficient timestamp querying.
-
-#### 3\. `journal_entries`
-
-Implements "Split-Knowledge" storage.
-
-  * **content\_encrypted:** Raw text encrypted via `pgcrypto`.
-  * **embedding:** 1536-dimensional vector generated from *sanitized* text.
-  * **Security:** Row Level Security (RLS) is mandatory; users can only access their own UUID.
-
------
-
-## ⚡ Backend Logic (Edge Functions)
-
-### PII Redaction Implementation
-
-We utilize Deno's Node.js compatibility to import robust redaction libraries.
-
-```typescript
-// Example Logic
-import { Redactor } from "npm:@redactpii/node";
-
-// ... inside serve handler
-const redactor = new Redactor();
-const safe_text = await redactor.redact(journal_text); 
-
-// Only safe_text is sent to OpenAI
-const embeddingResponse = await openai.embeddings.create({
-  model: "text-embedding-3-small", 
-  input: safe_text,
-});
-```
-
-*See the full implementation details in the Technical Report.*
-
-### Automated Data Ingestion
-
-A scheduled Edge Function (cron) performs the following:
-
-1.  **Fetch:** Queries OpenAQ for sensors within Bucharest (44.43, 26.10).
-2. **Spatial Join:** Maps sensor coordinates to a Bucharest Sector ID.
-3.  **Upsert:** Stores the reading in `air_quality_logs`.
-
------
-
-## 🤖 AI Features & Semantic Search
-
-### Medical Triage (Structured Outputs)
-
-To ensure reliable UI rendering, we use OpenAI's **Structured Outputs** to force a strict JSON schema for analysis.
-
-  * **Schema includes:** `clinical_sentiment`, `detected_symptoms`, `environmental_correlation`, and a boolean `risk_flag`.
-
-### Semantic Search (RAG)
-
-A custom RPC function enables users to query their past journals based on semantic meaning (e.g., "How does my mood change in smog?").
-
-```sql
--- RPC Function Signature
-CREATE OR REPLACE FUNCTION match_documents (
-  query_embedding vector(1536),
-  match_threshold float,
-  filter_user_id uuid -- Critical security filter
-)
--- ... calculates cosine distance (<=>)
-```
-
-*Note: The system uses `text-embedding-3-small` (1536 dims) for higher accuracy over storage efficiency.*
-
------
-
-## 🚀 Getting Started
+## ⚡ Installation & Setup
 
 ### Prerequisites
+* Node.js 18+
+* Supabase CLI
 
-  * Supabase Project (deployed in `eu-central-1` for GDPR).
-  * OpenAI API Key.
-  * OpenAQ API Key (optional for community access).
-
-### Installation Roadmap
-
-1.  **Foundation:** Set up Supabase project, enable extensions, and deploy the PII Redaction Edge Function.
-2.  **Data Ingestion:** Configure OpenAQ cron jobs and backfill historical air quality data.
-3.  **Frontend:** Build the React dashboard with Leaflet and integrate OpenAI Structured Outputs.
-4.  **Validation:** Run synthetic data tests using Python `Faker` to verify correlation algorithms.
-
------
-
-## 📄 License & Regulatory Note
-
-**EU Directive 2024/2881:** This project is calibrated to detect "moderate" pollution levels (annual PM2.5 \> $10~\mu g/m^{3}$) which are now recognized as hazardous under the new legal framework.
-
-**Medical Disclaimer:** This tool provides health insights but does not replace professional medical advice. The `risk_flag` feature is a triage estimation only.
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/your-org/envirosense.git](https://github.com/your-org/envirosense.git)
+cd envirosense

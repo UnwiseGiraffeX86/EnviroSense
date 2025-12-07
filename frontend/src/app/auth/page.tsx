@@ -13,7 +13,7 @@ export default function AuthPage() {
       <div className="w-full max-w-2xl z-10 relative">
         {/* Header / Logo Area */}
         <div className="mb-12 text-center">
-          <h1 className="text-3xl font-light tracking-wide mb-2">BESTEM</h1>
+          <h1 className="text-3xl font-light tracking-wide mb-2">EnviroSense</h1>
           <p className="text-[#562C2C]/60 text-sm uppercase tracking-widest">Precision Neuro-Optimization</p>
         </div>
 

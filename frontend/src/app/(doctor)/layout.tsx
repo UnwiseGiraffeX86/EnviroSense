@@ -39,7 +39,7 @@ export default async function DoctorLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/auth");
   }
 
   // Check user role
@@ -58,6 +58,7 @@ export default async function DoctorLayout({
       <DoctorSidebar />
       
       {/* Main Content Area - Offset for Sidebar */}
+      {/* TODO: Ensure the sidebar is fully responsive or at least hidden on mobile */}
       <main className="md:ml-64 min-h-screen transition-all duration-300">
         <div className="p-8 max-w-7xl mx-auto">
           {children}

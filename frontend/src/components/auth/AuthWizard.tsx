@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 import StepIdentity from "./StepIdentity";
 import StepBiometrics from "./StepBiometrics";
 import StepRespiratory from "./StepRespiratory";
@@ -17,14 +17,7 @@ import { useRouter } from "next/navigation";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 // Create a single instance of the Supabase client
-let supabase: ReturnType<typeof createClient>;
-
-if (typeof window !== 'undefined') {
-  supabase = createClient(supabaseUrl, supabaseKey);
-} else {
-  // Server-side fallback (though this component is client-side only)
-  supabase = createClient(supabaseUrl, supabaseKey);
-}
+const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 export type AuthMode = "LOGIN" | "SIGNUP";
 

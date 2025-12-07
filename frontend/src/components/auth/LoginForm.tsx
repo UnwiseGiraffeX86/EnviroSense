@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
@@ -33,8 +33,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
 
       if (error) throw error;
       
-      // Redirect or handle success (usually handled by auth state listener or router)
-      window.location.href = "/dashboard"; // Simple redirect for now
+      // Check user role for redirection
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+        
+        if (profile?.role === 'doctor') {
+          window.location.href = "/doctor";
+        } else {
+          window.location.href = "/dashboard";
+        }
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

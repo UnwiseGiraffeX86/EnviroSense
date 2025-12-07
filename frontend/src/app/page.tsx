@@ -28,7 +28,7 @@ const Navbar = () => (
       <div className="flex items-center gap-6 text-sm font-medium text-brand-brown/80">
         <Link href="#mission" className="hover:text-brand-green transition-colors">Mission</Link>
         <Link href="#map" className="hover:text-brand-green transition-colors">Live Map</Link>
-        <Link href="#doctors" className="hover:text-brand-green transition-colors">For Doctors</Link>
+        <Link href="/doctor" className="hover:text-brand-green transition-colors">For Doctors</Link>
         <Link href="/auth" className="hover:text-brand-green transition-colors">Login</Link>
       </div>
       <Link href="/auth?mode=signup">

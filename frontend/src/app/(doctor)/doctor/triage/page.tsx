@@ -27,35 +27,56 @@ export default function TriagePage() {
   const fetchTriageRequests = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      // 1. Fetch Logs
+      const { data: logs, error: logsError } = await supabase
         .from('daily_logs')
-        .select('*, profiles(full_name, email)')
+        .select('*')
         .ilike('transcript', 'TRIAGE REQUEST%')
         // .neq('ai_risk_assessment', 'Resolved') // Temporarily removed to debug
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error("Supabase Error Details:", JSON.stringify(error, null, 2));
-        throw error;
+      if (logsError) {
+        console.error("Supabase Error Details (Logs):", JSON.stringify(logsError, null, 2));
+        throw logsError;
       }
 
-      const formattedRequests = data?.map(log => {
-        const parts = log.transcript.split(' - ');
-        const type = parts[0].replace('TRIAGE REQUEST: ', '');
-        const description = parts[1] || "No description provided";
+      // 2. Fetch Profiles manually to avoid FK issues
+      let formattedRequests: any[] = [];
+      
+      if (logs && logs.length > 0) {
+        const userIds = Array.from(new Set(logs.map(log => log.user_id)));
+        
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, full_name, email')
+          .in('id', userIds);
+          
+        if (profilesError) {
+           console.error("Supabase Error Details (Profiles):", JSON.stringify(profilesError, null, 2));
+           // Continue without profiles if error, or throw? Let's continue with unknown.
+        }
 
-        return {
-          id: log.id,
-          patientId: log.user_id,
-          name: log.profiles?.full_name || "Unknown Patient",
-          email: log.profiles?.email,
-          type: type,
-          description: description,
-          severity: log.breathing_status === 'Severe' ? 'Critical' : 'Urgent',
-          time: new Date(log.created_at),
-          status: 'Pending'
-        };
-      }) || [];
+        const profilesMap = new Map(profiles?.map(p => [p.id, p]) || []);
+
+        formattedRequests = logs.map(log => {
+          const profile = profilesMap.get(log.user_id);
+          const parts = log.transcript.split(' - ');
+          const type = parts[0].replace('TRIAGE REQUEST: ', '');
+          const description = parts[1] || "No description provided";
+
+          return {
+            id: log.id,
+            patientId: log.user_id,
+            name: profile?.full_name || "Unknown Patient",
+            email: profile?.email,
+            type: type,
+            description: description,
+            severity: log.breathing_status === 'Severe' ? 'Critical' : 'Urgent',
+            time: new Date(log.created_at),
+            status: 'Pending'
+          };
+        });
+      }
 
       setRequests(formattedRequests);
     } catch (error) {

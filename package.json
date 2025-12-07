@@ -9,6 +9,7 @@
     "lint": "cd frontend && npm run lint"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.15.0"
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "openai": "^6.10.0"
   }
 }

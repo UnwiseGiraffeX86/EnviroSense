@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "@/lib/supabaseClient";
 
 export type DashboardData = {
   profile: {
@@ -80,12 +76,19 @@ export const useDashboardData = () => {
               .from("air_quality")
               .select("pm25, pm10, last_updated, sector_name")
               .eq("sector_name", profile.sector)
-              .single(),
+              .maybeSingle(),
             supabase
               .from("appointments")
               .select("id, doctor_name, clinic_name, appointment_time, status")
               .eq("patient_id", session.user.id)
-              .order("appointment_time", { ascending: true }),
+              .order("appointment_time", { ascending: true })
+              .then(res => {
+                if (res.error) {
+                  console.warn("Appointments fetch error (ignoring):", res.error);
+                  return { data: [], error: null };
+                }
+                return res;
+              }),
             // Fetch real weather data from OpenMeteo (Bucharest coordinates for demo)
             fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4268&longitude=26.1025&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto")
               .then(res => res.json())

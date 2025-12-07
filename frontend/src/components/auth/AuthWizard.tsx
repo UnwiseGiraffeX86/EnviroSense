@@ -77,7 +77,19 @@ const AuthWizard = () => {
 
       if (authError) throw authError;
 
-      if (authData.user) {
+      // Check if session exists (required for RLS)
+      if (authData.user && !authData.session) {
+        // Email confirmation is enabled, so we can't insert into profiles yet.
+        // We'll just redirect to a "Check your email" page or let them know.
+        // For now, we'll just skip the profile creation and let them do it later or 
+        // rely on them confirming email first.
+        // Ideally, we should show a message.
+        alert("Please check your email to confirm your account. You can complete your profile after logging in.");
+        router.push("/login");
+        return;
+      }
+
+      if (authData.user && authData.session) {
         // 2. Create Profile Record
         const { error: profileError } = await supabase
           .from("profiles")

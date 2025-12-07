@@ -2,7 +2,10 @@
 import React from "react";
 import { BrainCircuit } from "lucide-react";
 
-export const NeuroRadar = () => {
+export const NeuroRadar = ({ focusIndex, pm25 }: { focusIndex: number, pm25: number }) => {
+  const impact = Math.min(pm25 / 10, focusIndex);
+  const currentFocus = Math.max(0, focusIndex - impact);
+
   return (
     <div className="bg-white/60 backdrop-blur-md border border-white/50 shadow-sm rounded-3xl p-6 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
@@ -30,8 +33,11 @@ export const NeuroRadar = () => {
         <span className="absolute right-0 text-[10px] font-bold text-[#562C2C]/60">ENERGY</span>
       </div>
 
-      <div className="mt-4 bg-[#E07A5F]/10 p-3 rounded-xl text-xs text-[#562C2C]">
-        <span className="font-bold text-[#E07A5F]">Insight:</span> High CO2 levels detected. Predicted Focus Drop: -15%.
+      <div className="mt-4 text-center">
+        <div className="text-2xl font-bold text-[#562C2C]">{currentFocus.toFixed(1)} <span className="text-sm text-[#562C2C]/40">/ 10</span></div>
+        <p className="text-xs text-[#E07A5F] mt-1">
+          -{impact.toFixed(1)} impact from Air Quality
+        </p>
       </div>
     </div>
   );

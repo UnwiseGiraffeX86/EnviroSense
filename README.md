@@ -46,6 +46,30 @@ To protect user privacy, we utilize Supabase Edge Functions as a secure gateway.
 
 -----
 
+## 📂 Project Structure
+
+The repository is organized as follows:
+
+```
+BESTEM/
+├── backend/               # Python backend logic and utilities
+│   ├── models/            # Machine Learning models (.pkl)
+│   ├── scripts/           # Data ingestion and maintenance scripts
+│   └── tests/             # Validation and testing scripts
+├── database/              # PostgreSQL schemas and migrations
+│   ├── migrations/        # Incremental database updates
+│   └── init_db.sql        # Core database initialization
+├── docs/                  # Project documentation and assets
+│   ├── assets/            # Images and graphics
+│   └── knowledge_base/    # RAG source documents
+├── frontend/              # Next.js React application
+│   ├── src/               # Source code
+│   └── public/            # Static assets
+└── supabase/              # Supabase configuration and Edge Functions
+```
+
+-----
+
 ## 🗄️ Database Design
 
 The schema is designed to handle high-frequency time-series data, geospatial polygons, and high-dimensional vectors.

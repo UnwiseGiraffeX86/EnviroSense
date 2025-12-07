@@ -17,14 +17,25 @@ const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 export default function PatientDirectory() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("All Patients");
+  const [filterType, setFilterType] = useState("My Patients");
   const [patients, setPatients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        // 1. Fetch all profiles with role 'patient'
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        // 1. Fetch My Active Patients (from Consultations)
+        const { data: myConsultations } = await supabase
+          .from('consultations')
+          .select('patient_id, status, risk_score, ai_summary, created_at')
+          .eq('doctor_id', user?.id)
+          .eq('status', 'active');
+
+        const myPatientIds = myConsultations?.map(c => c.patient_id) || [];
+
+        // 2. Fetch Profiles (All or just mine? Let's fetch all for directory, but mark mine)
         const { data: profiles, error: profilesError } = await supabase
           .from('profiles')
           .select('*')
@@ -32,7 +43,7 @@ export default function PatientDirectory() {
 
         if (profilesError) throw profilesError;
 
-        // 2. Fetch latest log for each patient to determine 'Last Active'
+        // 3. Fetch latest log for each patient to determine 'Last Active'
         const patientsWithStatus = await Promise.all(profiles.map(async (profile) => {
           const { data: logs } = await supabase
             .from('daily_logs')
@@ -45,16 +56,23 @@ export default function PatientDirectory() {
             ? new Date(logs[0].created_at).toLocaleDateString() + ' ' + new Date(logs[0].created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
             : 'Never';
 
-          // Mocking Risk/Sector for now as they aren't in DB yet
+          const activeConsultation = myConsultations?.find(c => c.patient_id === profile.id);
+          const isMyPatient = !!activeConsultation;
+
           return {
             id: profile.id,
             name: profile.full_name || "Unknown Patient",
             sector: "Sector 1", // Mock
             lastActive: lastActive,
-            risk: Math.random() > 0.7 ? "High" : Math.random() > 0.4 ? "Medium" : "Low", // Mock
-            status: "Stable" // Mock
+            risk: activeConsultation ? (activeConsultation.risk_score > 5 ? "High" : "Medium") : "Low",
+            status: isMyPatient ? "Under Care" : "Stable",
+            isMyPatient: isMyPatient,
+            aiSummary: activeConsultation?.ai_summary
           };
         }));
+
+        // Sort: My Patients first
+        patientsWithStatus.sort((a, b) => (b.isMyPatient ? 1 : 0) - (a.isMyPatient ? 1 : 0));
 
         setPatients(patientsWithStatus);
       } catch (error) {
@@ -70,6 +88,9 @@ export default function PatientDirectory() {
   const filteredPatients = patients.filter(patient => {
     const matchesSearch = patient.name.toLowerCase().includes(searchTerm.toLowerCase());
     
+    if (filterType === "My Patients") {
+        return matchesSearch && patient.isMyPatient;
+    }
     if (filterType === "High Risk Only") {
       return matchesSearch && patient.risk === "High";
     }
@@ -115,6 +136,7 @@ export default function PatientDirectory() {
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
+              <option>My Patients</option>
               <option>All Patients</option>
               <option>High Risk Only</option>
               <option>Sector 1 Only</option>

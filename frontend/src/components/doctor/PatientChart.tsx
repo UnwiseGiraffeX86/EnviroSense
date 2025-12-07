@@ -44,9 +44,10 @@ const CustomDot = (props: any) => {
 
 export default function PatientChart({ data }: PatientChartProps) {
   return (
-    <div className="h-[400px] w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+    <div className="h-[400px] w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col">
       <h3 className="text-lg font-semibold text-[#1E293B] mb-4">30-Day Health & Environmental Correlation</h3>
-      <ResponsiveContainer width="100%" height="100%">
+      <div className="flex-1 min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           data={data}
           margin={{
@@ -106,6 +107,7 @@ export default function PatientChart({ data }: PatientChartProps) {
           />
         </ComposedChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }

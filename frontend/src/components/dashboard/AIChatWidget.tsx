@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createBrowserClient } from "@supabase/ssr";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Send, 
@@ -12,7 +13,8 @@ import {
   Wind, 
   Database, 
   BrainCircuit,
-  Stethoscope
+  Stethoscope,
+  Loader2
 } from "lucide-react";
 
 type Message = {
@@ -45,20 +47,225 @@ export function AIChatWidget() {
   const [inputValue, setInputValue] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [requestStatus, setRequestStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const [activeConsultationId, setActiveConsultationId] = useState<string | null>(null);
+  const [isLiveChat, setIsLiveChat] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Init: Get User & Restore Session
+  useEffect(() => {
+    const init = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            setCurrentUserId(user.id);
+            
+            // Check for existing active/pending consultation
+            const { data } = await supabase
+                .from('consultations')
+                .select('id, status')
+                .eq('patient_id', user.id)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+            
+            if (data) {
+                if (data.status === 'pending' || data.status === 'active') {
+                    setActiveConsultationId(data.id);
+                    if (data.status === 'active') {
+                        setIsLiveChat(true);
+                        // Fetch history
+                        const { data: history } = await supabase
+                            .from('chat_messages')
+                            .select('*')
+                            .eq('consultation_id', data.id)
+                            .order('created_at', { ascending: true });
+                        
+                        if (history) {
+                             const historyMsgs: Message[] = history.map((m: any) => ({
+                                id: m.id,
+                                role: m.sender_id === user.id ? 'user' : 'ai',
+                                content: m.content,
+                                type: 'text'
+                             }));
+                             // Append history to initial greeting
+                             setMessages(prev => {
+                                 const greeting = prev[0];
+                                 return [greeting, ...historyMsgs];
+                             });
+                        }
+                    } else {
+                        // Pending: Show request sent message
+                        setMessages(prev => [...prev, {
+                            id: 'pending-msg',
+                            role: 'ai',
+                            content: "Request sent to Dr. Popa. You will be notified when the consultation begins.",
+                            type: 'text'
+                        }]);
+                        setRequestStatus('sent');
+                    }
+                }
+            }
+        }
+    };
+    init();
+  }, []);
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, isThinking, currentStep]);
+
+  // Listen for consultation acceptance
+  useEffect(() => {
+    if (!activeConsultationId) return;
+
+    const channel = supabase
+      .channel(`consultation:${activeConsultationId}`)
+      .on(
+        'postgres_changes',
+        { 
+          event: 'UPDATE', 
+          schema: 'public', 
+          table: 'consultations', 
+          filter: `id=eq.${activeConsultationId}` 
+        },
+        (payload) => {
+          if (payload.new.status === 'active') {
+            setIsLiveChat(true);
+            setMessages(prev => [...prev, {
+              id: 'system-connected',
+              role: 'ai',
+              content: "Dr. Popa has joined the chat.",
+              type: 'text'
+            }]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [activeConsultationId]);
+
+  // Listen for new messages in live chat
+  useEffect(() => {
+    if (!isLiveChat || !activeConsultationId || !currentUserId) return;
+
+    const channel = supabase
+      .channel(`chat:${activeConsultationId}`)
+      .on(
+        'postgres_changes',
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'chat_messages', 
+          filter: `consultation_id=eq.${activeConsultationId}` 
+        },
+        (payload) => {
+             if (payload.new.sender_id !== currentUserId) {
+                setMessages(prev => {
+                    // Avoid duplicates
+                    if (prev.some(m => m.id === payload.new.id)) return prev;
+                    return [...prev, {
+                        id: payload.new.id,
+                        role: 'ai', 
+                        content: payload.new.content,
+                        type: 'text'
+                    }];
+                });
+             }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isLiveChat, activeConsultationId, currentUserId]);
+
+  const handleRequestDoctor = async (riskData: any) => {
+    setRequestStatus('sending');
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { data, error } = await supabase
+        .from('consultations')
+        .insert({
+          patient_id: user.id,
+          status: 'pending',
+          ai_summary: riskData.details || "No details provided",
+          risk_score: riskData.level === 'High' ? 8 : 4
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setActiveConsultationId(data.id);
+      setRequestStatus('sent');
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        role: "ai",
+        content: "Request sent to Dr. Popa. You will be notified when the consultation begins.",
+        type: "text"
+      }]);
+    } catch (err: any) {
+      console.error("Error requesting doctor:", err);
+      if (typeof err === 'object' && err !== null) {
+          console.error("Error message:", err.message);
+          console.error("Error code:", err.code);
+          console.error("Error details:", err.details);
+      }
+      setRequestStatus('idle');
+    }
+  };
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!inputValue.trim()) return;
 
+    // If in Live Chat mode, send to DB
+    if (isLiveChat && activeConsultationId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { error } = await supabase
+                .from('chat_messages')
+                .insert({
+                    consultation_id: activeConsultationId,
+                    sender_id: user.id,
+                    content: inputValue
+                });
+            
+            if (error) {
+                console.error("Error sending message:", error);
+                return;
+            }
+        }
+        
+        // Optimistic update
+        setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            role: "user",
+            content: inputValue,
+            type: "text"
+        }]);
+        setInputValue("");
+        return;
+    }
+
+    // Normal AI Chat Logic
     const userMsg: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -144,10 +351,27 @@ export function AIChatWidget() {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full mt-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl p-3 flex items-center justify-center gap-2 text-sm font-semibold transition-colors"
+                      onClick={() => requestStatus === 'idle' && handleRequestDoctor(msg.riskData)}
+                      disabled={requestStatus !== 'idle'}
+                      className={`w-full mt-2 border rounded-xl p-3 flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${
+                        requestStatus === 'sent' 
+                          ? "bg-green-50 text-green-700 border-green-200" 
+                          : "bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                      }`}
                     >
-                      <Stethoscope size={16} />
-                      Request Dr. Popa (Available)
+                      {requestStatus === 'sending' ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : requestStatus === 'sent' ? (
+                        <>
+                          <CheckCircle2 size={16} />
+                          Request Sent
+                        </>
+                      ) : (
+                        <>
+                          <Stethoscope size={16} />
+                          Request Dr. Popa (Available)
+                        </>
+                      )}
                     </motion.button>
                   )}
                 </div>

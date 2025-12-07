@@ -79,15 +79,24 @@ export const useDashboardData = () => {
               .maybeSingle(),
             supabase
               .from("appointments")
-              .select("id, doctor_name, clinic_name, appointment_time, status")
+              .select("*")
               .eq("patient_id", session.user.id)
-              .order("appointment_time", { ascending: true })
               .then(res => {
                 if (res.error) {
                   console.warn("Appointments fetch error (ignoring):", res.error);
                   return { data: [], error: null };
                 }
-                return res;
+                
+                // Map data to ensure compatibility with both schemas
+                const mappedData = res.data.map((appt: any) => ({
+                    id: appt.id,
+                    doctor_name: appt.doctor_name || "Dr. Popa",
+                    clinic_name: appt.clinic_name || "Regina Maria",
+                    appointment_time: appt.appointment_time || appt.start_time || new Date().toISOString(),
+                    status: appt.status
+                })).sort((a: any, b: any) => new Date(a.appointment_time).getTime() - new Date(b.appointment_time).getTime());
+
+                return { data: mappedData, error: null };
               }),
             // Fetch real weather data from OpenMeteo (Bucharest coordinates for demo)
             fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4268&longitude=26.1025&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto")

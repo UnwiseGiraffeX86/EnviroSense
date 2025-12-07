@@ -44,19 +44,44 @@ export default function DoctorDashboard() {
           .select('*', { count: 'exact', head: true })
           .eq('role', 'patient');
 
-        // 2. Fetch Recent Logs for Watchlist (Real)
-        const { data: recentLogs } = await supabase
+        // 2. Fetch Recent Logs for Watchlist (Real) - Manual Join
+        const { data: recentLogs, error: logsError } = await supabase
           .from('daily_logs')
-          .select('*, profiles(full_name)')
+          .select('*')
           .order('created_at', { ascending: false })
           .limit(20); 
 
-        // 3. Fetch Triage Requests (Real from Logs)
-        const { data: triageLogs } = await supabase
+        if (logsError) {
+            console.error("Error fetching logs:", logsError);
+        }
+
+        // 3. Fetch Triage Requests (Real from Logs) - Manual Join
+        const { data: triageLogs, error: triageError } = await supabase
           .from('daily_logs')
-          .select('*, profiles(full_name)')
+          .select('*')
           .ilike('transcript', 'TRIAGE REQUEST%')
           .order('created_at', { ascending: false });
+
+        if (triageError) {
+            console.error("Error fetching triage logs:", triageError);
+        }
+
+        // 4. Fetch Profiles manually
+        const userIds = new Set<string>();
+        recentLogs?.forEach((l: any) => l.user_id && userIds.add(l.user_id));
+        triageLogs?.forEach((l: any) => l.user_id && userIds.add(l.user_id));
+
+        let profilesMap: Record<string, any> = {};
+        if (userIds.size > 0) {
+            const { data: profiles } = await supabase
+                .from('profiles')
+                .select('id, full_name')
+                .in('id', Array.from(userIds));
+            
+            profiles?.forEach((p: any) => {
+                profilesMap[p.id] = p;
+            });
+        }
 
         setStats({
           total: totalPatients || 0,
@@ -68,11 +93,11 @@ export default function DoctorDashboard() {
         let formattedWatchlist: any[] = [];
         if (recentLogs) {
            formattedWatchlist = recentLogs
-            .filter(log => (log.breathing_status === 'Severe' || log.focus_level <= 3) && !log.transcript?.startsWith('TRIAGE REQUEST')) // Exclude triage requests from watchlist to avoid duplication if desired, or keep them. Let's keep them separate.
-            .map(log => ({
+            .filter((log: any) => (log.breathing_status === 'Severe' || log.focus_level <= 3) && !log.transcript?.startsWith('TRIAGE REQUEST')) 
+            .map((log: any) => ({
               id: log.id,
               patientId: log.user_id,
-              name: log.profiles?.full_name || "Unknown Patient",
+              name: profilesMap[log.user_id]?.full_name || "Unknown Patient",
               risk: "High",
               flag: log.breathing_status === 'Severe' ? 'Severe Breathing Alert' : 'Low Focus Alert',
               time: new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
@@ -82,8 +107,8 @@ export default function DoctorDashboard() {
         // If empty, add a fake one for demo to ensure UI isn't empty
         if (formattedWatchlist.length === 0) {
              formattedWatchlist.push({
-                id: 'fake-1',
-                patientId: 'fake-id', // This won't link to a real page, but shows the UI
+                id: 'demo-1',
+                patientId: 'demo-patient-id', // Changed from fake-id to avoid 400 errors if used in queries
                 name: "Mihai Ionescu",
                 risk: "High",
                 flag: "Severe Breathing Alert",
@@ -96,14 +121,14 @@ export default function DoctorDashboard() {
         let initialTriage: any[] = [];
         
         if (triageLogs && triageLogs.length > 0) {
-          initialTriage = triageLogs.map(log => {
+          initialTriage = triageLogs.map((log: any) => {
             // Extract symptom from "TRIAGE REQUEST: Symptom - Description"
             const parts = log.transcript.split(' - ');
             const type = parts[0].replace('TRIAGE REQUEST: ', '');
             
             return {
               id: log.id,
-              name: log.profiles?.full_name || "Unknown Patient",
+              name: profilesMap[log.user_id]?.full_name || "Unknown Patient",
               type: type,
               status: "Urgent" // All triage requests are urgent
             };

@@ -1,108 +1,70 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { 
-  AlertCircle, 
-  CheckCircle2, 
+  Send, 
+  User, 
   Clock, 
-  Filter, 
-  Search, 
-  User,
-  XCircle,
-  ArrowRight
+  CheckCircle2, 
+  AlertCircle,
+  MessageSquare,
+  MoreVertical,
+  Phone,
+  Video,
+  Search
 } from "lucide-react";
-import Link from "next/link";
+
+type Consultation = {
+  id: string;
+  patient_id: string;
+  doctor_id: string | null;
+  status: 'pending' | 'active' | 'closed';
+  ai_summary: string;
+  risk_score: number;
+  created_at: string;
+  patient_name?: string; // Joined manually
+  patient_email?: string;
+};
+
+type ChatMessage = {
+  id: string;
+  consultation_id: string;
+  sender_id: string;
+  content: string;
+  created_at: string;
+};
 
 export default function TriagePage() {
-  const [requests, setRequests] = useState<any[]>([]);
+  const [consultations, setConsultations] = useState<Consultation[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("all");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const fetchTriageRequests = async () => {
-    setLoading(true);
-    try {
-      // 1. Fetch Logs
-      const { data: logs, error: logsError } = await supabase
-        .from('daily_logs')
-        .select('*')
-        .ilike('transcript', 'TRIAGE REQUEST%')
-        // .neq('ai_risk_assessment', 'Resolved') // Temporarily removed to debug
-        .order('created_at', { ascending: false });
-
-      if (logsError) {
-        console.error("Supabase Error Details (Logs):", JSON.stringify(logsError, null, 2));
-        throw logsError;
-      }
-
-      // 2. Fetch Profiles manually to avoid FK issues
-      let formattedRequests: any[] = [];
-      
-      if (logs && logs.length > 0) {
-        const userIds = Array.from(new Set(logs.map(log => log.user_id)));
-        
-        const { data: profiles, error: profilesError } = await supabase
-          .from('profiles')
-          .select('id, full_name, email')
-          .in('id', userIds);
-          
-        if (profilesError) {
-           console.error("Supabase Error Details (Profiles):", JSON.stringify(profilesError, null, 2));
-           // Continue without profiles if error, or throw? Let's continue with unknown.
-        }
-
-        const profilesMap = new Map(profiles?.map(p => [p.id, p]) || []);
-
-        formattedRequests = logs.map(log => {
-          const profile = profilesMap.get(log.user_id);
-          const parts = log.transcript.split(' - ');
-          const type = parts[0].replace('TRIAGE REQUEST: ', '');
-          const description = parts[1] || "No description provided";
-
-          return {
-            id: log.id,
-            patientId: log.user_id,
-            name: profile?.full_name || "Unknown Patient",
-            email: profile?.email,
-            type: type,
-            description: description,
-            severity: log.breathing_status === 'Severe' ? 'Critical' : 'Urgent',
-            time: new Date(log.created_at),
-            status: 'Pending'
-          };
-        });
-      }
-
-      setRequests(formattedRequests);
-    } catch (error) {
-      console.error("Error fetching triage requests:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // 1. Init & Fetch Consultations
   useEffect(() => {
-    fetchTriageRequests();
-    
-    // Real-time subscription
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
+      await fetchConsultations();
+    };
+    init();
+
+    // Realtime Consultations Subscription
     const channel = supabase
-      .channel('triage_updates')
+      .channel('consultations_room')
       .on(
         'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'daily_logs',
-          filter: 'transcript=ilike.TRIAGE REQUEST%'
-        },
-        () => {
-          fetchTriageRequests();
-        }
+        { event: '*', schema: 'public', table: 'consultations' },
+        () => fetchConsultations() // Refresh list on any change
       )
       .subscribe();
 
@@ -111,111 +73,294 @@ export default function TriagePage() {
     };
   }, []);
 
-  const handleResolve = async (id: string) => {
+  // 2. Fetch Messages when Consultation Selected
+  useEffect(() => {
+    if (!selectedId) return;
+
+    const fetchMessages = async () => {
+      const { data } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('consultation_id', selectedId)
+        .order('created_at', { ascending: true });
+      
+      if (data) setMessages(data);
+    };
+    fetchMessages();
+
+    // Realtime Chat Subscription
+    const channel = supabase
+      .channel(`chat:${selectedId}`)
+      .on(
+        'postgres_changes',
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'chat_messages', 
+          filter: `consultation_id=eq.${selectedId}` 
+        },
+        (payload) => {
+          setMessages(prev => [...prev, payload.new as ChatMessage]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedId]);
+
+  // Auto-scroll to bottom of chat
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const fetchConsultations = async () => {
+    setLoading(true);
     try {
-      // Mark as resolved in DB
-      const { error } = await supabase
-        .from('daily_logs')
-        .update({ ai_risk_assessment: 'Resolved' })
-        .eq('id', id);
+      // Fetch pending AND active (for this doctor)
+      const { data: consData, error } = await supabase
+        .from('consultations')
+        .select('*')
+        .or(`status.eq.pending,status.eq.active`)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Optimistic update
-      setRequests(prev => prev.filter(req => req.id !== id));
-    } catch (error) {
-      console.error("Error resolving request:", error);
-      alert("Failed to resolve request");
+      // Manual Join for Profiles
+      if (consData && consData.length > 0) {
+        const userIds = Array.from(new Set(consData.map(c => c.patient_id)));
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, full_name, email')
+          .in('id', userIds);
+        
+        const profileMap = new Map(profiles?.map(p => [p.id, p]));
+
+        const merged = consData.map(c => ({
+          ...c,
+          patient_name: profileMap.get(c.patient_id)?.full_name || "Unknown",
+          patient_email: profileMap.get(c.patient_id)?.email
+        }));
+        setConsultations(merged);
+      } else {
+        setConsultations([]);
+      }
+    } catch (err) {
+      console.error("Error fetching consultations:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity.toLowerCase()) {
-      case 'critical': return 'bg-red-100 text-red-700 border-red-200';
-      case 'urgent': return 'bg-orange-100 text-orange-700 border-orange-200';
-      default: return 'bg-blue-100 text-blue-700 border-blue-200';
+  const handleAcceptCase = async (id: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error("No authenticated user found");
+        return;
+      }
+
+      const { error } = await supabase
+        .from('consultations')
+        .update({ 
+          status: 'active', 
+          doctor_id: user.id 
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      // Refresh immediately
+      await fetchConsultations();
+    } catch (err) {
+      console.error("Error accepting case:", err);
     }
   };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !selectedId || !currentUser) return;
+
+    try {
+      const { error } = await supabase
+        .from('chat_messages')
+        .insert({
+          consultation_id: selectedId,
+          sender_id: currentUser.id,
+          content: newMessage
+        });
+
+      if (error) throw error;
+      setNewMessage("");
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
+  };
+
+  const selectedConsultation = consultations.find(c => c.id === selectedId);
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">Triage & Alerts</h1>
-          <p className="text-slate-500">Manage incoming patient requests and critical alerts</p>
+    <div className="h-[calc(100vh-100px)] flex gap-6 max-w-7xl mx-auto">
+      
+      {/* LEFT COLUMN: INBOX */}
+      <div className="w-1/3 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+          <h2 className="font-bold text-[#1E293B] flex items-center gap-2">
+            <AlertCircle size={20} className="text-[#0077B6]" />
+            Triage Queue
+          </h2>
         </div>
-        <div className="flex gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search patients..." 
-              className="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0077B6]"
-            />
-          </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
-            <Filter size={18} />
-            Filter
-          </button>
+        
+        <div className="flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="p-8 text-center text-slate-400">Loading...</div>
+          ) : consultations.length === 0 ? (
+            <div className="p-8 text-center text-slate-400">No active or pending cases.</div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {consultations.map(c => (
+                <div 
+                  key={c.id}
+                  onClick={() => setSelectedId(c.id)}
+                  className={`p-4 cursor-pointer transition-colors hover:bg-slate-50 ${
+                    selectedId === c.id ? 'bg-blue-50/50 border-l-4 border-[#0077B6]' : 'border-l-4 border-transparent'
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500">
+                        <User size={16} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-sm text-[#1E293B]">{c.patient_name}</h3>
+                        <span className="text-xs text-slate-500">{new Date(c.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                      </div>
+                    </div>
+                    {c.status === 'pending' ? (
+                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-[10px] font-bold rounded-full uppercase">Pending</span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded-full uppercase">Active</span>
+                    )}
+                  </div>
+                  
+                  <div className="bg-slate-50 p-2 rounded-lg mb-3">
+                    <p className="text-xs text-slate-600 line-clamp-2">
+                      <span className="font-semibold text-slate-700">AI Summary:</span> {c.ai_summary || "No summary available."}
+                    </p>
+                  </div>
+
+                  {c.status === 'pending' && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAcceptCase(c.id);
+                      }}
+                      className="w-full py-1.5 bg-[#0077B6] text-white text-xs font-medium rounded-md hover:bg-[#005f92] transition-colors flex items-center justify-center gap-1"
+                    >
+                      <CheckCircle2 size={14} /> Accept Case
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0077B6]"></div>
-        </div>
-      ) : requests.length === 0 ? (
-        <div className="bg-white rounded-xl p-12 text-center border border-slate-200 shadow-sm">
-          <div className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={32} />
-          </div>
-          <h3 className="text-lg font-semibold text-[#1E293B]">All Caught Up</h3>
-          <p className="text-slate-500 mt-1">No pending triage requests at the moment.</p>
-        </div>
-      ) : (
-        <div className="grid gap-4">
-          {requests.map((req) => (
-            <div key={req.id} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start">
-                <div className="flex gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-slate-100 text-slate-500`}>
-                    <User size={24} />
+      {/* RIGHT COLUMN: LIVE CHANNEL */}
+      <div className="flex-1 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        {selectedConsultation ? (
+          <>
+            {/* Chat Header */}
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-full bg-[#0077B6] text-white flex items-center justify-center font-bold">
+                    {selectedConsultation.patient_name?.charAt(0)}
                   </div>
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-semibold text-lg text-[#1E293B]">{req.name}</h3>
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${getSeverityColor(req.severity)}`}>
-                        {req.severity.toUpperCase()}
-                      </span>
-                      <span className="text-xs text-slate-400 flex items-center gap-1">
-                        <Clock size={12} />
-                        {req.time.toLocaleString()}
-                      </span>
-                    </div>
-                    <p className="text-[#0077B6] font-medium mb-1">{req.type}</p>
-                    <p className="text-slate-600 text-sm">{req.description}</p>
-                  </div>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                 </div>
-                
-                <div className="flex flex-col gap-2">
-                  <Link 
-                    href={`/doctor/patients/${req.patientId}`}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-[#0077B6] text-white rounded-lg text-sm font-medium hover:bg-[#005f92] transition-colors"
-                  >
-                    View Patient <ArrowRight size={16} />
-                  </Link>
-                  <button 
-                    onClick={() => handleResolve(req.id)}
-                    className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
-                  >
-                    <CheckCircle2 size={16} /> Mark Resolved
-                  </button>
+                <div>
+                  <h2 className="font-bold text-[#1E293B]">Live with {selectedConsultation.patient_name}</h2>
+                  <p className="text-xs text-slate-500 flex items-center gap-1">
+                    Risk Score: <span className="font-semibold text-red-500">{selectedConsultation.risk_score}/10</span>
+                  </p>
                 </div>
               </div>
+              <div className="flex gap-2">
+                <button className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-blue-50 rounded-full transition-colors">
+                  <Phone size={20} />
+                </button>
+                <button className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-blue-50 rounded-full transition-colors">
+                  <Video size={20} />
+                </button>
+                <button className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-blue-50 rounded-full transition-colors">
+                  <MoreVertical size={20} />
+                </button>
+              </div>
             </div>
-          ))}
-        </div>
-      )}
+
+            {/* Chat Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/30">
+              {/* AI Summary System Message */}
+              <div className="flex justify-center">
+                <div className="bg-slate-100 text-slate-500 text-xs px-4 py-2 rounded-full flex items-center gap-2">
+                  <AlertCircle size={12} />
+                  AI Summary: {selectedConsultation.ai_summary}
+                </div>
+              </div>
+
+              {messages.map((msg) => {
+                const isMe = msg.sender_id === currentUser?.id;
+                return (
+                  <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[70%] rounded-2xl px-4 py-3 text-sm ${
+                      isMe 
+                        ? 'bg-[#0077B6] text-white rounded-tr-none' 
+                        : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm'
+                    }`}>
+                      <p>{msg.content}</p>
+                      <p className={`text-[10px] mt-1 ${isMe ? 'text-blue-200' : 'text-slate-400'}`}>
+                        {new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-slate-100">
+              <div className="relative flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder={`Message ${selectedConsultation.patient_name}...`}
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6]"
+                />
+                <button 
+                  type="submit"
+                  disabled={!newMessage.trim()}
+                  className="p-3 bg-[#0077B6] text-white rounded-xl hover:bg-[#005f92] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                >
+                  <Send size={18} />
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center text-slate-400 p-8">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+              <MessageSquare size={32} className="text-slate-300" />
+            </div>
+            <p className="text-lg font-medium text-slate-500">Select a consultation</p>
+            <p className="text-sm">Choose a pending request or active case to start chatting.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

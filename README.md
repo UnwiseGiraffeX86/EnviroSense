@@ -88,5 +88,43 @@ EnviroSense was architected specifically to meet the challenge requirements:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/your-org/envirosense.git](https://github.com/your-org/envirosense.git)
+git clone https://github.com/your-org/envirosense.git
 cd envirosense
+```
+
+### 2. Install Dependencies
+```bash
+cd frontend
+npm install
+```
+
+### 3. Environment Variables
+Create a `.env.local` file in `frontend/`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+OPENAI_API_KEY=your_openai_key
+```
+
+### 4. Run Development Server
+```bash
+npm run dev
+```
+
+---
+
+## 📚 Documentation & Resources
+
+### 🗺️ Roadmaps & Strategy
+*   [**Strategic Project Roadmap (12 Months)**](./ROADMAP.md) - The high-level vision and quarterly goals.
+*   [**Mobile App Roadmap (EnviroSense Go)**](./docs/MOBILE_APP_ROADMAP.md) - Features and concepts for the mobile application.
+*   [**Project Status**](./docs/PROJECT_STATUS.md) - Current implementation status of all modules.
+
+### 📖 Technical Documentation
+*   [**Technical Dossier**](./docs/TECHNICAL_DOSSIER.md) - Deep dive into architecture, database schema, and AI logic.
+*   [**Presentation**](./docs/PRESENTATION.md) - Pitch deck and project overview.
+
+### 🧠 Knowledge Base & Tasks
+*   [**Teo's Tasks**](./docs/TEO_TASKS.md) - Specific task list for team members.
+*   [**Known Issues**](./docs/knowledge_base/ISSUES.md) - Tracking current bugs and limitations.
+*   [**Progress Log**](./docs/knowledge_base/PROGRESS.md) - Historical log of development progress.

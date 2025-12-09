@@ -50,6 +50,7 @@ export default function DashboardPage() {
             lastUpdated={airQuality?.last_updated || ""}
             stressTriggers={profile?.stress_triggers || []} 
             weather={weather}
+            sectorName={profile?.sector || "Unknown"}
           />
         </div>
         <div className="col-span-12 lg:col-span-4 h-full min-h-[300px]">

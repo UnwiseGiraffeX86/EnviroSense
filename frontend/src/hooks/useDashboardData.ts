@@ -52,11 +52,9 @@ export const useDashboardData = () => {
         }
 
         // 2. Fetch Profile
-        // Note: focus_index and stress_triggers are temporarily removed from select to prevent 
-        // "column does not exist" error until migration is applied.
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
-          .select("sector, full_name")
+          .select("sector, full_name, focus_index, stress_triggers")
           .eq("id", session.user.id)
           .single();
 
@@ -65,8 +63,8 @@ export const useDashboardData = () => {
         // Add default values for missing columns
         const profile = profileData ? {
             ...profileData,
-            focus_index: 10,
-            stress_triggers: [] as string[]
+            focus_index: profileData.focus_index || 10,
+            stress_triggers: profileData.stress_triggers || []
         } : null;
 
         if (profile?.sector) {

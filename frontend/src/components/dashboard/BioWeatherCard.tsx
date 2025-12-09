@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Wind, AlertTriangle } from "lucide-react";
 
-export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weather }: { 
+export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weather, sectorName }: { 
   pm25: number, 
   pm10: number, 
   lastUpdated: string, 
@@ -14,7 +14,8 @@ export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weathe
     windSpeed: number; 
     condition: string;
     forecast: { time: string; temp: number; condition: string }[]
-  } | null
+  } | null,
+  sectorName: string
 }) => {
   const getStatus = (val: number) => {
     if (val <= 10) return { label: "OPTIMAL", color: "bg-[#00A36C]", text: "text-[#00A36C]", bg: "bg-[#00A36C]/10" };
@@ -30,7 +31,7 @@ export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weathe
       <div className="flex justify-between items-start">
         <div>
           <h3 className="text-[#562C2C] font-medium text-lg">Bio-Weather Station</h3>
-          <p className="text-[#562C2C]/60 text-sm">Sector 1 • {lastUpdated ? new Date(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Live'}</p>
+          <p className="text-[#562C2C]/60 text-sm">{sectorName || "Unknown Sector"} • {lastUpdated ? new Date(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Live'}</p>
         </div>
         <div className={`${status.bg} ${status.text} px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1`}>
           <div className={`w-2 h-2 ${status.color} rounded-full animate-pulse`} />

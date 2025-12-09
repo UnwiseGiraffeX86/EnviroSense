@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "@/lib/supabaseClient";
 import StepIdentity from "./StepIdentity";
 import StepBiometrics from "./StepBiometrics";
 import StepRespiratory from "./StepRespiratory";
@@ -14,10 +14,10 @@ import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 // Create a single instance of the Supabase client
-const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+// const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 export type AuthMode = "LOGIN" | "SIGNUP";
 

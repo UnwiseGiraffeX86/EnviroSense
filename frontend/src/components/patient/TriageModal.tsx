@@ -9,7 +9,7 @@ import {
   Thermometer,
   Send
 } from "lucide-react";
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "@/lib/supabaseClient";
 
 const SYMPTOMS = [
   { id: "breathing", label: "Breathing Difficulty", icon: Wind, severity: "high" },
@@ -24,10 +24,10 @@ export default function TriageModal({ isOpen, onClose }: { isOpen: boolean; onCl
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  // const supabase = createBrowserClient(
+  //   process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  //   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  // );
 
   const handleSubmit = async () => {
     if (!selectedSymptom && !description) return;

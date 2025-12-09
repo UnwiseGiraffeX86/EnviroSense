@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { createBrowserClient } from '@supabase/ssr';
+import { supabase } from "@/lib/supabaseClient";
 import { 
   User, 
   Calendar, 
@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import PatientChart from "@/components/doctor/PatientChart";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 export default function PatientDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

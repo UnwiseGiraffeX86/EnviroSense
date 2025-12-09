@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserClient } from '@supabase/ssr';
+import { supabase } from "@/lib/supabaseClient";
 import { 
   Search, 
   Filter, 
@@ -10,9 +10,9 @@ import {
   Loader2
 } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 export default function PatientDirectory() {
   const router = useRouter();

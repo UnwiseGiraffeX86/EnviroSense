@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { createBrowserClient } from '@supabase/ssr';
+import { supabase } from "@/lib/supabaseClient";
 import { 
   User, 
   Phone, 
@@ -14,9 +14,9 @@ import {
   CheckCircle2
 } from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true);

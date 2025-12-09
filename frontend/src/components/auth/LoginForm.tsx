@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "@/lib/supabaseClient";
 
 // Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// const supabase = createBrowserClient(supabaseUrl, supabaseKey);
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;

@@ -53,6 +53,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Text input is required" }, { status: 400 });
     }
 
+    // Security: Input Length Validation to prevent Token Exhaustion
+    if (text.length > 5000) {
+      return NextResponse.json({ error: "Input text exceeds 5000 characters limit." }, { status: 413 });
+    }
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [

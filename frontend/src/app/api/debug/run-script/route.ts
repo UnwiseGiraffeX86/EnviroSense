@@ -1,12 +1,56 @@
 import { NextResponse } from "next/server";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import path from "path";
 import { promisify } from "util";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 export async function POST(req: Request) {
   try {
+    // 1. Auth Check
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value, ...options });
+            } catch (error) {
+            }
+          },
+          remove(name: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value: "", ...options });
+            } catch (error) {
+            }
+          },
+        },
+      }
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.role !== "doctor") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    // 2. Script Execution
     const { script } = await req.json();
     
     let scriptPath = "";
@@ -24,7 +68,8 @@ export async function POST(req: Request) {
     }
 
     try {
-      const { stdout, stderr } = await execAsync(`${pythonPath} ${scriptPath}`, { cwd: projectRoot });
+      // Use execFile for safety, although arguments are fixed here.
+      const { stdout, stderr } = await execFileAsync(pythonPath, [scriptPath], { cwd: projectRoot });
       return NextResponse.json({ 
         success: true, 
         output: stdout,

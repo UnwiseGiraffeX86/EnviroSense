@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import path from "path";
 import { promisify } from "util";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 export async function POST(req: Request) {
   try {
@@ -13,11 +13,9 @@ export async function POST(req: Request) {
     const pythonPath = path.join(projectRoot, ".venv/bin/python3");
     const scriptPath = path.join(projectRoot, "scripts/analyze_symptoms.py");
 
-    // Escape quotes in symptoms to prevent shell injection/errors
-    const safeSymptoms = symptoms.replace(/"/g, '\\"');
-
     try {
-      const { stdout, stderr } = await execAsync(`${pythonPath} ${scriptPath} "${safeSymptoms}"`, { cwd: projectRoot });
+      // Use execFile to avoid shell injection
+      const { stdout, stderr } = await execFileAsync(pythonPath, [scriptPath, symptoms], { cwd: projectRoot });
       
       if (stderr && !stdout) {
           throw new Error(stderr);

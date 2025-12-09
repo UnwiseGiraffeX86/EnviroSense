@@ -18,18 +18,25 @@ Deno.serve(async (req: Request) => {
     // 0. Setup & Auth
     // --------------------------------------------------------------------------
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY') ?? ''
 
-    if (!supabaseUrl || !supabaseServiceKey || !openaiApiKey) {
+    if (!supabaseUrl || !supabaseAnonKey || !openaiApiKey) {
       throw new Error('Missing environment variables.')
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
-    const openai = new OpenAI({ apiKey: openaiApiKey })
-
     // Get user from Auth header
     const authHeader = req.headers.get('Authorization')
+    
+    // Create client with user's auth context to respect RLS
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: {
+          Authorization: authHeader!,
+        },
+      },
+    })
+
     let userId = null
     if (authHeader) {
       const token = authHeader.replace('Bearer ', '')

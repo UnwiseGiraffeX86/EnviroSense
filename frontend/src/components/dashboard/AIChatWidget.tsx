@@ -285,21 +285,43 @@ export function AIChatWidget() {
     }
 
     // Final Response Delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // await new Promise(resolve => setTimeout(resolve, 800));
 
-    const aiResponse: Message = {
-      id: (Date.now() + 1).toString(),
-      role: "ai",
-      content: "Analysis Complete.",
-      type: "risk-card",
-      riskData: {
-        level: "High",
-        advice: "Consult Specialist",
-        details: "Symptoms correlate with high PM2.5 levels in your area (Sector 1). Immediate medical consultation recommended."
-      }
-    };
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-risk', {
+        body: {
+          symptom_description: inputValue,
+          user_lat: 44.4268, // Default to Bucharest Sector 1 center if not available
+          user_long: 26.1025
+        }
+      });
 
-    setMessages(prev => [...prev, aiResponse]);
+      if (error) throw error;
+
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "ai",
+        content: data.regulatory_context || "Analysis Complete.",
+        type: "risk-card",
+        riskData: {
+          level: data.risk_level || "Low",
+          advice: data.recommendation || "Monitor symptoms.",
+          details: data.analysis || "No specific risks detected."
+        }
+      };
+
+      setMessages(prev => [...prev, aiResponse]);
+
+    } catch (err: any) {
+      console.error("AI Error:", err);
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        role: "ai",
+        content: "I apologize, but I cannot process your request at the moment. The AI service is currently unavailable (Missing Configuration).",
+        type: "text"
+      }]);
+    }
+
     setIsThinking(false);
     setCurrentStep(0);
   };

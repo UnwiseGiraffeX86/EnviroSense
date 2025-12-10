@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { Activity, ShieldCheck, Stethoscope, UserCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 interface SymptomTriageProps {
   onSubmit: (symptoms: string) => void;
@@ -20,23 +21,21 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
   if (analysisResult) {
     return (
       <div className="max-w-2xl mx-auto p-6">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-teal-100">
-          <div className="bg-teal-50 p-6 border-b border-teal-100">
-            <h2 className="text-2xl font-semibold text-teal-900 mb-2">Care Card</h2>
-            <p className="text-teal-700">We've analyzed your input against local environmental factors.</p>
+        <div className="bg-[#FAF3DD]/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#562C2C]/10">
+          <div className="bg-[#FAF3DD] p-6 border-b border-[#562C2C]/10">
+            <h2 className="text-2xl font-semibold text-[#562C2C] mb-2">Care Card</h2>
+            <p className="text-[#562C2C]/80">We've analyzed your input against local environmental factors.</p>
           </div>
           
           <div className="p-6 space-y-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-blue-50 rounded-full">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+              <div className="p-3 bg-[#00A36C]/10 rounded-full">
+                <Activity className="w-6 h-6 text-[#00A36C]" />
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">Health Insight</h3>
-                <p className="text-gray-600 mt-1">
-                  Your symptoms align with <span className="font-medium text-gray-900">{analysisResult.possible_causes[0]}</span>.
+                <h3 className="font-medium text-[#562C2C]">Health Insight</h3>
+                <p className="text-[#562C2C]/70 mt-1">
+                  Your symptoms align with <span className="font-medium text-[#562C2C]">{analysisResult.possible_causes[0]}</span>.
                   {analysisResult.weather_context.pm25 > 20 && (
                     <span> Note: High PM2.5 levels ({analysisResult.weather_context.pm25}µg/m³) in your sector may be exacerbating this.</span>
                   )}
@@ -45,30 +44,26 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-purple-50 rounded-full">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+              <div className="p-3 bg-[#E07A5F]/10 rounded-full">
+                <Stethoscope className="w-6 h-6 text-[#E07A5F]" />
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">Specialist Recommendation</h3>
-                <p className="text-gray-600 mt-1">
-                  Based on this, we recommend a review by a <span className="font-medium text-purple-700">{analysisResult.medical_specialty || 'General Practitioner'}</span>.
+                <h3 className="font-medium text-[#562C2C]">Specialist Recommendation</h3>
+                <p className="text-[#562C2C]/70 mt-1">
+                  Based on this, we recommend a review by a <span className="font-medium text-[#E07A5F]">{analysisResult.medical_specialty || 'General Practitioner'}</span>.
                 </p>
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-gray-100">
+            <div className="mt-8 pt-6 border-t border-[#562C2C]/10">
               <button
                 onClick={onStartChat}
-                className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="w-full py-4 bg-[#00A36C] hover:bg-[#008f5d] text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-md"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
+                <UserCheck className="w-5 h-5" />
                 Connect with a Doctor
               </button>
-              <p className="text-center text-xs text-gray-400 mt-3">
+              <p className="text-center text-xs text-[#562C2C]/40 mt-3">
                 Wait time is approximately 2 minutes.
               </p>
             </div>
@@ -81,8 +76,8 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">How are you feeling today?</h1>
-        <p className="text-gray-500">Describe your symptoms and we'll match you with the right care.</p>
+        <h1 className="text-3xl font-bold text-[#562C2C] mb-3">How are you feeling today?</h1>
+        <p className="text-[#562C2C]/60">Describe your symptoms and we'll match you with the right care.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="relative">
@@ -90,7 +85,7 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
           value={symptoms}
           onChange={(e) => setSymptoms(e.target.value)}
           placeholder="e.g., I've had a dry cough since yesterday and my chest feels tight..."
-          className="w-full h-48 p-6 rounded-2xl border-2 border-gray-100 focus:border-teal-500 focus:ring-0 resize-none text-lg text-gray-700 shadow-sm transition-all"
+          className="w-full h-48 p-6 rounded-2xl border-2 border-[#562C2C]/10 focus:border-[#00A36C] focus:ring-0 resize-none text-lg text-[#562C2C] placeholder-[#562C2C]/30 shadow-sm transition-all bg-white/80"
           disabled={isAnalyzing}
         />
         
@@ -101,8 +96,8 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
             className={`
               px-6 py-2 rounded-full font-medium transition-all flex items-center gap-2
               ${!symptoms.trim() || isAnalyzing 
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                : 'bg-teal-600 text-white hover:bg-teal-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'}
+                ? 'bg-[#562C2C]/10 text-[#562C2C]/30 cursor-not-allowed' 
+                : 'bg-[#00A36C] text-white hover:bg-[#008f5d] shadow-md hover:shadow-lg transform hover:-translate-y-0.5'}
             `}
           >
             {isAnalyzing ? (
@@ -112,9 +107,7 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
             ) : (
               <>
                 Analyze Symptoms
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+                <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
@@ -122,29 +115,23 @@ export default function SymptomTriage({ onSubmit, isAnalyzing, analysisResult, o
       </form>
 
       <div className="mt-12 grid grid-cols-3 gap-6 text-center">
-        <div className="p-4 rounded-xl bg-gray-50">
-          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-teal-600">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+        <div className="p-4 rounded-xl bg-[#FAF3DD]/50 border border-[#562C2C]/5">
+          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-[#00A36C]">
+            <ShieldCheck className="w-5 h-5" />
           </div>
-          <h3 className="font-medium text-gray-900">Secure & Private</h3>
+          <h3 className="font-medium text-[#562C2C]">Secure & Private</h3>
         </div>
-        <div className="p-4 rounded-xl bg-gray-50">
-          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-teal-600">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-            </svg>
+        <div className="p-4 rounded-xl bg-[#FAF3DD]/50 border border-[#562C2C]/5">
+          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-[#00A36C]">
+            <Activity className="w-5 h-5" />
           </div>
-          <h3 className="font-medium text-gray-900">AI Analysis</h3>
+          <h3 className="font-medium text-[#562C2C]">AI Analysis</h3>
         </div>
-        <div className="p-4 rounded-xl bg-gray-50">
-          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-teal-600">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+        <div className="p-4 rounded-xl bg-[#FAF3DD]/50 border border-[#562C2C]/5">
+          <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-[#00A36C]">
+            <UserCheck className="w-5 h-5" />
           </div>
-          <h3 className="font-medium text-gray-900">Human Care</h3>
+          <h3 className="font-medium text-[#562C2C]">Human Care</h3>
         </div>
       </div>
     </div>

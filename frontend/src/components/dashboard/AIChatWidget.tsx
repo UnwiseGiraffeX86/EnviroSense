@@ -327,23 +327,23 @@ export function AIChatWidget() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto h-[600px] flex flex-col rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-white/60 backdrop-blur-xl relative">
+    <div className="w-full h-full flex flex-col rounded-3xl overflow-hidden border border-[#562C2C]/10 bg-[#FAF3DD]/90 backdrop-blur-xl relative">
       {/* Header */}
-      <div className="p-4 border-b border-white/20 bg-white/40 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0077B6] to-[#00B4D8] flex items-center justify-center text-white shadow-lg">
+      <div className="p-4 border-b border-[#562C2C]/10 bg-[#FAF3DD] flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00A36C] to-[#2D6A4F] flex items-center justify-center text-white">
           <Bot size={20} />
         </div>
         <div>
-          <h3 className="font-bold text-[#1E293B]">EnviroSense AI</h3>
-          <p className="text-xs text-slate-500 flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <h3 className="font-bold text-[#562C2C]">EnviroSense AI</h3>
+          <p className="text-xs text-[#562C2C]/70 flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-[#00A36C] animate-pulse" />
             Online • Neuro-Symbolic Active
           </p>
         </div>
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-200">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#562C2C]/20">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -352,8 +352,8 @@ export function AIChatWidget() {
             <div
               className={`max-w-[85%] rounded-2xl p-4 shadow-sm ${
                 msg.role === "user"
-                  ? "bg-[#0077B6] text-white rounded-tr-none"
-                  : "bg-white/80 text-[#1E293B] rounded-tl-none border border-white/50"
+                  ? "bg-[#00A36C] text-white rounded-tr-none"
+                  : "bg-white/80 text-[#562C2C] rounded-tl-none border border-[#562C2C]/10"
               }`}
             >
               {msg.type === "text" ? (
@@ -361,13 +361,13 @@ export function AIChatWidget() {
               ) : (
                 <div className="space-y-3">
                   <div className={`flex items-center gap-2 font-bold ${
-                    msg.riskData?.level === "High" ? "text-red-600" : "text-green-600"
+                    msg.riskData?.level === "High" ? "text-[#E07A5F]" : "text-[#00A36C]"
                   }`}>
                     {msg.riskData?.level === "High" ? <ShieldAlert size={18} /> : <CheckCircle2 size={18} />}
                     {msg.riskData?.level} Risk Detected
                   </div>
                   
-                  <p className="text-sm text-slate-600">{msg.riskData?.details}</p>
+                  <p className="text-sm text-[#562C2C]/80">{msg.riskData?.details}</p>
                   
                   {msg.riskData?.level === "High" && (
                     <motion.button
@@ -377,8 +377,8 @@ export function AIChatWidget() {
                       disabled={requestStatus !== 'idle'}
                       className={`w-full mt-2 border rounded-xl p-3 flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${
                         requestStatus === 'sent' 
-                          ? "bg-green-50 text-green-700 border-green-200" 
-                          : "bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                          ? "bg-[#00A36C]/10 text-[#00A36C] border-[#00A36C]/20" 
+                          : "bg-[#E07A5F]/10 hover:bg-[#E07A5F]/20 text-[#E07A5F] border-[#E07A5F]/20"
                       }`}
                     >
                       {requestStatus === 'sending' ? (
@@ -411,23 +411,23 @@ export function AIChatWidget() {
               exit={{ opacity: 0, y: 10 }}
               className="flex justify-start"
             >
-              <div className="bg-white/80 rounded-2xl rounded-tl-none p-4 border border-white/50 shadow-sm max-w-[85%]">
+              <div className="bg-white/80 rounded-2xl rounded-tl-none p-4 border border-[#562C2C]/10 shadow-sm max-w-[85%]">
                 <div className="space-y-3">
                   {THINKING_STEPS.map((step, index) => (
                     <div 
                       key={step.id}
                       className={`flex items-center gap-3 text-sm transition-colors duration-300 ${
                         index === currentStep 
-                          ? "text-[#0077B6] font-medium" 
+                          ? "text-[#00A36C] font-medium" 
                           : index < currentStep 
-                            ? "text-green-600/70" 
-                            : "text-slate-300"
+                            ? "text-[#00A36C]/70" 
+                            : "text-[#562C2C]/30"
                       }`}
                     >
                       <div className="relative">
                         <step.icon size={16} />
                         {index === currentStep && (
-                          <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#0077B6] rounded-full animate-ping" />
+                          <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00A36C] rounded-full animate-ping" />
                         )}
                       </div>
                       <span>{step.text}</span>
@@ -443,7 +443,7 @@ export function AIChatWidget() {
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSendMessage} className="p-4 bg-white/40 border-t border-white/20">
+      <form onSubmit={handleSendMessage} className="p-4 bg-[#FAF3DD] border-t border-[#562C2C]/10">
         <div className="relative flex items-center">
           <input
             type="text"
@@ -451,12 +451,12 @@ export function AIChatWidget() {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Describe your symptoms..."
             disabled={isThinking}
-            className="w-full bg-white/80 border-0 rounded-xl py-3 pl-4 pr-12 text-sm text-[#1E293B] placeholder:text-slate-400 focus:ring-2 focus:ring-[#0077B6]/50 shadow-inner"
+            className="w-full bg-white/80 border-0 rounded-xl py-3 pl-4 pr-12 text-sm text-[#562C2C] placeholder:text-[#562C2C]/40 focus:ring-2 focus:ring-[#00A36C]/50"
           />
           <button
             type="submit"
             disabled={!inputValue.trim() || isThinking}
-            className="absolute right-2 p-2 bg-[#0077B6] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#005f92] transition-colors shadow-md"
+            className="absolute right-2 p-2 bg-[#00A36C] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#008f5d] transition-colors"
           >
             <Send size={16} />
           </button>

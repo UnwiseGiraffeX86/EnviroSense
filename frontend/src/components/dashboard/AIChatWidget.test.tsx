@@ -85,8 +85,8 @@ describe('AIChatWidget', () => {
     
     // Verify the specific red CSS class on the header element
     // The header is likely the first one or the one with the class
-    const headerAlert = riskAlerts.find(el => el.tagName === 'DIV' && el.className.includes('text-red-600'));
+    const headerAlert = riskAlerts.find(el => el.tagName === 'DIV' && el.className.includes('text-[#E07A5F]'));
     expect(headerAlert).toBeInTheDocument();
-    expect(headerAlert).toHaveClass('text-red-600');
+    expect(headerAlert).toHaveClass('text-[#E07A5F]');
   });
 });

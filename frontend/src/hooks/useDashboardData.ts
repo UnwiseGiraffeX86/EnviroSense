@@ -142,31 +142,6 @@ export const useDashboardData = () => {
             weather: weatherData,
             loading: false,
           });
-
-          // 4. Real-Time Subscription for Air Quality
-          const channel = supabase
-            .channel('air-quality-updates')
-            .on(
-              'postgres_changes',
-              {
-                event: 'UPDATE',
-                schema: 'public',
-                table: 'air_quality',
-                filter: `sector_name=eq.${profile.sector}`,
-              },
-              (payload) => {
-                console.log('Real-time update:', payload);
-                setData(prev => ({
-                  ...prev,
-                  airQuality: payload.new as any,
-                }));
-              }
-            )
-            .subscribe();
-
-          return () => {
-            supabase.removeChannel(channel);
-          };
         } else {
             setData(prev => ({ ...prev, profile, loading: false }));
         }
@@ -179,6 +154,37 @@ export const useDashboardData = () => {
 
     fetchData();
   }, []);
+
+  // Real-time subscription for Air Quality
+  useEffect(() => {
+    if (!data.profile?.sector) return;
+
+    console.log(`Subscribing to air_quality changes for sector: ${data.profile.sector}`);
+    const channel = supabase
+      .channel('air-quality-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'air_quality',
+          filter: `sector_name=eq.${data.profile.sector}`,
+        },
+        (payload) => {
+          console.log('Real-time update received:', payload);
+          setData(prev => ({
+            ...prev,
+            airQuality: payload.new as any,
+          }));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('Unsubscribing from air_quality changes');
+      supabase.removeChannel(channel);
+    };
+  }, [data.profile?.sector]);
 
   return data;
 };

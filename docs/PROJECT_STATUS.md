@@ -34,28 +34,28 @@
     *   Database reset and migration scripts (`fix_profile_rls.sql`, `reset_db.sql`).
     *   **Schema Update:** Added `neuro_profile` JSONB column for flexible cognitive data storage.
 
+*   **User Interface:**
+    *   **Chat Interface:** Refactored to use Cream/Brown palette, Lucide icons, and glassmorphism.
+    *   **Symptom Triage:** Updated "Care Card" and input forms to match the "Eco-Neuro" design system.
+
 ### ⚠️ In Progress / Needs Refactoring
-*   **Chat Interface (`/chat`):**
-    *   Currently functional but uses legacy styling (Gray/Blue palette).
-    *   Needs to be updated to the Cream/Brown design system.
-*   **Symptom Triage:**
-    *   Logic exists but UI needs visual overhaul.
+*   *(None - UI Refactoring Phase 1 Complete)*
 
 ---
 
 ## 3. Web Interface Roadmap (Planned Features)
 
 ### Phase 1: Visual Consistency (Immediate Priority)
-- [ ] **Refactor Chat Interface:**
+- [x] **Refactor Chat Interface:**
     -   Apply `#FAF3DD` background and `#562C2C` typography.
     -   Update message bubbles to use `#00A36C` (User) and White/Glass (AI/System).
     -   Add "Fireflies" background to the chat view.
-- [ ] **Refactor Symptom Triage:**
+- [x] **Refactor Symptom Triage:**
     -   Style the "Care Card" with the new design system.
     -   Replace standard icons with Lucide-React icons matching the Auth flow.
 
 ### Phase 2: Core Functionality
-- [ ] **Real-Time Air Quality Dashboard:**
+- [x] **Real-Time Air Quality Dashboard:**
     -   Visual widget showing live PM2.5/AQI data for the user's sector.
     -   "Safe/Unsafe" indicators using the Green/Orange/Red status colors.
 - [ ] **Doctor Dashboard:**

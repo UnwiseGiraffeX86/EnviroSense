@@ -55,9 +55,24 @@ embeddings = OpenAIEmbeddings(model="text-embedding-3-small", openai_api_key=OPE
 
 # Search Configuration
 SEARCH_QUERIES = {
-    "Regulatory": "latest EU air quality directives 2024 2025 pdf",
-    "Clinical": "medical studies air pollution neuro-inflammation depression 2024",
-    "National": "Romania mental health action plan pollution statistics"
+    # --- Regulatory & Policy ---
+    "Regulatory_EU": "latest EU air quality directives 2024 2025 pdf",
+    "Regulatory_WHO": "WHO global air quality guidelines 2024 update",
+    
+    # --- Clinical: Respiratory (The Basics) ---
+    "Clinical_Respiratory": "asthma COPD exacerbation PM2.5 NO2 studies 2024",
+    
+    # --- Clinical: Neurological (The USP) ---
+    "Clinical_Neuro": "air pollution neuro-inflammation cognitive decline studies 2024",
+    "Clinical_Psych": "air pollution depression anxiety suicide risk correlation research",
+    
+    # --- Local Context (Romania/Bucharest) ---
+    "Local_Romania": "Romania mental health action plan pollution statistics 2024",
+    "Local_Bucharest": "Bucharest air quality annual report 2024 health impact",
+    
+    # --- Environmental Science ---
+    "Env_Science": "urban heat island effect air quality correlation studies",
+    "Env_Sensors": "low cost air quality sensor accuracy validation studies 2024"
 }
 
 MAX_RESULTS_PER_QUERY = 5  # Increased for better coverage

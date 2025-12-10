@@ -15,6 +15,9 @@ import os
 import re
 import requests
 import tempfile
+import random
+import time
+import concurrent.futures
 from datetime import datetime
 from typing import List, Dict, Optional
 from urllib.parse import urlparse
@@ -57,11 +60,30 @@ SEARCH_QUERIES = {
     "National": "Romania mental health action plan pollution statistics"
 }
 
-MAX_RESULTS_PER_QUERY = 3
+MAX_RESULTS_PER_QUERY = 5  # Increased for better coverage
+MAX_WORKERS = 4  # For parallel processing
+
+# User Agents for Rotation
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
+]
 
 # ------------------------------------------------------------------------------
 # 2. Helper Functions
 # ------------------------------------------------------------------------------
+
+def get_headers() -> Dict[str, str]:
+    """Returns headers with a random User-Agent to avoid blocking."""
+    return {
+        "User-Agent": random.choice(USER_AGENTS),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1"
+    }
 
 def clean_text(text: str) -> str:
     """
@@ -99,7 +121,7 @@ def download_pdf(url: str) -> Optional[str]:
     Returns the path to the temporary file or None if failed.
     """
     try:
-        response = requests.get(url, timeout=15, stream=True)
+        response = requests.get(url, headers=get_headers(), timeout=15, stream=True)
         response.raise_for_status()
         
         # Create a temp file
@@ -117,19 +139,103 @@ def scrape_webpage(url: str) -> str:
     Scrapes text content from a standard webpage using BeautifulSoup.
     """
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, headers=get_headers(), timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Remove script and style elements
-        for script in soup(["script", "style", "nav", "footer", "header"]):
-            script.extract()
+        # Remove script, style, and other non-content elements
+        for element in soup(["script", "style", "nav", "footer", "header", "aside", "form", "iframe", "noscript"]):
+            element.extract()
             
-        text = soup.get_text()
+        text = soup.get_text(separator=' ')
         return clean_text(text)
     except Exception as e:
         print(f"  [!] Failed to scrape webpage {url}: {e}")
         return ""
+
+# ------------------------------------------------------------------------------
+# 3. ETL Pipeline
+# ------------------------------------------------------------------------------
+
+def process_result(result: Dict, category: str, text_splitter: RecursiveCharacterTextSplitter):
+    """
+    Processes a single search result: Checks existence, scrapes, chunks, and upserts.
+    """
+    url = result['link']
+    title = result['title']
+    
+    # Random sleep to be polite
+    time.sleep(random.uniform(1, 3))
+
+    print(f"\n[Thread] Processing: {title[:30]}... ({url})")
+
+    # 1. Check for Duplicates
+    if check_url_exists(url):
+        print(f"  [i] Skipping {url}: Already exists.")
+        return
+
+    documents_to_process = []
+    
+    # 2. Extraction
+    if url.lower().endswith(".pdf"):
+        print(f"  [i] Downloading PDF: {url}")
+        pdf_path = download_pdf(url)
+        if pdf_path:
+            try:
+                loader = PyPDFLoader(pdf_path)
+                raw_docs = loader.load()
+                for doc in raw_docs:
+                    doc.page_content = clean_text(doc.page_content)
+                    doc.metadata["source_url"] = url
+                    doc.metadata["category"] = category
+                    doc.metadata["title"] = title
+                    doc.metadata["date_scraped"] = datetime.now().isoformat()
+                    documents_to_process.extend(raw_docs)
+            except Exception as e:
+                print(f"  [!] Error processing PDF {url}: {e}")
+            finally:
+                if os.path.exists(pdf_path):
+                    os.remove(pdf_path)
+    else:
+        print(f"  [i] Scraping Webpage: {url}")
+        content = scrape_webpage(url)
+        if content and len(content) > 500:
+            doc = Document(
+                page_content=content,
+                metadata={
+                    "source_url": url,
+                    "category": category,
+                    "title": title,
+                    "date_scraped": datetime.now().isoformat()
+                }
+            )
+            documents_to_process.append(doc)
+        else:
+            print(f"  [!] Content too short for {url}")
+
+    if not documents_to_process:
+        return
+
+    # 3. Transformation (Chunking)
+    chunks = text_splitter.split_documents(documents_to_process)
+    print(f"  Generated {len(chunks)} chunks for {url}")
+
+    # 4. Loading (Supabase)
+    if chunks:
+        try:
+            # Use a lock if needed, but Supabase client is thread-safe enough for this volume
+            with get_openai_callback() as cb:
+                SupabaseVectorStore.from_documents(
+                    documents=chunks,
+                    embedding=embeddings,
+                    client=supabase,
+                    table_name="knowledge_base",
+                    query_name="match_documents",
+                    chunk_size=100
+                )
+                print(f"  [+] Success {url}! Tokens: {cb.total_tokens}")
+        except Exception as e:
+            print(f"  [!] Error upserting {url}: {e}")
 
 # ------------------------------------------------------------------------------
 # 3. ETL Pipeline
@@ -140,8 +246,7 @@ def run_pipeline():
     
     # Initialize Search Tool
     wrapper = DuckDuckGoSearchAPIWrapper(max_results=MAX_RESULTS_PER_QUERY)
-    search = DuckDuckGoSearchRun(api_wrapper=wrapper)
-
+    
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=200,
@@ -153,110 +258,22 @@ def run_pipeline():
         print(f"Query: {query}")
         
         try:
-            # Perform Search
-            # Note: DuckDuckGoSearchRun returns a string summary. 
-            # For actual URLs, we need to use the wrapper's results method if available, 
-            # or parse the results. The standard tool returns a string.
-            # We will use the wrapper directly to get metadata.
             results = wrapper.results(query, max_results=MAX_RESULTS_PER_QUERY)
             
             if not results:
                 print("  No results found.")
                 continue
 
-            for result in results:
-                url = result['link']
-                title = result['title']
-                snippet = result['snippet']
+            # Parallel Processing
+            with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                futures = [
+                    executor.submit(process_result, result, category, text_splitter)
+                    for result in results
+                ]
+                concurrent.futures.wait(futures)
                 
-                print(f"\nFound: {title}")
-                print(f"URL: {url}")
-
-                # 1. Check for Duplicates
-                if check_url_exists(url):
-                    print("  [i] Skipping: URL already exists in database.")
-                    continue
-
-                documents_to_process = []
-                
-                # 2. Extraction
-                if url.lower().endswith(".pdf"):
-                    print("  [i] Detected PDF. Downloading...")
-                    pdf_path = download_pdf(url)
-                    if pdf_path:
-                        try:
-                            loader = PyPDFLoader(pdf_path)
-                            raw_docs = loader.load()
-                            # Combine text or keep pages? Keeping pages is better for context.
-                            for doc in raw_docs:
-                                doc.page_content = clean_text(doc.page_content)
-                                doc.metadata["source_url"] = url
-                                doc.metadata["category"] = category
-                                doc.metadata["title"] = title
-                                doc.metadata["date_scraped"] = datetime.now().isoformat()
-                                documents_to_process.extend(raw_docs)
-                        except Exception as e:
-                            print(f"  [!] Error processing PDF: {e}")
-                        finally:
-                            os.remove(pdf_path) # Clean up temp file
-                else:
-                    print("  [i] Detected Webpage. Scraping...")
-                    content = scrape_webpage(url)
-                    if content and len(content) > 500: # Minimum content check
-                        doc = Document(
-                            page_content=content,
-                            metadata={
-                                "source_url": url,
-                                "category": category,
-                                "title": title,
-                                "date_scraped": datetime.now().isoformat()
-                            }
-                        )
-                        documents_to_process.append(doc)
-                    else:
-                        print("  [!] Content too short or empty. Skipping.")
-
-                if not documents_to_process:
-                    continue
-
-                # 3. Transformation (Chunking)
-                chunks = text_splitter.split_documents(documents_to_process)
-                print(f"  Generated {len(chunks)} chunks.")
-
-                # 4. Loading (Supabase)
-                if chunks:
-                    try:
-                        print("  Upserting to Supabase...")
-                        with get_openai_callback() as cb:
-                            SupabaseVectorStore.from_documents(
-                                documents=chunks,
-                                embedding=embeddings,
-                                client=supabase,
-                                table_name="knowledge_base",
-                                query_name="match_documents",
-                                chunk_size=100
-                            )
-                            print(f"  [+] Success! Tokens Used: {cb.total_tokens}")
-                            
-                            # Log to DB
-                            try:
-                                supabase.table("token_usage_logs").insert({
-                                    "source": "ingest_knowledge_script",
-                                    "model": "text-embedding-3-small",
-                                    "prompt_tokens": cb.prompt_tokens,
-                                    "completion_tokens": cb.completion_tokens,
-                                    "total_tokens": cb.total_tokens
-                                }).execute()
-                            except Exception as log_err:
-                                print(f"  [!] Warning: Could not log token usage: {log_err}")
-
-                    except Exception as e:
-                        print(f"  [!] Error upserting to Supabase: {e}")
-
         except Exception as e:
-            print(f"Error processing category {category}: {e}")
-
-    print("\nPipeline Complete.")
+            print(f"Error searching for {category}: {e}")
 
 if __name__ == "__main__":
     run_pipeline()

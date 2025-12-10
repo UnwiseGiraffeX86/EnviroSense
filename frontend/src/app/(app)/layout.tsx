@@ -13,7 +13,7 @@ export default function AppLayout({
       {/* Main Content Area */}
       {/* Desktop: Left margin for sidebar. Mobile: Bottom margin for dock. */}
       <main className="md:ml-20 pb-24 md:pb-0 min-h-screen transition-all duration-300">
-        <div className="p-4 md:p-8 max-w-7xl mx-auto">
+        <div className="w-full h-full">
           {children}
         </div>
       </main>

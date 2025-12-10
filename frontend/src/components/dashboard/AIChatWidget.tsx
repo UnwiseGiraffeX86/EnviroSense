@@ -54,11 +54,6 @@ export function AIChatWidget() {
   const [isLiveChat, setIsLiveChat] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  // const supabase = createBrowserClient(
-  //   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  // );
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -98,21 +93,8 @@ export function AIChatWidget() {
                                 content: m.content,
                                 type: 'text'
                              }));
-                             // Append history to initial greeting
-                             setMessages(prev => {
-                                 const greeting = prev[0];
-                                 return [greeting, ...historyMsgs];
-                             });
+                             setMessages(historyMsgs);
                         }
-                    } else {
-                        // Pending: Show request sent message
-                        setMessages(prev => [...prev, {
-                            id: 'pending-msg',
-                            role: 'ai',
-                            content: "Request sent to Dr. Popa. You will be notified when the consultation begins.",
-                            type: 'text'
-                        }]);
-                        setRequestStatus('sent');
                     }
                 }
             }
@@ -121,33 +103,30 @@ export function AIChatWidget() {
     init();
   }, []);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isThinking, currentStep]);
-
-  // Listen for consultation acceptance
+  // Realtime Subscription for Chat
   useEffect(() => {
     if (!activeConsultationId) return;
 
     const channel = supabase
-      .channel(`consultation:${activeConsultationId}`)
+      .channel(`chat:${activeConsultationId}`)
       .on(
         'postgres_changes',
-        { 
-          event: 'UPDATE', 
-          schema: 'public', 
-          table: 'consultations', 
-          filter: `id=eq.${activeConsultationId}` 
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat_messages',
+          filter: `consultation_id=eq.${activeConsultationId}`
         },
         (payload) => {
-          if (payload.new.status === 'active') {
-            setIsLiveChat(true);
-            setMessages(prev => [...prev, {
-              id: 'system-connected',
-              role: 'ai',
-              content: "Dr. Popa has joined the chat.",
-              type: 'text'
-            }]);
+          const newMsg = payload.new;
+          // Only add if it's not from us (we add optimistically)
+          if (newMsg.sender_id !== currentUserId) {
+             setMessages(prev => [...prev, {
+                id: newMsg.id,
+                role: 'ai', // In this context, doctor/system is AI role for UI
+                content: newMsg.content,
+                type: 'text'
+             }]);
           }
         }
       )
@@ -156,116 +135,64 @@ export function AIChatWidget() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [activeConsultationId]);
+  }, [activeConsultationId, currentUserId]);
 
-  // Listen for new messages in live chat
+
   useEffect(() => {
-    if (!isLiveChat || !activeConsultationId || !currentUserId) return;
+    scrollToBottom();
+  }, [messages, isThinking, currentStep]);
 
-    const channel = supabase
-      .channel(`chat:${activeConsultationId}`)
-      .on(
-        'postgres_changes',
-        { 
-          event: 'INSERT', 
-          schema: 'public', 
-          table: 'chat_messages', 
-          filter: `consultation_id=eq.${activeConsultationId}` 
-        },
-        (payload) => {
-             if (payload.new.sender_id !== currentUserId) {
-                setMessages(prev => {
-                    // Avoid duplicates
-                    if (prev.some(m => m.id === payload.new.id)) return prev;
-                    return [...prev, {
-                        id: payload.new.id,
-                        role: 'ai', 
-                        content: payload.new.content,
-                        type: 'text'
-                    }];
-                });
-             }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [isLiveChat, activeConsultationId, currentUserId]);
+  // Thinking Animation Loop
+  useEffect(() => {
+    if (isThinking) {
+      const interval = setInterval(() => {
+        setCurrentStep((prev) => (prev + 1) % THINKING_STEPS.length);
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [isThinking]);
 
   const handleRequestDoctor = async (riskData: any) => {
     setRequestStatus('sending');
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
-        .from('consultations')
-        .insert({
-          patient_id: user.id,
-          status: 'pending',
-          ai_summary: riskData.details || "No details provided",
-          risk_score: riskData.level === 'High' ? 8 : 4
-        })
-        .select()
-        .single();
+        // 1. Create Consultation Request
+        const { data: consultation, error } = await supabase
+            .from('consultations')
+            .insert({
+                patient_id: user.id,
+                status: 'pending',
+                priority: riskData.level === 'High' ? 'high' : 'medium',
+                symptoms: riskData.details
+            })
+            .select()
+            .single();
 
-      if (error) throw error;
+        if (error) throw error;
 
-      setActiveConsultationId(data.id);
-      setRequestStatus('sent');
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        role: "ai",
-        content: "Request sent to Dr. Popa. You will be notified when the consultation begins.",
-        type: "text"
-      }]);
-    } catch (err: any) {
-      console.error("Error requesting doctor:", err);
-      if (typeof err === 'object' && err !== null) {
-          console.error("Error message:", err.message);
-          console.error("Error code:", err.code);
-          console.error("Error details:", err.details);
-      }
-      setRequestStatus('idle');
+        setActiveConsultationId(consultation.id);
+        setRequestStatus('sent');
+
+        // Add system message
+        setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            role: 'ai',
+            content: "I've forwarded your profile to Dr. Popa. He is currently available and will review your case shortly.",
+            type: 'text'
+        }]);
+
+    } catch (e) {
+        console.error(e);
+        setRequestStatus('idle');
     }
   };
 
-  const handleSendMessage = async (e?: React.FormEvent) => {
-    e?.preventDefault();
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!inputValue.trim()) return;
 
-    // If in Live Chat mode, send to DB
-    if (isLiveChat && activeConsultationId) {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const { error } = await supabase
-                .from('chat_messages')
-                .insert({
-                    consultation_id: activeConsultationId,
-                    sender_id: user.id,
-                    content: inputValue
-                });
-            
-            if (error) {
-                console.error("Error sending message:", error);
-                return;
-            }
-        }
-        
-        // Optimistic update
-        setMessages(prev => [...prev, {
-            id: Date.now().toString(),
-            role: "user",
-            content: inputValue,
-            type: "text"
-        }]);
-        setInputValue("");
-        return;
-    }
-
-    // Normal AI Chat Logic
     const userMsg: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -273,30 +200,33 @@ export function AIChatWidget() {
       type: "text"
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInputValue("");
-    setIsThinking(true);
-    setCurrentStep(0);
-
-    // Simulate Thinking Steps
-    for (let i = 0; i < THINKING_STEPS.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setCurrentStep(i + 1);
+    
+    // If live chat is active, send to DB
+    if (isLiveChat && activeConsultationId && currentUserId) {
+        await supabase.from('chat_messages').insert({
+            consultation_id: activeConsultationId,
+            sender_id: currentUserId,
+            content: userMsg.content
+        });
+        return; // Stop here, don't trigger AI
     }
 
-    // Final Response Delay
-    // await new Promise(resolve => setTimeout(resolve, 800));
+    setIsThinking(true);
 
+    // Simulate AI Processing
     try {
-      const { data, error } = await supabase.functions.invoke('analyze-risk', {
-        body: {
-          symptom_description: inputValue,
-          user_lat: 44.4268, // Default to Bucharest Sector 1 center if not available
-          user_long: 26.1025
-        }
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            message: userMsg.content,
+            history: messages 
+        })
       });
 
-      if (error) throw error;
+      const data = await response.json();
 
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -330,12 +260,12 @@ export function AIChatWidget() {
     <div className="w-full h-full flex flex-col rounded-3xl overflow-hidden border border-[#562C2C]/10 bg-[#FAF3DD]/90 backdrop-blur-xl relative">
       {/* Header */}
       <div className="p-4 border-b border-[#562C2C]/10 bg-[#FAF3DD] flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00A36C] to-[#2D6A4F] flex items-center justify-center text-white">
-          <Bot size={20} />
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00A36C] to-[#2D6A4F] flex items-center justify-center text-white">
+          <Bot size={24} />
         </div>
         <div>
-          <h3 className="font-bold text-[#562C2C]">EnviroSense AI</h3>
-          <p className="text-xs text-[#562C2C]/70 flex items-center gap-1">
+          <h3 className="font-bold text-[#562C2C] text-xl">EnviroSense AI</h3>
+          <p className="text-sm text-[#562C2C]/70 flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-[#00A36C] animate-pulse" />
             Online • Neuro-Symbolic Active
           </p>
@@ -357,17 +287,17 @@ export function AIChatWidget() {
               }`}
             >
               {msg.type === "text" ? (
-                <p className="text-sm leading-relaxed">{msg.content}</p>
+                <p className="text-base leading-relaxed">{msg.content}</p>
               ) : (
                 <div className="space-y-3">
-                  <div className={`flex items-center gap-2 font-bold ${
+                  <div className={`flex items-center gap-2 font-bold text-lg ${
                     msg.riskData?.level === "High" ? "text-[#E07A5F]" : "text-[#00A36C]"
                   }`}>
-                    {msg.riskData?.level === "High" ? <ShieldAlert size={18} /> : <CheckCircle2 size={18} />}
+                    {msg.riskData?.level === "High" ? <ShieldAlert size={20} /> : <CheckCircle2 size={20} />}
                     {msg.riskData?.level} Risk Detected
                   </div>
                   
-                  <p className="text-sm text-[#562C2C]/80">{msg.riskData?.details}</p>
+                  <p className="text-base text-[#562C2C]/80">{msg.riskData?.details}</p>
                   
                   {msg.riskData?.level === "High" && (
                     <motion.button
@@ -375,22 +305,22 @@ export function AIChatWidget() {
                       whileTap={{ scale: 0.98 }}
                       onClick={() => requestStatus === 'idle' && handleRequestDoctor(msg.riskData)}
                       disabled={requestStatus !== 'idle'}
-                      className={`w-full mt-2 border rounded-xl p-3 flex items-center justify-center gap-2 text-sm font-semibold transition-colors ${
+                      className={`w-full mt-2 border rounded-xl p-3 flex items-center justify-center gap-2 text-base font-semibold transition-colors ${
                         requestStatus === 'sent' 
                           ? "bg-[#00A36C]/10 text-[#00A36C] border-[#00A36C]/20" 
                           : "bg-[#E07A5F]/10 hover:bg-[#E07A5F]/20 text-[#E07A5F] border-[#E07A5F]/20"
                       }`}
                     >
                       {requestStatus === 'sending' ? (
-                        <Loader2 size={16} className="animate-spin" />
+                        <Loader2 size={18} className="animate-spin" />
                       ) : requestStatus === 'sent' ? (
                         <>
-                          <CheckCircle2 size={16} />
+                          <CheckCircle2 size={18} />
                           Request Sent
                         </>
                       ) : (
                         <>
-                          <Stethoscope size={16} />
+                          <Stethoscope size={18} />
                           Request Dr. Popa (Available)
                         </>
                       )}
@@ -416,7 +346,7 @@ export function AIChatWidget() {
                   {THINKING_STEPS.map((step, index) => (
                     <div 
                       key={step.id}
-                      className={`flex items-center gap-3 text-sm transition-colors duration-300 ${
+                      className={`flex items-center gap-3 text-base transition-colors duration-300 ${
                         index === currentStep 
                           ? "text-[#00A36C] font-medium" 
                           : index < currentStep 
@@ -425,13 +355,13 @@ export function AIChatWidget() {
                       }`}
                     >
                       <div className="relative">
-                        <step.icon size={16} />
+                        <step.icon size={18} />
                         {index === currentStep && (
                           <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00A36C] rounded-full animate-ping" />
                         )}
                       </div>
                       <span>{step.text}</span>
-                      {index < currentStep && <CheckCircle2 size={14} className="ml-auto" />}
+                      {index < currentStep && <CheckCircle2 size={16} className="ml-auto" />}
                     </div>
                   ))}
                 </div>
@@ -451,14 +381,14 @@ export function AIChatWidget() {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Describe your symptoms..."
             disabled={isThinking}
-            className="w-full bg-white/80 border-0 rounded-xl py-3 pl-4 pr-12 text-sm text-[#562C2C] placeholder:text-[#562C2C]/40 focus:ring-2 focus:ring-[#00A36C]/50"
+            className="w-full bg-white/80 border-0 rounded-xl py-4 pl-4 pr-12 text-base text-[#562C2C] placeholder:text-[#562C2C]/40 focus:ring-2 focus:ring-[#00A36C]/50"
           />
           <button
             type="submit"
             disabled={!inputValue.trim() || isThinking}
-            className="absolute right-2 p-2 bg-[#00A36C] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#008f5d] transition-colors"
+            className="absolute right-2 p-2.5 bg-[#00A36C] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#008f5d] transition-colors"
           >
-            <Send size={16} />
+            <Send size={20} />
           </button>
         </div>
       </form>

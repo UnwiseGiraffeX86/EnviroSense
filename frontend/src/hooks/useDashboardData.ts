@@ -98,11 +98,19 @@ export const useDashboardData = () => {
               }),
             // Fetch real weather data from OpenMeteo (Bucharest coordinates for demo)
             fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4268&longitude=26.1025&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto")
-              .then(res => res.json())
+              .then(res => {
+                if (!res.ok) throw new Error(`Weather fetch failed: ${res.statusText}`);
+                return res.json();
+              })
+              .catch(err => {
+                console.warn("Weather fetch failed:", err);
+                return { current: null, hourly: null }; // Return fallback structure
+              })
           ]);
 
           // Map OpenMeteo WMO codes to conditions
           const getWeatherCondition = (code: number) => {
+            if (code === undefined) return "Unknown";
             if (code === 0) return "Clear Sky";
             if (code <= 3) return "Partly Cloudy";
             if (code <= 48) return "Foggy";
@@ -112,7 +120,7 @@ export const useDashboardData = () => {
           };
 
           let forecast = [];
-          if (weatherRes.hourly) {
+          if (weatherRes && weatherRes.hourly && weatherRes.hourly.time) {
             const currentHour = new Date().getHours();
             // Take next 5 hours
             for (let i = 0; i < 5; i++) {
@@ -127,7 +135,7 @@ export const useDashboardData = () => {
             }
           }
 
-          const weatherData = weatherRes.current ? {
+          const weatherData = (weatherRes && weatherRes.current) ? {
             temperature: weatherRes.current.temperature_2m,
             humidity: weatherRes.current.relative_humidity_2m,
             windSpeed: weatherRes.current.wind_speed_10m,
@@ -146,8 +154,8 @@ export const useDashboardData = () => {
             setData(prev => ({ ...prev, profile, loading: false }));
         }
 
-      } catch (error) {
-        console.error("Error fetching dashboard data:", JSON.stringify(error, null, 2));
+      } catch (error: any) {
+        console.error("Error fetching dashboard data:", error.message || error);
         setData(prev => ({ ...prev, loading: false }));
       }
     };

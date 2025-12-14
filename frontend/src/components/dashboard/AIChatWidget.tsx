@@ -257,9 +257,9 @@ export function AIChatWidget() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col rounded-3xl overflow-hidden border border-[#562C2C]/10 bg-[#FAF3DD]/90 backdrop-blur-xl relative">
+    <div className="w-full h-full flex flex-col rounded-3xl overflow-hidden border border-[#562C2C]/20 shadow-sm bg-white/60 backdrop-blur-xl relative">
       {/* Header */}
-      <div className="p-4 border-b border-[#562C2C]/10 bg-[#FAF3DD] flex items-center gap-3">
+      <div className="p-4 border-b border-[#562C2C]/10 bg-white/40 flex items-center gap-3">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00A36C] to-[#2D6A4F] flex items-center justify-center text-white">
           <Bot size={24} />
         </div>
@@ -283,7 +283,7 @@ export function AIChatWidget() {
               className={`max-w-[85%] rounded-2xl p-4 shadow-sm ${
                 msg.role === "user"
                   ? "bg-[#00A36C] text-white rounded-tr-none"
-                  : "bg-white/80 text-[#562C2C] rounded-tl-none border border-[#562C2C]/10"
+                  : "bg-white/80 text-[#562C2C] rounded-tl-none border border-[#562C2C]/20"
               }`}
             >
               {msg.type === "text" ? (

@@ -26,7 +26,7 @@ export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weathe
   const status = getStatus(pm25);
 
   return (
-    <div className="bg-[#FAF3DD]/90 backdrop-blur-xl border border-[#562C2C]/10 rounded-3xl p-6 h-full flex flex-col relative overflow-hidden">
+    <div className="bg-white/60 backdrop-blur-xl border border-[#562C2C]/20 shadow-sm rounded-3xl p-6 h-full flex flex-col relative overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-start mb-6 flex-shrink-0">
         <div>

@@ -24,7 +24,7 @@ export const NeuroRadar = ({ focusIndex, pm25 }: { focusIndex: number, pm25: num
   ];
 
   return (
-    <div className="bg-[#FAF3DD]/90 backdrop-blur-xl border border-[#562C2C]/10 rounded-3xl p-5 h-full flex flex-col relative overflow-hidden">
+    <div className="bg-white/60 backdrop-blur-xl border border-[#562C2C]/20 shadow-sm rounded-3xl p-5 h-full flex flex-col relative overflow-hidden">
       {/* Decorative Background */}
       <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tr from-[#E07A5F]/10 to-transparent rounded-full blur-2xl pointer-events-none" />
 

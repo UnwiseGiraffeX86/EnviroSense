@@ -37,7 +37,7 @@ export const TabbedInsights = ({
   ];
 
   return (
-    <div className="bg-[#FAF3DD]/90 backdrop-blur-xl border border-[#562C2C]/10 rounded-3xl flex flex-col h-full overflow-hidden relative">
+    <div className="bg-white/60 backdrop-blur-xl border border-[#562C2C]/20 shadow-sm rounded-3xl flex flex-col h-full overflow-hidden relative">
       {/* Header / Tabs */}
       <div className="flex items-center p-2 gap-2 border-b border-[#562C2C]/5">
         <button

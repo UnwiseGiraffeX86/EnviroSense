@@ -69,16 +69,17 @@ We do not use heuristics. We use physics.
 
 *   **Equation 1: Signal Magnitude Vector (SMV)**
     To quantify "Movement Intensity" from a tri-axial accelerometer ($a_x, a_y, a_z$):
-    $$ SMV = \sqrt{a_x^2 + a_y^2 + a_z^2} $$
+    $$ SMV(t) = \sqrt{a_x(t)^2 + a_y(t)^2 + a_z(t)^2} $$
 
 *   **Equation 2: Gait Velocity ($v_{gait}$)**
-    $$ v_{gait} \approx h \cdot f_{step} \cdot \sqrt{\frac{SMV_{avg}}{g}} $$
+    $$ v_{gait} = f_{step} \times L_{step} \approx C \cdot \sqrt{h_{leg}} $$
     *   Where $f_{step}$ is cadence (steps/min) derived from the FFT of the SMV.
     *   **Clinical Threshold:** A velocity of **< 0.8 m/s** is the "Disability Threshold."
-    *   **Hazard Model:** Mortality risk increases by **~25%** for every 0.1 m/s drop in usual gait speed (HR = 0.747; 95% CI: 0.62-0.90).
+    *   **Hazard Model:** Mortality risk increases by **~25%** for every 0.1 m/s drop in usual gait speed ($HR = 0.747; 95\% CI: 0.62-0.90$).
 
 *   **Equation 3: Fractal Scaling ($\alpha$)**
-    We use **Detrended Fluctuation Analysis (DFA)** to measure the "health" of the walk ($F(n) \propto n^\alpha$).
+    We use **Detrended Fluctuation Analysis (DFA)** to measure the "health" of the walk.
+    $$ F(n) \propto n^\alpha $$
     *   **$\alpha \approx 1.0$ (Pink Noise):** Healthy, adaptable gait.
     *   **$\alpha < 0.5$ (White Noise):** Disorganized, "stumbling" gait (indicative of neurological or respiratory failure).
 
@@ -86,7 +87,7 @@ We do not use heuristics. We use physics.
 **The Science:** We model the lungs not as a bag, but as a resistive pipe system. Inflammation (Asthma/PM2.5) narrows the pipes, increasing turbulence.
 
 *   **Equation: Rohrer’s Resistance Model**
-    $$ P_{drive} = K_1 \dot{V} + K_2 \dot{V}^2 $$
+    $$ P_{drive} = K_1 \dot{V} + K_2 \dot{V}^2 + I \ddot{V} $$
     *   **$P_{drive}$:** Driving pressure (Muscular effort).
     *   **$\dot{V}$:** Airflow rate.
     *   **$K_1$ (Laminar Coeff):** Viscosity-driven resistance (Small airways).
@@ -103,14 +104,14 @@ We do not use heuristics. We use physics.
 
 *   **Equation 2: Sample Entropy (SampEn)**
     Measures the complexity (adaptability) of the heart rate.
-    $$ SampEn = -\ln \left( \frac{A}{B} \right) $$
+    $$ SampEn(m, r, N) = -\ln \left( \frac{A}{B} \right) $$
     *   **Logic:** A drop in Entropy often precedes clinical symptoms of sepsis or cardiac failure by **4-24 hours**, acting as an "Early Warning Radar".
 
 ### 3.4 Acoustic Stress Markers (Voice Analysis)
 **The Science:** Mental stress tightens the laryngeal muscles (cricothyroid), causing micro-tremors in the voice.
 
 *   **Equation: Jitter (Frequency Perturbation)**
-    $$ Jitter(\%) = \frac{\frac{1}{N-1} \sum |T_i - T_{i+1}|}{\frac{1}{N} \sum T_i} \times 100 $$
+    $$ Jitter_{abs} = \frac{1}{N-1} \sum_{i=1}^{N-1} |T_i - T_{i+1}| $$
     *   **Biomarker:** Acute stress increases $F_0$ (Pitch) and reduces Jitter variability (due to muscle rigidity), whereas fatigue *increases* Jitter (muscle weakness).
 
 ---
@@ -122,17 +123,17 @@ We do not use AQI. We use **Particle Deposition Physics**.
 ### 4.1 The ICRP66 Deposition Model
 Based on the International Commission on Radiological Protection (1994).
 
-$$ Dose = C_{air} \times V_{min} \times \eta_{dep} \times t $$
+$$ Dose(t) = \int_{0}^{t} C_{air}(t) \cdot V_{min}(t) \cdot \eta_{dep}(d_p) \, dt $$
 
 *   **$V_{min}$ (Minute Ventilation):** $\approx 6 \text{ L/min}$ (Rest) vs $\approx 40 \text{ L/min}$ (Exercise).
 *   **$\eta_{dep}$ (Deposition Efficiency):** For Ultrafine Particles (<0.1 $\mu m$), deposition is driven by **Brownian Diffusion**:
-    $$ \eta_{diff} = 1 - e^{-a \cdot D^{2/3} \cdot Q^{-1/2}} $$
+    $$ \eta_{diff} = 1 - \exp(-k \cdot D_{diff} \cdot Q^{-0.5}) $$
 *   **Fact:** A runner absorbs **4-6x** more toxins than a walker in the same smog because $V_{min}$ is higher and deep breathing bypasses nasal filters.
 
 ### 4.2 The Indoor Infiltration Function
 Since users are indoors 90% of the time:
 
-$$ C_{indoor} = P \cdot C_{outdoor} + \frac{S}{V \cdot (\lambda + k_{decay})} $$
+$$ C_{in} = P \cdot C_{out} + \frac{S}{Q_{vent} + k_{decay}V} $$
 
 *   **$P$ (Penetration):** Fraction of outdoor pollution entering (0.8 for old windows, 0.3 for HEPA homes).
 *   **$k_{decay}$:** Deposition rate onto surfaces (walls/carpets).
@@ -156,7 +157,7 @@ The Twin models how these systems crash into each other.
 *   **Trigger:** High Indoor $CO_2$.
 *   **Process:** $CO_2$ acts as a vasodilator but reduces cortical pH.
 *   **The Math:**
-    $$ Score_{cog} = 100 - 0.05 \cdot (CO_2 - 600) $$
+    $$ Cognitive\_Score \propto \frac{1}{\log(CO_2)} $$
 *   **Fact:** At **1,000 ppm** $CO_2$, decision-making performance drops by **~15%**. At **2,500 ppm**, it drops by **~40-90%**.
 
 ### 5.3 The "Heat Shock" Metabolic Shift

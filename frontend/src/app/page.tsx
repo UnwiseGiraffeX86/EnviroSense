@@ -4,16 +4,20 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   ShieldCheck, 
   Play, 
-  Brain, 
-  MapPin, 
-  Lock, 
-  UserPlus, 
-  CheckCircle2
+  UserPlus
 } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 import MapCaller from "@/components/MapCaller";
 import NeuroTree from "@/components/NeuroTree";
+
+import { 
+  BucharestReality, 
+  MedicalTrust, 
+  SentinelNetwork, 
+  ValidatedPerformance, 
+  ZeroTrustFAQ 
+} from "@/components/landing/LandingSections";
 
 // --- Components ---
 
@@ -128,85 +132,7 @@ const Hero = () => {
   );
 };
 
-const Mission = () => (
-  <section id="mission" className="py-24 px-6 lg:px-20 relative overflow-hidden">
-    {/* Background Specs */}
-    <div className="absolute top-20 left-10 w-72 h-72 bg-brand-green/5 rounded-full blur-3xl" />
-    <div className="absolute bottom-20 right-10 w-96 h-96 bg-brand-orange/5 rounded-full blur-3xl" />
 
-    <div className="max-w-7xl mx-auto relative z-10">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
-        <h2 className="text-4xl font-bold text-brand-brown mb-4">Privacy-First. Intelligence-Driven.</h2>
-        <p className="text-brand-brown/60 max-w-2xl mx-auto">
-          We don't just collect data. We protect it, analyze it, and turn it into actionable health insights.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Card 1: The Tech */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/50 backdrop-blur-sm border border-brand-brown/5 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group"
-        >
-          <div className="w-12 h-12 bg-brand-brown/10 text-brand-brown rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
-            <Brain className="w-6 h-6" />
-          </div>
-          <h3 className="text-xl font-bold text-brand-brown mb-3">Neuro-Symbolic AI</h3>
-          <p className="text-brand-brown/70 leading-relaxed">
-            Fusing GPT-4o reasoning with hard SQL constraints. No hallucinations, just medically-grounded logic.
-          </p>
-        </motion.div>
-
-        {/* Card 2: The Data */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/50 backdrop-blur-sm border border-brand-brown/5 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group"
-        >
-          <div className="w-12 h-12 bg-brand-green/10 text-brand-green rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-green group-hover:text-white transition-colors">
-            <MapPin className="w-6 h-6" />
-          </div>
-          <h3 className="text-xl font-bold text-brand-brown mb-3">Hyper-Local Sensors</h3>
-          <p className="text-brand-brown/70 leading-relaxed mb-4">
-            Real-time PM2.5 & PM10 tracking across Bucharest sectors.
-          </p>
-          <div className="h-24 bg-brand-cream rounded-xl relative overflow-hidden border border-brand-brown/5">
-            <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-brand-green rounded-full animate-ping" />
-            <div className="absolute top-1/3 left-2/3 w-2 h-2 bg-brand-orange rounded-full animate-ping delay-75" />
-            <div className="absolute bottom-1/4 left-1/2 w-2 h-2 bg-brand-green rounded-full animate-ping delay-150" />
-          </div>
-        </motion.div>
-
-        {/* Card 3: The Privacy */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="bg-white/50 backdrop-blur-sm border border-brand-brown/5 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group"
-        >
-          <div className="w-12 h-12 bg-brand-brown/10 text-brand-brown rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-brown group-hover:text-white transition-colors">
-            <Lock className="w-6 h-6" />
-          </div>
-          <h3 className="text-xl font-bold text-brand-brown mb-3">Zero Trust Architecture</h3>
-          <p className="text-brand-brown/70 leading-relaxed">
-            Your health data never leaves your specialized encrypted row. <span className="bg-brand-yellow px-1 rounded text-brand-brown font-medium">RLS enabled</span> by default.
-          </p>
-        </motion.div>
-      </div>
-    </div>
-  </section>
-);
 
 const LiveMapSection = () => (
   <section id="map" className="py-20 px-6 lg:px-20 bg-brand-cream relative overflow-hidden">
@@ -356,43 +282,7 @@ const FeatureShowcase = () => {
   );
 };
 
-const TrustBadge = () => (
-  <section className="bg-brand-brown py-20 px-6 relative overflow-hidden">
-    <div className="max-w-4xl mx-auto text-center relative z-10">
-      <div className="inline-flex items-center gap-2 bg-brand-cream/10 px-4 py-2 rounded-full text-brand-cream text-sm mb-6 border border-brand-cream/10">
-        <CheckCircle2 className="w-4 h-4 text-brand-green" />
-        <span>Synthetic Validation Protocol</span>
-      </div>
-      <h2 className="text-3xl md:text-4xl font-bold text-brand-cream mb-6">
-        Validated on 10,000+ synthetic scenarios before touching real data.
-      </h2>
-      <p className="text-brand-cream/60 max-w-2xl mx-auto">
-        Our algorithms are stress-tested against millions of permutations of environmental and biological data points to ensure accuracy and safety.
-      </p>
-    </div>
 
-    {/* Background Code Animation */}
-    <div className="absolute inset-0 opacity-5 pointer-events-none font-mono text-xs text-brand-cream p-8 overflow-hidden">
-      <motion.div
-        animate={{ y: ["0%", "-50%"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      >
-        {Array.from({ length: 20 }).map((_, i) => (
-          <pre key={i} className="mb-4">
-{`def validate_scenario(symptoms, air_quality):
-    risk_score = calculate_risk(symptoms, air_quality)
-    assert risk_score <= 1.0
-    return True
-
-# Running simulation ${10000 + i}...
-# Scenario: High PM2.5 + Asthma History
-# Result: VALIDATED`}
-          </pre>
-        ))}
-      </motion.div>
-    </div>
-  </section>
-);
 
 const Footer = () => (
   <footer className="bg-brand-cream border-t border-brand-brown/10 py-12 px-6">
@@ -420,10 +310,13 @@ export default function LandingPage() {
     <main className="bg-brand-cream min-h-screen selection:bg-brand-green selection:text-white">
       <Navbar />
       <Hero />
-      <Mission />
+      <MedicalTrust />
+      <BucharestReality />
       <LiveMapSection />
+      <SentinelNetwork />
       <FeatureShowcase />
-      <TrustBadge />
+      <ValidatedPerformance />
+      <ZeroTrustFAQ />
       <Footer />
     </main>
   );

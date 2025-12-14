@@ -48,6 +48,10 @@ export default function DashboardPage() {
             <p className="text-[#562C2C]/60 font-medium mt-1 text-xs">Real-time environmental & biometric monitoring</p>
           </div>
           <div className="flex gap-2">
+            <div className="px-3 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-[10px] font-bold border border-brand-orange/20 shadow-sm backdrop-blur-sm flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+              DEMO MODE
+            </div>
             <div className="px-3 py-1 bg-[#00A36C]/10 text-[#00A36C] rounded-full text-[10px] font-bold border border-[#00A36C]/20 shadow-sm backdrop-blur-sm">
               System Optimal
             </div>

@@ -129,7 +129,7 @@ export const MedicalTrust = () => {
           <div className="h-8 w-px bg-brand-brown/20 hidden md:block" />
           
           <p className="text-brand-brown/60 font-medium text-sm md:text-base">
-            Protocols validated by Pulmonologists. Data secured by EU Directives.
+            Protocols in course of validation by Pulmonologists. Data secured by EU Directives.
           </p>
 
           <div className="flex items-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">

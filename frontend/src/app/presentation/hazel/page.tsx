@@ -1,9 +1,13 @@
     "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ShieldCheck, User, Shield, Scale, Brain, ArrowRight, Lock, Activity, Zap, Wind } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShieldCheck, User, Shield, Scale, Brain, ArrowRight, Lock, Activity, Zap, Wind, FileText, Scan, Database, FileJson } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import SlideArchitecture from "./SlideArchitecture";
+import SlideSecurity from "./SlideSecurity";
+import SlideScienceAnatomy from "./SlideScienceAnatomy";
+import SlideFutureInitialization from "./SlideFutureInitialization";
 
 const Map = dynamic(() => import("@/components/Map"), { 
   ssr: false,
@@ -92,213 +96,6 @@ const SlideContext = () => (
       </div>
 
     </div>
-  </section>
-);
-
-const SlideArchitecture = () => (
-  <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-[#FDFBF7] overflow-hidden">
-    {/* Title */}
-    <div className="absolute top-24 text-center z-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[#3D3430] mb-3">The Logic</h2>
-        <p className="text-lg text-[#3D3430]/60 font-mono">Neuro-Symbolic Architecture</p>
-      </motion.div>
-    </div>
-
-    {/* Diagram Container */}
-    <div className="relative w-full max-w-6xl px-4 md:px-10 flex items-center justify-between z-0 mt-10">
-      
-      {/* Connecting Pipe */}
-      <div className="absolute top-[3rem] left-0 w-full h-1 bg-[#3D3430]/10 z-0 mx-10 md:mx-20 max-w-[calc(100%-5rem)] md:max-w-[calc(100%-10rem)]">
-         {/* Data Packet Animation */}
-         <motion.div
-           className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#00A36C] rounded-full shadow-[0_0_15px_#00A36C]"
-           animate={{ 
-             left: ["0%", "100%"],
-             opacity: [0, 1, 1, 0]
-           }}
-           transition={{ 
-             duration: 4, 
-             repeat: Infinity, 
-             ease: "linear",
-             times: [0, 0.1, 0.9, 1]
-           }}
-         />
-      </div>
-
-      {/* Node 1: Input */}
-      <div className="relative z-10 flex flex-col items-center gap-6 group">
-         <div className="w-24 h-24 bg-[#FDFBF7] rounded-2xl shadow-lg border border-[#3D3430]/5 flex items-center justify-center relative z-10">
-            <User className="w-10 h-10 text-[#3D3430]" />
-         </div>
-         <div className="text-center">
-            <h3 className="font-bold text-[#3D3430] text-lg">Input</h3>
-            <p className="text-xs text-[#3D3430]/60 font-mono mt-1">User Query</p>
-         </div>
-      </div>
-
-      {/* Node 2: Airlock */}
-      <div className="relative z-10 flex flex-col items-center gap-6">
-         <div className="w-24 h-24 bg-[#FDFBF7] rounded-2xl shadow-lg border border-[#3D3430]/5 flex items-center justify-center relative z-10">
-            <Shield className="w-10 h-10 text-[#3D3430]" />
-         </div>
-         <div className="text-center">
-            <h3 className="font-bold text-[#3D3430] text-lg">Airlock</h3>
-            <p className="text-xs text-[#3D3430]/60 font-mono mt-1">Edge PII Redaction</p>
-         </div>
-      </div>
-
-      {/* Node 3: Grounding (Gold Glow) */}
-      <div className="relative z-10 flex flex-col items-center gap-6">
-         <motion.div 
-           className="w-24 h-24 bg-[#FDFBF7] rounded-2xl shadow-lg border border-[#3D3430]/5 flex items-center justify-center relative z-10"
-           animate={{
-             boxShadow: ["0 10px 15px -3px rgba(0, 0, 0, 0.1)", "0 0 40px rgba(233, 196, 106, 0.6)", "0 10px 15px -3px rgba(0, 0, 0, 0.1)"],
-             borderColor: ["rgba(61, 52, 48, 0.05)", "rgba(233, 196, 106, 1)", "rgba(61, 52, 48, 0.05)"],
-             scale: [1, 1.1, 1]
-           }}
-           transition={{
-             duration: 0.6,
-             delay: 2.5, // Timing to match packet passing ~66%
-             repeat: Infinity,
-             repeatDelay: 3.4
-           }}
-         >
-            <Scale className="w-10 h-10 text-[#E9C46A]" />
-         </motion.div>
-         <div className="text-center">
-            <h3 className="font-bold text-[#3D3430] text-lg">Grounding</h3>
-            <p className="text-xs text-[#3D3430]/60 font-mono mt-1">RAG (EU Directives)</p>
-         </div>
-      </div>
-
-      {/* Node 4: Reasoning */}
-      <div className="relative z-10 flex flex-col items-center gap-6">
-         <div className="w-24 h-24 bg-[#FDFBF7] rounded-2xl shadow-lg border border-[#3D3430]/5 flex items-center justify-center relative z-10">
-            <Brain className="w-10 h-10 text-[#3D3430]" />
-         </div>
-         <div className="text-center">
-            <h3 className="font-bold text-[#3D3430] text-lg">Reasoning</h3>
-            <p className="text-xs text-[#3D3430]/60 font-mono mt-1">GPT-4o Inference</p>
-         </div>
-      </div>
-
-    </div>
-  </section>
-);
-
-const SlideSecurity = () => (
-  <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-[#FDFBF7] overflow-hidden">
-    {/* Title */}
-    <div className="absolute top-24 text-center z-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[#3D3430] mb-3">The Vault</h2>
-        <p className="text-lg text-[#3D3430]/60 font-mono">Database-Level Immunity</p>
-      </motion.div>
-    </div>
-
-    {/* Main Visual Area */}
-    <div className="relative w-full max-w-4xl h-[400px] flex items-center justify-center">
-      
-      {/* The Shield */}
-      <div className="relative z-20">
-        <div className="relative w-40 h-40 flex items-center justify-center">
-            {/* Glowing Backdrop */}
-            <div className="absolute inset-0 bg-[#00A36C]/20 blur-3xl rounded-full" />
-            
-            {/* 3D Shield Icon */}
-            <div className="relative z-10 drop-shadow-[0_20px_20px_rgba(0,163,108,0.4)]">
-                <Shield className="w-32 h-32 text-[#00A36C] fill-[#00A36C]/10" strokeWidth={1.5} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <Lock className="w-12 h-12 text-[#00A36C]" />
-                </div>
-            </div>
-        </div>
-      </div>
-
-      {/* Animation Layer */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center gap-16 pointer-events-none">
-        
-        {/* Unauthorized Access (Red) */}
-        <div className="w-full flex items-center relative h-10">
-            <motion.div
-                className="absolute left-[10%] flex items-center gap-2"
-                animate={{ 
-                    x: ["0%", "35%", "20%"], // Move to shield, bounce back
-                    opacity: [0, 1, 0]
-                }}
-                transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    repeatDelay: 1 
-                }}
-            >
-                <span className="text-xs font-bold text-red-500 uppercase tracking-wider">Anon</span>
-                <ArrowRight className="w-8 h-8 text-red-500" />
-            </motion.div>
-            
-            {/* Impact Effect */}
-            <motion.div
-                className="absolute left-[48%] w-8 h-8 rounded-full border-2 border-red-500/50"
-                animate={{ scale: [0.5, 1.5], opacity: [1, 0] }}
-                transition={{ duration: 0.5, delay: 0.8, repeat: Infinity, repeatDelay: 2.5 }}
-            />
-        </div>
-
-        {/* Authorized Access (Green) */}
-        <div className="w-full flex items-center relative h-10">
-            <motion.div
-                className="absolute left-[10%] flex items-center gap-2"
-                animate={{ 
-                    x: ["0%", "80%"], // Pass through
-                    opacity: [0, 1, 0]
-                }}
-                transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    repeatDelay: 1,
-                    delay: 1 // Offset timing
-                }}
-            >
-                <span className="text-xs font-bold text-[#00A36C] uppercase tracking-wider">Doctor</span>
-                <ArrowRight className="w-8 h-8 text-[#00A36C]" />
-            </motion.div>
-        </div>
-
-      </div>
-    </div>
-
-    {/* Code Snippet */}
-    <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="mt-8 w-full max-w-2xl bg-[#1E1E1E] rounded-xl overflow-hidden shadow-2xl border border-[#3D3430]/10"
-    >
-        <div className="flex items-center gap-2 px-4 py-2 bg-[#2D2D2D] border-b border-white/10">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500" />
-            <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="ml-2 text-xs text-white/40 font-mono">supabase_rls.sql</span>
-        </div>
-        <div className="p-6 font-mono text-sm text-gray-300 leading-relaxed">
-            <p><span className="text-purple-400">CREATE POLICY</span> <span className="text-green-400">"Doctors Only"</span></p>
-            <p><span className="text-purple-400">ON</span> patient_logs</p>
-            <p><span className="text-purple-400">FOR SELECT</span></p>
-            <p><span className="text-purple-400">USING</span> (</p>
-            <p className="pl-4">auth.jwt() -{'>'}{'>'} <span className="text-green-400">'role'</span> = <span className="text-green-400">'doctor'</span></p>
-            <p>);</p>
-        </div>
-    </motion.div>
-
   </section>
 );
 
@@ -412,111 +209,7 @@ const SlideScience = () => (
   </section>
 );
 
-const SlideFuture = () => (
-  <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-[#FDFBF7] overflow-hidden">
-    {/* Background Pattern - Topographic */}
-    <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <filter id="noise">
-                <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="2" stitchTiles="stitch"/>
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noise)" />
-        </svg>
-    </div>
 
-    {/* Title */}
-    <div className="absolute top-24 text-center z-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-4xl md:text-5xl font-extrabold text-[#3D3430] mb-3">The Horizon</h2>
-        <p className="text-lg text-[#3D3430]/60 font-mono">Roadmap & Partnership</p>
-      </motion.div>
-    </div>
-
-    {/* Roadmap Container */}
-    <div className="relative w-full max-w-5xl h-[300px] flex items-center justify-center mt-10">
-        {/* The Path (SVG) */}
-        <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 1000 300" preserveAspectRatio="none">
-            {/* Background Track */}
-            <motion.path
-                d="M 100,150 C 300,150 300,50 500,150 C 700,250 700,150 900,150"
-                fill="none"
-                stroke="#3D3430"
-                strokeWidth="2"
-                strokeOpacity="0.1"
-                strokeDasharray="10 10"
-            />
-            {/* Active Progress Track */}
-            <motion.path
-                d="M 100,150 C 300,150 300,50 500,150 C 700,250 700,150 900,150"
-                fill="none"
-                stroke="#00A36C"
-                strokeWidth="4"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 0.4 }} // Animates up to the second node roughly
-                transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
-            />
-        </svg>
-
-        {/* Node 1: Sector 3 (Now) */}
-        <div className="absolute left-[10%] top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-            <div className="relative">
-                <div className="w-6 h-6 bg-[#00A36C] rounded-full z-10 relative shadow-[0_0_20px_#00A36C]" />
-                <div className="absolute inset-0 bg-[#00A36C] rounded-full animate-ping opacity-50" />
-            </div>
-            <div className="text-center w-32">
-                <h3 className="font-bold text-[#3D3430]">Sector 3</h3>
-                <p className="text-xs text-[#00A36C] font-mono uppercase">Live Now</p>
-            </div>
-        </div>
-
-        {/* Node 2: National Mesh (2026) */}
-        <div className="absolute left-[50%] top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-            <div className="w-6 h-6 bg-[#3D3430] rounded-full z-10 border-4 border-[#FDFBF7]" />
-            <div className="text-center w-40">
-                <h3 className="font-bold text-[#3D3430]">National Mesh</h3>
-                <p className="text-xs text-[#3D3430]/60 font-mono">2026 Expansion</p>
-            </div>
-        </div>
-
-        {/* Node 3: Enviro-Link (2027) */}
-        <div className="absolute left-[90%] top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-            <div className="w-6 h-6 bg-[#FDFBF7] border-4 border-[#3D3430]/40 rounded-full z-10" />
-            <div className="text-center w-40">
-                <h3 className="font-bold text-[#3D3430]/60">Enviro-Link</h3>
-                <p className="text-xs text-[#3D3430]/40 font-mono">2027 Hardware</p>
-            </div>
-        </div>
-    </div>
-
-    {/* CTA Button */}
-    <motion.button
-        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(0, 163, 108, 0.4)" }}
-        whileTap={{ scale: 0.95 }}
-        className="mt-16 px-12 py-6 bg-[#00A36C] text-white rounded-full text-xl font-bold tracking-wide shadow-xl flex items-center gap-3 group cursor-pointer z-20"
-    >
-        Initialize Pilot
-        <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-    </motion.button>
-
-    {/* Footer */}
-    <div className="absolute bottom-8 flex items-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-        <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#3D3430] rounded-md" />
-            <span className="font-bold text-[#3D3430]">EnviroSense</span>
-        </div>
-        <span className="text-[#3D3430]/30">+</span>
-        <div className="flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-[#00A36C]" />
-            <span className="font-bold text-[#00A36C]">HazelHeartwood</span>
-        </div>
-    </div>
-
-  </section>
-);
 
 // --- Main Page Shell ---
 
@@ -554,21 +247,61 @@ export default function HazelPresentationPage() {
 
   return (
     <main className="relative h-screen w-full bg-[#FDFBF7] text-[#3D3430] font-sans overflow-hidden">
+      {/* --- ATMOSPHERE LAYER --- */}
+      
+      {/* 1. Texture: Noise Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-50 opacity-20 mix-blend-multiply">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+      </div>
+
+      {/* 2. Lighting: Breathing Orbs */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* Top-Left Emerald Orb */}
+          <motion.div 
+            animate={{ 
+                x: [0, 50, 0], 
+                y: [0, 30, 0],
+                scale: [1, 1.1, 1] 
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-emerald-500/5 rounded-full blur-[150px]" 
+          />
+          
+          {/* Bottom-Right Gold Orb */}
+          <motion.div 
+            animate={{ 
+                x: [0, -50, 0], 
+                y: [0, -30, 0],
+                scale: [1, 1.2, 1] 
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] bg-amber-500/5 rounded-full blur-[150px]" 
+          />
+      </div>
+
+      {/* 3. Vignette: Darkened Corners */}
+      <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(61,52,48,0.15)_100%)]" />
+
       {/* Scroll Container */}
       <div
         ref={containerRef}
-        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar"
+        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar relative z-10"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <SlideContext />
         <SlideArchitecture />
         <SlideSecurity />
-        <SlideScience />
-        <SlideFuture />
+        <SlideScienceAnatomy />
+        <SlideFutureInitialization />
       </div>
 
       {/* Presenter Dock */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-6 bg-white/80 backdrop-blur-xl border border-[#3D3430]/5 px-6 py-3 rounded-2xl shadow-2xl shadow-[#3D3430]/5 transition-all hover:scale-105">
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-6 bg-white/30 backdrop-blur-md border border-white/50 px-6 py-3 rounded-full shadow-2xl shadow-[#3D3430]/10 transition-all hover:scale-105 hover:bg-white/40">
         
         {/* Badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 bg-[#00A36C]/10 rounded-full border border-[#00A36C]/20">

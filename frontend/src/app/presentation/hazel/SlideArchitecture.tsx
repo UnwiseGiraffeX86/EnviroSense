@@ -1,17 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Shield, MessageSquare, Database, Lock } from "lucide-react";
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
+
 export default function SlideArchitecture() {
   const [isHovered, setIsHovered] = useState(false);
+  // Increased threshold to 1080px to catch most laptops (13", 14", 15" screens usually have <1000px viewport height)
+  const isShortScreen = useMediaQuery("(max-height: 1080px)");
 
   return (
     <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-[#FDFBF7] overflow-hidden perspective-[2000px]">
       
       {/* Typography */}
-      <div className="absolute top-24 text-center z-10">
+      <div className="absolute top-24 text-center z-10 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -24,7 +42,7 @@ export default function SlideArchitecture() {
 
       {/* 3D Stack Container */}
       <div 
-        className="relative w-[600px] h-[300px] group cursor-pointer"
+        className="relative w-[600px] h-[300px] group cursor-pointer mt-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -34,11 +52,24 @@ export default function SlideArchitecture() {
           className="absolute inset-0 rounded-2xl border border-[#3D3430]/10 bg-[#F0EBE0] shadow-xl overflow-hidden flex flex-col"
           initial={{ y: 0, z: 0, scale: 0.9, opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          animate={{ 
-            y: isHovered ? 320 : 10, 
-            z: isHovered ? -100 : 0,
-            scale: isHovered ? 0.95 : 0.9,
-            rotateX: isHovered ? 20 : 0
+          animate={isHovered ? (isShortScreen ? {
+            x: -340, // Increased spread to reveal content
+            y: 0,
+            z: 0,
+            rotateZ: -5,
+            scale: 0.85 // Slightly smaller to fit width
+          } : {
+            y: 320,
+            z: -100,
+            rotateX: 20,
+            scale: 0.95
+          }) : {
+            x: 0,
+            y: 10,
+            z: 0,
+            rotateZ: 0,
+            rotateX: 0,
+            scale: 0.9
           }}
           transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
           style={{ transformStyle: "preserve-3d" }}
@@ -69,11 +100,21 @@ export default function SlideArchitecture() {
           className="absolute inset-0 rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-md shadow-2xl overflow-hidden flex flex-col"
           initial={{ y: 0, z: 0, scale: 0.95, opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          animate={{ 
-            y: isHovered ? 0 : 5, 
-            z: isHovered ? -50 : 0,
-            scale: isHovered ? 0.98 : 0.95,
-            rotateX: isHovered ? 10 : 0
+          animate={isHovered ? (isShortScreen ? {
+            x: 0,
+            y: 0,
+            z: 50,
+            scale: 1
+          } : {
+            y: 0,
+            z: -50,
+            rotateX: 10,
+            scale: 0.98
+          }) : {
+            x: 0,
+            y: 5,
+            z: 0,
+            scale: 0.95
           }}
           transition={{ duration: 0.6, type: "spring", stiffness: 100, delay: 0.05 }}
           style={{ transformStyle: "preserve-3d" }}
@@ -114,11 +155,24 @@ export default function SlideArchitecture() {
           className="absolute inset-0 rounded-2xl border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col"
           initial={{ y: 0, z: 0, scale: 1, opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          animate={{ 
-            y: isHovered ? -320 : 0, 
-            z: isHovered ? 0 : 0,
-            scale: 1,
-            rotateX: isHovered ? -10 : 0
+          animate={isHovered ? (isShortScreen ? {
+            x: 340, // Increased spread to reveal content
+            y: 0,
+            z: 100,
+            rotateZ: 5,
+            scale: 0.85 // Matched scale
+          } : {
+            y: -320,
+            z: 0,
+            rotateX: -10,
+            scale: 1
+          }) : {
+            x: 0,
+            y: 0,
+            z: 0,
+            rotateZ: 0,
+            rotateX: 0,
+            scale: 1
           }}
           transition={{ duration: 0.6, type: "spring", stiffness: 100, delay: 0.1 }}
           style={{ transformStyle: "preserve-3d" }}
@@ -148,16 +202,14 @@ export default function SlideArchitecture() {
              </div>
           </div>
         </motion.div>
-
       </div>
-
+      
       {/* Connecting Lines (Optional visual aid when expanded) */}
       <motion.div 
-        className="absolute w-[1px] bg-gradient-to-b from-[#3D3430]/0 via-[#3D3430]/20 to-[#3D3430]/0"
+         className="absolute w-[1px] bg-gradient-to-b from-[#3D3430]/0 via-[#3D3430]/20 to-[#3D3430]/0"
         style={{ height: '400px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
-        animate={{ opacity: isHovered ? 1 : 0 }}
+        animate={{ opacity: isHovered && !isShortScreen ? 1 : 0 }}
       />
-
     </section>
   );
 }

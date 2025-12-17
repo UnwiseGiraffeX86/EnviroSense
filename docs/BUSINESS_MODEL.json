@@ -1,0 +1,41 @@
+{
+  "business_model": {
+    "value_proposition": {
+      "primary": "Proactive health protection through environmental intelligence.",
+      "secondary": "Data-driven urban planning and policy making."
+    },
+    "customer_segments": [
+      "Asthma & COPD Patients",
+      "Urban Planners",
+      "Healthcare Providers",
+      "Insurance Companies"
+    ],
+    "revenue_streams": [
+      {
+        "type": "Subscription",
+        "target": "Individual Users",
+        "pricing": "Freemium model with premium health insights"
+      },
+      {
+        "type": "B2B API Access",
+        "target": "Healthcare & Insurance",
+        "pricing": "Tiered usage-based pricing"
+      },
+      {
+        "type": "Government Contracts",
+        "target": "Municipalities",
+        "pricing": "Project-based licensing"
+      }
+    ],
+    "key_partners": [
+      "Local Hospitals",
+      "Environmental Agencies",
+      "Smart City Initiatives"
+    ],
+    "cost_structure": [
+      "Sensor Network Maintenance",
+      "Cloud Infrastructure",
+      "R&D (AI & Medical Research)"
+    ]
+  }
+}

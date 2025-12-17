@@ -3,14 +3,9 @@
 import { MapContainer, TileLayer, Marker, Popup, Circle, Tooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 import { Loader2, Navigation } from "lucide-react";
-
-// Initialize Supabase Client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface AirQualityData {
   id: number;
@@ -60,7 +55,7 @@ const MapController = ({ center }: { center: [number, number] | null }) => {
   return null;
 };
 
-const Map = () => {
+const Map = ({ weather }: { weather?: any }) => {
   const [sectors, setSectors] = useState<AirQualityData[]>([]);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
@@ -179,27 +174,59 @@ const Map = () => {
               const center = getCentroid(coordinates);
               
               return (
-                <Circle
-                  key={sector.id}
-                  center={center}
-                  radius={1500} // Fixed radius for visual consistency (1.5km)
-                  pathOptions={{
-                    color: getColor(sector.pm25),
-                    fillColor: getColor(sector.pm25),
-                    fillOpacity: 0.4,
-                    weight: 0, // No border for softer look
-                  }}
-                >
-                  <Tooltip sticky className="bg-brand-cream text-brand-brown border-brand-brown/10 shadow-xl rounded-lg font-mono">
-                    <div className="p-2">
-                      <p className="font-bold text-sm mb-1">{sector.sector_name}</p>
-                      <div className="flex items-center gap-2 text-xs">
-                        <div className="w-2 h-2 rounded-full" style={{ background: getColor(sector.pm25) }} />
-                        <span>PM2.5: {sector.pm25.toFixed(1)}</span>
+                <React.Fragment key={sector.id}>
+                  <Circle
+                    center={center}
+                    radius={1500} // Fixed radius for visual consistency (1.5km)
+                    pathOptions={{
+                      color: getColor(sector.pm25),
+                      fillColor: getColor(sector.pm25),
+                      fillOpacity: 0.4,
+                      weight: 0, // No border for softer look
+                    }}
+                  >
+                    <Tooltip sticky className="bg-brand-cream text-brand-brown border-brand-brown/10 shadow-xl rounded-lg font-mono">
+                      <div className="p-2">
+                        <p className="font-bold text-sm mb-1">{sector.sector_name}</p>
+                        <div className="flex items-center gap-2 text-xs">
+                          <div className="w-2 h-2 rounded-full" style={{ background: getColor(sector.pm25) }} />
+                          <span>PM2.5: {sector.pm25.toFixed(1)}</span>
+                        </div>
+                        {weather && (
+                          <div className="mt-2 pt-2 border-t border-brand-brown/10 text-[10px] text-brand-brown/60">
+                            <div className="flex justify-between gap-4">
+                              <span>Temp: {weather.temperature}°</span>
+                              <span>Wind: {weather.windSpeed}km/h</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  </Tooltip>
-                </Circle>
+                    </Tooltip>
+                  </Circle>
+                  <Marker 
+                    position={center}
+                    icon={L.divIcon({
+                      className: 'bg-transparent',
+                      html: `<div style="
+                        background-color: rgba(255, 255, 255, 0.9); 
+                        padding: 4px 8px; 
+                        border-radius: 12px; 
+                        font-weight: 800; 
+                        font-size: 11px; 
+                        color: #562C2C; 
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
+                        border: 1px solid rgba(86, 44, 44, 0.1); 
+                        white-space: nowrap;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-width: 30px;
+                      ">${Math.round(sector.pm25)}</div>`,
+                      iconSize: [40, 24],
+                      iconAnchor: [20, 12]
+                    })}
+                  />
+                </React.Fragment>
               );
             }
           } catch (e) {

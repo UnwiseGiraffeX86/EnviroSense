@@ -14,12 +14,12 @@ const Map = dynamic(() => import("@/components/Map"), {
   )
 });
 
-export const LiveSectorMap = ({ sector, pm25 }: { sector: string, pm25: number }) => {
+export const LiveSectorMap = ({ sector, pm25, weather }: { sector: string, pm25: number, weather?: any }) => {
   return (
     <div className="h-full w-full flex flex-col relative overflow-hidden rounded-3xl group bg-[#E5E0D0] border border-[#562C2C]/20 shadow-sm">
       {/* Real Map Component */}
       <div className="absolute inset-0 z-0">
-        <Map />
+        <Map weather={weather} />
       </div>
 
       {/* Controls Overlay */}
@@ -43,7 +43,7 @@ export const LiveSectorMap = ({ sector, pm25 }: { sector: string, pm25: number }
          <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl border border-[#562C2C]/20 shadow-sm pointer-events-auto">
            <div className="flex justify-between items-center text-sm">
              <span className="text-[#562C2C]/60">Air Quality Index</span>
-             <span className="font-bold text-[#00A36C]">{pm25 <= 10 ? "Good" : pm25 <= 25 ? "Moderate" : "High Risk"} ({pm25})</span>
+             <span className="font-bold text-[#00A36C]">{pm25 <= 10 ? "Good" : pm25 <= 25 ? "Moderate" : "High Risk"} ({typeof pm25 === 'number' ? Number(pm25.toFixed(1)) : "--"})</span>
            </div>
            <div className="w-full h-1.5 bg-[#562C2C]/10 rounded-full mt-3 overflow-hidden">
              <div className="h-full bg-[#00A36C] rounded-full" style={{ width: `${Math.min(pm25, 100)}%` }} />

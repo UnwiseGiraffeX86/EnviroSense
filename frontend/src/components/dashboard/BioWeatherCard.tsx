@@ -64,7 +64,7 @@ export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weathe
               />
            </svg>
            <div className="absolute flex flex-col items-center">
-             <span className="text-5xl font-bold text-[#562C2C] tracking-tighter">{pm25}</span>
+             <span className="text-5xl font-bold text-[#562C2C] tracking-tighter">{typeof pm25 === 'number' ? Number(pm25.toFixed(1)) : "--"}</span>
              <span className="text-xs font-bold text-[#562C2C]/50 uppercase mt-1">PM2.5 Index</span>
            </div>
         </div>
@@ -72,43 +72,43 @@ export const BioWeatherCard = ({ pm25, pm10, lastUpdated, stressTriggers, weathe
         {/* Metrics Grid - Compact & Readable */}
         <div className="flex-1 grid grid-cols-2 gap-3 h-full">
            {/* PM10 */}
-           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center">
+           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center items-center">
              <div className="flex items-center gap-2 text-[#562C2C]/60 mb-1">
                <Gauge className="w-5 h-5" />
                <span className="text-sm font-bold">PM10</span>
              </div>
-             <span className="text-3xl font-bold text-[#562C2C]">{pm10 ?? "--"}</span>
+             <span className="text-3xl font-bold text-[#562C2C]">{typeof pm10 === 'number' ? Number(pm10.toFixed(2)) : "--"}</span>
            </div>
 
            {/* Temperature */}
-           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center">
+           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center items-center">
              <div className="flex items-center gap-2 text-[#562C2C]/60 mb-1">
                <Thermometer className="w-5 h-5" />
                <span className="text-sm font-bold">Temp</span>
              </div>
-             <span className="text-3xl font-bold text-[#562C2C]">{weather?.temperature ?? "--"}°</span>
+             <span className="text-3xl font-bold text-[#562C2C]">{typeof weather?.temperature === 'number' ? Number(weather.temperature.toFixed(2)) : "--"}°</span>
            </div>
 
            {/* Wind */}
-           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center">
+           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center items-center">
              <div className="flex items-center gap-2 text-[#562C2C]/60 mb-1">
                <Wind className="w-5 h-5" />
                <span className="text-sm font-bold">Wind</span>
              </div>
              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-[#562C2C]">{weather?.windSpeed ?? "--"}</span>
+                <span className="text-3xl font-bold text-[#562C2C]">{typeof weather?.windSpeed === 'number' ? Number(weather.windSpeed.toFixed(2)) : "--"}</span>
                 <span className="text-sm font-medium text-[#562C2C]/50">km/h</span>
              </div>
            </div>
 
            {/* Humidity */}
-           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center">
+           <div className="bg-white/60 p-3 rounded-2xl border border-[#562C2C]/5 flex flex-col justify-center items-center">
              <div className="flex items-center gap-2 text-[#562C2C]/60 mb-1">
                <Droplets className="w-5 h-5" />
                <span className="text-sm font-bold">Hum</span>
              </div>
              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-[#562C2C]">{weather?.humidity ?? "--"}</span>
+                <span className="text-3xl font-bold text-[#562C2C]">{typeof weather?.humidity === 'number' ? Number(weather.humidity.toFixed(2)) : "--"}</span>
                 <span className="text-sm font-medium text-[#562C2C]/50">%</span>
              </div>
            </div>

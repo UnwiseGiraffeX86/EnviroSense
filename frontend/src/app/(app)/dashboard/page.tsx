@@ -103,6 +103,7 @@ export default function DashboardPage() {
              <LiveSectorMap 
                sector={profile?.sector || "Sector 1"} 
                pm25={airQuality?.pm25 || 0} 
+               weather={weather}
              />
           </div>
 

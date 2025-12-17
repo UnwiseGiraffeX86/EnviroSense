@@ -31,6 +31,25 @@ export type DashboardData = {
   loading: boolean;
 };
 
+// Helper to calculate distance
+function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg: number) {
+  return deg * (Math.PI/180)
+}
+
 export const useDashboardData = () => {
   const [data, setData] = useState<DashboardData>({
     profile: null,
@@ -67,14 +86,34 @@ export const useDashboardData = () => {
             stress_triggers: profileData.stress_triggers || []
         } : null;
 
-        if (profile?.sector) {
-          // 3. Parallel Fetch: Air Quality, Appointments, and Weather
+        // 3. Get Location (with timeout)
+        let lat = 44.4268;
+        let lon = 26.1025;
+        let locationFound = false;
+
+        if (typeof window !== 'undefined' && navigator.geolocation) {
+            try {
+                const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
+                    const timeoutId = setTimeout(() => reject(new Error("Timeout")), 5000);
+                    navigator.geolocation.getCurrentPosition(
+                        (p) => { clearTimeout(timeoutId); resolve(p); }, 
+                        (e) => { clearTimeout(timeoutId); reject(e); }
+                    );
+                });
+                lat = pos.coords.latitude;
+                lon = pos.coords.longitude;
+                locationFound = true;
+            } catch (e) {
+                console.warn("Location access denied or timed out, using default.");
+            }
+        }
+
+        if (profile) {
+          // 4. Parallel Fetch: Air Quality (All), Appointments, and Weather
           const [airQualityRes, appointmentsRes, weatherRes] = await Promise.all([
             supabase
-              .from("air_quality")
-              .select("pm25, pm10, last_updated, sector_name")
-              .eq("sector_name", profile.sector)
-              .maybeSingle(),
+              .from("air_quality_public")
+              .select("*"), // Fetch all to find nearest
             supabase
               .from("appointments")
               .select("*")
@@ -96,8 +135,8 @@ export const useDashboardData = () => {
 
                 return { data: mappedData, error: null };
               }),
-            // Fetch real weather data from OpenMeteo (Bucharest coordinates for demo)
-            fetch("https://api.open-meteo.com/v1/forecast?latitude=44.4268&longitude=26.1025&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto")
+            // Fetch real weather data from OpenMeteo (User coordinates)
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto`)
               .then(res => {
                 if (!res.ok) throw new Error(`Weather fetch failed: ${res.statusText}`);
                 return res.json();
@@ -107,6 +146,42 @@ export const useDashboardData = () => {
                 return { current: null, hourly: null }; // Return fallback structure
               })
           ]);
+
+          // Find nearest station
+          let nearestStation = null;
+          if (airQualityRes.data && airQualityRes.data.length > 0) {
+              if (locationFound) {
+                  let minDist = Infinity;
+                  
+                  // Prioritize stations with valid PM2.5 data (> 0)
+                  const validStations = airQualityRes.data.filter((s: any) => s.pm25 > 0);
+                  const searchPool = validStations.length > 0 ? validStations : airQualityRes.data;
+
+                  searchPool.forEach((station: any) => {
+                      if (station.boundary_geojson && station.boundary_geojson.coordinates) {
+                          const coords = station.boundary_geojson.coordinates[0];
+                          let sLat = 0, sLon = 0;
+                          coords.forEach((c: any) => { sLon += c[0]; sLat += c[1]; });
+                          sLat /= coords.length;
+                          sLon /= coords.length;
+                          
+                          const dist = getDistanceFromLatLonInKm(lat, lon, sLat, sLon);
+                          if (dist < minDist) {
+                              minDist = dist;
+                              nearestStation = station;
+                          }
+                      }
+                  });
+              }
+              
+              // Fallback if no location or calculation failed
+              if (!nearestStation) {
+                  // Try to find one with data first
+                  nearestStation = airQualityRes.data.find((s: any) => s.sector_name === profile.sector && s.pm25 > 0) 
+                                || airQualityRes.data.find((s: any) => s.sector_name === profile.sector)
+                                || airQualityRes.data[0];
+              }
+          }
 
           // Map OpenMeteo WMO codes to conditions
           const getWeatherCondition = (code: number) => {
@@ -145,7 +220,7 @@ export const useDashboardData = () => {
 
           setData({
             profile,
-            airQuality: airQualityRes.data,
+            airQuality: nearestStation,
             appointments: appointmentsRes.data || [],
             weather: weatherData,
             loading: false,
@@ -180,9 +255,15 @@ export const useDashboardData = () => {
         },
         (payload) => {
           console.log('Real-time update received:', payload);
+          const newRecord = payload.new as any;
           setData(prev => ({
             ...prev,
-            airQuality: payload.new as any,
+            airQuality: {
+                ...prev.airQuality!,
+                ...newRecord,
+                pm25: Number(newRecord.pm25),
+                pm10: Number(newRecord.pm10),
+            },
           }));
         }
       )

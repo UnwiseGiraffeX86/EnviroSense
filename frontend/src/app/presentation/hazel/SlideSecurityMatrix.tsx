@@ -92,7 +92,7 @@ const SlideSecurityMatrix = () => {
                     transition={{ duration: 1, delay: 1 }}
                 />
                 <motion.circle r="4" fill="#00A36C">
-                    <motion.animateMotion 
+                    <animateMotion 
                         path={`M ${50 + 12.5}% 0 L 50% 100`}
                         dur="1.5s"
                         repeatCount="indefinite"

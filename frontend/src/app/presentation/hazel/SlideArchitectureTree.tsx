@@ -54,7 +54,7 @@ const SlideArchitectureTree = () => {
                     r="4"
                     fill="#E9C46A"
                   >
-                    <motion.animateMotion
+                    <animateMotion
                       dur={`${3 + i}s`}
                       repeatCount="indefinite"
                       path={d}
@@ -91,7 +91,7 @@ const SlideArchitectureTree = () => {
                
                {/* Moving Sap Particles */}
                <motion.circle r="3" fill="#00A36C">
-                  <motion.animateMotion
+                  <animateMotion
                      path="M 400 600 L 400 300"
                      dur="2s"
                      repeatCount="indefinite"

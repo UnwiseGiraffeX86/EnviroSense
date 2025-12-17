@@ -1,27 +1,59 @@
 "use client";
 
-import React from "react";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-  Line
-} from "react-simple-maps";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { geoMercator, geoPath } from "d3-geo";
+import { feature } from "topojson-client";
 
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+// Use a reliable TopoJSON source
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
 
 const SlideFuture = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const [geographies, setGeographies] = useState<any[]>([]);
+
   // Coordinates [Lon, Lat]
-  const bucharestCoords = [26.1025, 44.4268];
+  const bucharestCoords: [number, number] = [26.1025, 44.4268];
   
   const cities = [
-    { name: "Cluj-Napoca", coordinates: [23.6236, 46.7712], label: "Cluj" },
-    { name: "Timișoara", coordinates: [21.2087, 45.7489], label: "Timișoara" },
-    { name: "Iași", coordinates: [27.6014, 47.1585], label: "Iași" }
+    { name: "Cluj-Napoca", coordinates: [23.6236, 46.7712] as [number, number], label: "Cluj" },
+    { name: "Timișoara", coordinates: [21.2087, 45.7489] as [number, number], label: "Timișoara" },
+    { name: "Iași", coordinates: [27.6014, 47.1585] as [number, number], label: "Iași" }
   ];
+
+  // 1. Define Projection Manually
+  // This allows us to use the exact same projection for the map and the custom motion paths.
+  const width = 800;
+  const height = 600;
+  
+  const projection = useMemo(() => {
+    return geoMercator()
+      .center([25.0, 46.0]) // Center on Romania
+      .scale(3000)          // Zoom level
+      .translate([width / 2, height / 2]);
+  }, []);
+
+  // 2. Path Generator
+  const pathGenerator = useMemo(() => {
+    return geoPath().projection(projection);
+  }, [projection]);
+
+  // 3. Fetch and Prepare Data (Client-Side Only to prevent Hydration Mismatch)
+  useEffect(() => {
+    setIsMounted(true);
+    fetch(geoUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        // Convert TopoJSON to GeoJSON
+        // @ts-ignore
+        const geojson = feature(data, data.objects.countries) as any;
+        setGeographies(geojson.features);
+      })
+      .catch(err => console.error("Failed to load map data:", err));
+  }, []);
+
+  if (!isMounted) return <div className="h-screen w-full bg-[#FDFBF7]" />;
 
   return (
     <section className="h-screen w-full snap-start relative overflow-hidden bg-[#FDFBF7] flex flex-col items-center justify-center">
@@ -65,65 +97,58 @@ const SlideFuture = () => {
           transition={{ duration: 1 }}
           className="w-full h-full"
         >
-          <ComposableMap
-            projection="geoAzimuthalEqualArea"
-            projectionConfig={{
-              rotate: [-25.0, -46.0, 0],
-              scale: 2800
-            }}
-            className="w-full h-full"
-          >
-            <Geographies geography={geoUrl}>
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const isRomania = geo.properties.name === "Romania";
-                  // Filter for Europe context roughly by name or just render all and let zoom handle it.
-                  // Since we are zoomed in, rendering all is fine, but we can style them.
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      fill={isRomania ? "rgba(16, 185, 129, 0.1)" : "transparent"}
-                      stroke={isRomania ? "#10B981" : "#CBD5E1"}
-                      strokeWidth={isRomania ? 2 : 0.5}
-                      style={{
-                        default: { outline: "none" },
-                        hover: { outline: "none", fill: isRomania ? "rgba(16, 185, 129, 0.2)" : "transparent" },
-                        pressed: { outline: "none" },
-                      }}
-                    />
-                  );
-                })
-              }
-            </Geographies>
+          {/* We use a standard SVG but leverage d3-geo for paths */}
+          <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
+            
+            {/* Geographies */}
+            <g>
+              {geographies.map((geo, i) => {
+                const name = geo.properties.name;
+                const isRomania = name === "Romania";
+                const isNeighbor = ["Hungary", "Bulgaria", "Serbia", "Ukraine", "Moldova"].includes(name);
+                
+                if (!isRomania && !isNeighbor) return null;
 
-            {/* Connections */}
-            {cities.map((city, i) => (
-              <Line
-                key={`line-${i}`}
-                from={bucharestCoords}
-                to={city.coordinates}
-                stroke="rgba(16, 185, 129, 0.4)"
-                strokeWidth={2}
-                strokeDasharray="4 4"
-              >
-                {(props: any) => (
-                  <motion.path
-                    {...props}
-                    fill="none"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    whileInView={{ pathLength: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 1 + (i * 0.3), ease: "easeOut" }}
+                return (
+                  <path
+                    key={geo.id || i}
+                    d={pathGenerator(geo) || ""}
+                    fill={isRomania ? "rgba(16, 185, 129, 0.1)" : "transparent"}
+                    stroke={isRomania ? "#10B981" : "#CBD5E1"}
+                    strokeWidth={isRomania ? 2 : 1}
+                    style={{ pointerEvents: "none" }}
                   />
-                )}
-              </Line>
-            ))}
+                );
+              })}
+            </g>
 
+            {/* Connections (Custom Motion Paths) */}
+            {cities.map((city, i) => {
+              // Generate LineString GeoJSON
+              const lineData = {
+                type: "LineString",
+                coordinates: [bucharestCoords, city.coordinates]
+              };
+              const d = pathGenerator(lineData as any);
+
+              return (
+                <motion.path
+                  key={`line-${i}`}
+                  d={d || ""}
+                  fill="none"
+                  stroke="rgba(16, 185, 129, 0.4)"
+                  strokeWidth="2"
+                  strokeDasharray="4 4"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 1.5, delay: 1 + (i * 0.3), ease: "easeOut" }}
+                />
+              );
+            })}
+
+            {/* Markers (Manually projected) */}
             {/* Bucharest Hub */}
-            <Marker coordinates={bucharestCoords}>
-              <g transform="translate(-12, -24)"> {/* Adjust for centering if needed, but circle is centered at 0,0 usually */}
-                 {/* Actually Marker places 0,0 at the coordinate. */}
-              </g>
+            <g transform={`translate(${projection(bucharestCoords)?.join(",")})`}>
               <motion.circle 
                 r={8} 
                 fill="#10B981" 
@@ -145,39 +170,43 @@ const SlideFuture = () => {
               >
                 Bucharest Grid [ONLINE]
               </text>
-            </Marker>
+            </g>
 
             {/* Standby Nodes */}
-            {cities.map((city, i) => (
-              <Marker key={city.name} coordinates={city.coordinates}>
-                <motion.g
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 2 + (i * 0.2) }}
-                >
-                  <circle r={5} fill="#FDFBF7" stroke="#F59E0B" strokeWidth={2} />
-                  <motion.circle 
-                    r={10} 
-                    fill="none" 
-                    stroke="#F59E0B" 
-                    strokeWidth={1} 
-                    opacity={0.5}
-                    animate={{ scale: [1, 1.2], opacity: [0.5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <text
-                    textAnchor="middle"
-                    y={25}
-                    className="font-bold text-[8px] fill-amber-600 uppercase tracking-wider"
-                    style={{ textShadow: "0px 0px 5px rgba(255,255,255,0.8)" }}
+            {cities.map((city, i) => {
+              const pos = projection(city.coordinates);
+              if (!pos) return null;
+              return (
+                <g key={city.name} transform={`translate(${pos.join(",")})`}>
+                  <motion.g
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 2 + (i * 0.2) }}
                   >
-                    {city.label}
-                  </text>
-                </motion.g>
-              </Marker>
-            ))}
+                    <circle r={5} fill="#FDFBF7" stroke="#F59E0B" strokeWidth={2} />
+                    <motion.circle 
+                      r={10} 
+                      fill="none" 
+                      stroke="#F59E0B" 
+                      strokeWidth={1} 
+                      opacity={0.5}
+                      animate={{ scale: [1, 1.2], opacity: [0.5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <text
+                      textAnchor="middle"
+                      y={25}
+                      className="font-bold text-[8px] fill-amber-600 uppercase tracking-wider"
+                      style={{ textShadow: "0px 0px 5px rgba(255,255,255,0.8)" }}
+                    >
+                      {city.label}
+                    </text>
+                  </motion.g>
+                </g>
+              );
+            })}
 
-          </ComposableMap>
+          </svg>
         </motion.div>
       </div>
 

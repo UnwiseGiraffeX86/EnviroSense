@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
-import Link from "next/link";
 
 // Use a reliable TopoJSON source
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
@@ -31,8 +29,8 @@ const SlideFuture = () => {
   
   const projection = useMemo(() => {
     return geoMercator()
-      .center([25.0, 46.0]) // Shifted center slightly south to move map up
-      .scale(4500)          // Significantly increased scale
+      .center([25.0, 45.0]) // Shifted center slightly south to move map up
+      .scale(5500)          // Significantly increased scale
       .translate([width / 2, height / 2]);
   }, []);
 
@@ -58,7 +56,7 @@ const SlideFuture = () => {
   if (!isMounted) return <div className="h-screen w-full bg-[#FDFBF7]" />;
 
   return (
-    <section className="h-screen w-full snap-start relative overflow-hidden bg-[#FDFBF7] flex flex-col justify-between">
+    <section className="h-screen w-full snap-start relative overflow-hidden bg-[#FDFBF7] flex flex-col">
       
       {/* --- Atmosphere: Background Texture --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -100,12 +98,12 @@ const SlideFuture = () => {
       </div>
 
       {/* --- Section 2: The Map (Middle - The Filling) --- */}
-      <div className="relative flex-grow w-full z-0 flex items-center justify-center max-h-[65vh]">
+      <div className="relative flex-grow w-full z-0 flex items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
-          className="w-full h-full max-w-5xl"
+          className="w-full h-full max-w-6xl max-h-[80vh]"
         >
           <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
             
@@ -114,7 +112,7 @@ const SlideFuture = () => {
               {geographies.map((geo, i) => {
                 const name = geo.properties.name;
                 const isRomania = name === "Romania";
-                const isNeighbor = ["Hungary", "Bulgaria", "Serbia", "Ukraine", "Moldova"].includes(name);
+                const isNeighbor = ["Hungary", "Bulgaria", "Serbia", "Ukraine", "Moldova", "Slovakia", "Greece", "Bosnia and Herzegovina", "Montenegro", "Croatia", "Kosovo", "Slovenia", "Austria", "Czech Republic", "Poland"].includes(name);
                 
                 if (!isRomania && !isNeighbor) return null;
 
@@ -185,6 +183,7 @@ const SlideFuture = () => {
             {cities.map((city, i) => {
               const pos = projection(city.coordinates);
               if (!pos) return null;
+
               return (
                 <g key={city.name} transform={`translate(${pos.join(",")})`}>
                   <motion.g
@@ -214,26 +213,9 @@ const SlideFuture = () => {
                 </g>
               );
             })}
-
           </svg>
         </motion.div>
       </div>
-
-      {/* --- Section 3: The Footer (Bottom) --- */}
-      <div className="relative z-30 pb-64 pt-4 flex justify-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-        >
-          <Link href="/" className="group relative px-8 py-3 bg-[#3D3430] text-[#FDFBF7] rounded-full overflow-hidden shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 font-bold tracking-wide">
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-emerald-600 to-[#3D3430] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <span className="relative z-10">Start the Demo</span>
-            <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.div>
-      </div>
-
     </section>
   );
 };

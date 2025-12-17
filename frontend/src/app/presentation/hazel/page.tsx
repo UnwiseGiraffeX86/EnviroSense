@@ -8,6 +8,7 @@ import SlideArchitecture from "./SlideArchitecture";
 import SlideSecurity from "./SlideSecurity";
 import SlideScienceAnatomy from "./SlideScienceAnatomy";
 import SlideFuture from "./SlideFuture";
+import HazelControlBar from "./HazelControlBar";
 
 const Map = dynamic(() => import("@/components/Map"), { 
   ssr: false,
@@ -189,40 +190,12 @@ export default function HazelPresentationPage() {
       </div>
 
       {/* Presenter Dock */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-6 bg-white/30 backdrop-blur-md border border-white/50 px-6 py-3 rounded-full shadow-2xl shadow-[#3D3430]/10 transition-all hover:scale-105 hover:bg-white/40">
-        
-        {/* Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#00A36C]/10 rounded-full border border-[#00A36C]/20">
-            <ShieldCheck className="w-4 h-4 text-[#00A36C]" />
-            <span className="text-[10px] font-bold text-[#00A36C] uppercase tracking-widest">HazelHeartwood Mode</span>
-        </div>
-
-        {/* Divider */}
-        <div className="w-px h-8 bg-[#3D3430]/10" />
-
-        {/* Controls */}
-        <div className="flex items-center gap-4">
-            <button 
-                onClick={() => scrollToSlide(Math.max(1, currentSlide - 1))}
-                disabled={currentSlide === 1}
-                className="p-2 hover:bg-[#3D3430]/5 rounded-full transition-colors disabled:opacity-30 active:scale-95"
-            >
-                <ChevronLeft className="w-5 h-5 text-[#3D3430]" />
-            </button>
-
-            <span className="font-mono font-bold text-[#3D3430] text-sm min-w-[60px] text-center">
-                {String(currentSlide).padStart(2, '0')} <span className="text-[#3D3430]/30">/</span> {String(totalSlides).padStart(2, '0')}
-            </span>
-
-            <button 
-                onClick={() => scrollToSlide(Math.min(totalSlides, currentSlide + 1))}
-                disabled={currentSlide === totalSlides}
-                className="p-2 hover:bg-[#3D3430]/5 rounded-full transition-colors disabled:opacity-30 active:scale-95"
-            >
-                <ChevronRight className="w-5 h-5 text-[#3D3430]" />
-            </button>
-        </div>
-      </div>
+      <HazelControlBar 
+        currentSlide={currentSlide}
+        totalSlides={totalSlides}
+        onPrev={() => scrollToSlide(Math.max(1, currentSlide - 1))}
+        onNext={() => scrollToSlide(Math.min(totalSlides, currentSlide + 1))}
+      />
     </main>
   );
 }

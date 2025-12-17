@@ -2,181 +2,252 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Activity, Zap, Wind, Brain, Heart, Thermometer, Droplets } from "lucide-react";
+import { Activity, Brain, Wind } from "lucide-react";
 
 const SlideScienceAnatomy = () => {
   return (
-    <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-transparent overflow-hidden p-6">
-      
-      {/* Header */}
-      <div className="absolute top-24 text-center z-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+    <section className="h-screen w-full snap-start relative overflow-hidden bg-[#FDFBF7] flex items-center justify-center">
+      {/* Medical Grid Overlay */}
+      <div 
+        className="absolute inset-0 z-0 opacity-30 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, #bfdbfe 1px, transparent 1px), linear-gradient(to bottom, #bfdbfe 1px, transparent 1px)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
+
+      {/* Typography Header */}
+      <div className="absolute top-12 left-0 w-full text-center z-20">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          className="text-4xl md:text-6xl font-bold text-slate-800 tracking-tight"
         >
-          <h2 className="text-5xl md:text-6xl font-black text-[#3D3430] mb-2 tracking-tight">The Triple Twin.</h2>
-          <p className="text-lg text-[#3D3430]/60 font-mono uppercase tracking-widest">Modeling Body, Mind, and Air</p>
-        </motion.div>
+          The Triple Digital Twin
+        </motion.h2>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-lg md:text-xl text-slate-500 mt-2 font-medium tracking-widest uppercase"
+        >
+          Modeling Body, Mind, and Environment
+        </motion.p>
       </div>
 
-      {/* --- THE SCANNER MACHINE (Central Dark Container) --- */}
-      <div className="relative w-full max-w-4xl h-[600px] mt-16 bg-[#1a1a1a] rounded-[3rem] shadow-2xl border border-slate-800 overflow-hidden flex items-center justify-center z-10">
+      {/* Main Content Container */}
+      <div className="relative w-full max-w-5xl h-[80vh] flex items-center justify-center">
         
-        {/* Grid Background inside Machine */}
-        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#4ade8012_1px,transparent_1px),linear-gradient(to_bottom,#4ade8012_1px,transparent_1px)] bg-[size:40px_40px]" />
-        
-        {/* Vignette inside Machine */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#1a1a1a_80%)] pointer-events-none" />
+        {/* --- The Glass Body (Centerpiece) --- */}
+        <div className="relative w-[300px] h-[600px] flex items-center justify-center z-10">
+          
+          {/* Silhouette SVG */}
+          <svg 
+            viewBox="0 0 200 500" 
+            className="w-full h-full drop-shadow-2xl"
+            style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.1))" }}
+          >
+            <defs>
+              <linearGradient id="glassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
+              </linearGradient>
+              <filter id="backdropBlur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+              </filter>
+            </defs>
+            
+            {/* Body Path - Abstract Human Silhouette */}
+            <path 
+              d="M 100 40 
+                 C 130 40 150 65 150 95 
+                 C 150 120 135 140 120 145 
+                 L 120 160 
+                 C 160 165 190 180 190 220 
+                 V 500 
+                 H 10 
+                 V 220 
+                 C 10 180 40 165 80 160 
+                 L 80 145 
+                 C 65 140 50 120 50 95 
+                 C 50 65 70 40 100 40 Z"
+              fill="url(#glassGradient)"
+              stroke="rgba(255,255,255,0.8)"
+              strokeWidth="2"
+              className="backdrop-blur-md"
+            />
+          </svg>
 
-        {/* --- THE SUBJECT (Holographic Wireframe) --- */}
-        <div className="relative z-10 opacity-80">
-            <svg height="500" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                {/* Human Outline */}
-                <path 
-                    d="M100 20 C 115 20 125 35 125 50 C 125 65 115 80 100 80 C 85 80 75 65 75 50 C 75 35 85 20 100 20 Z" 
-                    stroke="white" strokeWidth="1.5" strokeOpacity="0.5"
-                />
-                <path 
-                    d="M 100 80 C 130 90 150 110 150 150 L 150 250 L 140 250 L 140 160 C 140 140 130 130 100 130 C 70 130 60 140 60 160 L 60 250 L 50 250 L 50 150 C 50 110 70 90 100 80" 
-                    stroke="white" strokeWidth="1.5" strokeOpacity="0.5"
-                />
-                <path 
-                    d="M 100 130 L 100 250 L 120 400 L 80 400 L 100 250" 
-                    stroke="white" strokeWidth="1.5" strokeOpacity="0.5"
-                />
-                
-                {/* Internal Organs (Stylized) */}
-                <motion.path 
-                    d="M 95 100 L 105 100 L 100 110 Z" // Brain-ish
-                    stroke="#60a5fa" strokeWidth="1" fill="#60a5fa" fillOpacity="0.2"
-                    animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }}
-                />
-                <motion.circle 
-                    cx="100" cy="140" r="5" // Heart
-                    stroke="#f87171" strokeWidth="1" fill="#f87171" fillOpacity="0.2"
-                    animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.8, repeat: Infinity }}
-                />
-            </svg>
-        </div>
+          {/* Layer 1: Somatic (Heart) */}
+          <div className="absolute top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              className="w-16 h-16 rounded-full bg-red-500/20 blur-xl absolute inset-0"
+            />
+            <motion.div 
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              className="w-6 h-6 rounded-full bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] relative z-10"
+            />
+          </div>
 
-        {/* --- THE LASER SCAN (Animation) --- */}
-        <motion.div 
-            className="absolute left-0 w-full h-0.5 bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)] z-20"
-            initial={{ top: "10%" }}
-            animate={{ top: ["10%", "90%", "10%"] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        >
-            {/* Laser Glow Line */}
-            <div className="absolute inset-0 bg-emerald-400 blur-sm" />
-        </motion.div>
+          {/* Layer 2: Cognitive (Head) */}
+          <div className="absolute top-[18%] left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <motion.div 
+              animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-28 h-28 rounded-full border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.2)] bg-blue-50/10"
+            />
+          </div>
 
-        {/* --- FLOATING DUST PARTICLES (Environment) --- */}
-        <div className="absolute inset-0 pointer-events-none">
-            {[...Array(15)].map((_, i) => (
+          {/* Layer 3: Contextual (Particles) */}
+          <div className="absolute inset-0 pointer-events-none">
+            {[...Array(15)].map((_, i) => {
+              // Deterministic random values based on index to prevent hydration mismatch
+              const r1 = (i * 137.5) % 200;
+              const r2 = (i * 293.3) % 500;
+              const r3 = (i * 41.7) % 100;
+              const r4 = (i * 73.1) % 20;
+              const r5 = (i * 19.9) % 3;
+              const r6 = (i * 7.7) % 2;
+              
+              return (
                 <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-white/20 rounded-full"
-                    initial={{ 
-                        x: Math.random() * 800, 
-                        y: Math.random() * 600, 
-                        scale: Math.random() 
-                    }}
-                    animate={{ 
-                        y: [null, Math.random() * 600],
-                        opacity: [0.2, 0.5, 0.2]
-                    }}
-                    transition={{ 
-                        duration: 10 + Math.random() * 10, 
-                        repeat: Infinity, 
-                        ease: "linear" 
-                    }}
+                  key={i}
+                  className="absolute w-1 h-1 bg-emerald-400 rounded-full"
+                  initial={{ 
+                    x: r1 + 50, 
+                    y: r2, 
+                    opacity: 0 
+                  }}
+                  animate={{ 
+                    y: [null, -r3],
+                    opacity: [0, 0.6, 0],
+                    x: [null, r4 - 10]
+                  }}
+                  transition={{ 
+                    duration: 4 + r5, 
+                    repeat: Infinity, 
+                    delay: r6 
+                  }}
                 />
-            ))}
+              );
+            })}
+          </div>
+
+          {/* The Scanning Laser */}
+          <motion.div
+            className="absolute left-[-30%] right-[-30%] h-[2px] bg-emerald-500/80 shadow-[0_0_20px_rgba(16,185,129,0.8)] z-50"
+            initial={{ top: "0%" }}
+            animate={{ top: "100%" }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+          >
+             <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] font-mono text-emerald-600 bg-emerald-100 px-1 rounded-l">SCANNING</div>
+          </motion.div>
         </div>
 
-        {/* --- DATA HUD (Floating Widgets) --- */}
-        
-        {/* 1. Cognitive Twin (Head) - Appears when laser is top */}
+        {/* --- Data Widgets (Floating Cards) --- */}
+
+        {/* Left Card: Somatic (Chest) */}
         <motion.div 
-            className="absolute top-20 right-10 md:right-20 w-64 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-2xl z-30"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: [0, 1, 1, 0], x: [20, 0, 0, 20] }}
-            transition={{ duration: 8, repeat: Infinity, times: [0, 0.1, 0.3, 0.4] }} // Visible during top scan
+          className="absolute left-[5%] lg:left-[15%] top-[35%] z-30"
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.4, duration: 0.5 }} // Timed to match laser crossing chest (~35%)
         >
-            <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                    <Brain className="w-5 h-5 text-blue-400" />
-                </div>
-                <div>
-                    <h3 className="text-white font-bold text-sm">Cognitive Twin</h3>
-                    <p className="text-xs text-slate-400">Real-time Neural Link</p>
-                </div>
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-4 rounded-2xl shadow-xl w-56 flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-wider">
+              <Activity className="w-4 h-4 text-red-500" />
+              Somatic (Heart)
             </div>
-            <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Stress Level</span>
-                    <span className="text-red-400 font-mono font-bold">HIGH (82%)</span>
-                </div>
-                <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full w-[82%] bg-red-500" />
-                </div>
+            <div className="flex items-end justify-between">
+              <span className="text-3xl font-bold text-slate-800 tracking-tight">45<span className="text-sm text-slate-400 ml-1 font-medium">ms</span></span>
+              <span className="text-xs font-bold text-emerald-600 bg-emerald-50/80 px-2 py-1 rounded-full border border-emerald-100">Stable</span>
             </div>
+            {/* Mini Sparkline */}
+            <div className="h-8 w-full flex items-end gap-1 mt-2 opacity-80">
+              {[40, 60, 45, 70, 30, 50, 35, 42, 55, 48].map((h, i) => (
+                <div key={i} className="flex-1 bg-red-100 rounded-full relative overflow-hidden h-full flex items-end">
+                  <motion.div 
+                    initial={{ height: 0 }}
+                    whileInView={{ height: `${h}%` }}
+                    transition={{ duration: 0.5, delay: 1.5 + (i * 0.05) }}
+                    className="w-full bg-red-500 rounded-full" 
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
-        {/* 2. Somatic Twin (Heart) - Appears when laser is mid */}
+        {/* Right Card: Cognitive (Head) */}
         <motion.div 
-            className="absolute top-1/3 left-10 md:left-20 w-64 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-2xl z-30"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: [0, 1, 1, 0], x: [-20, 0, 0, -20] }}
-            transition={{ duration: 8, repeat: Infinity, times: [0.2, 0.3, 0.5, 0.6] }} // Visible during mid scan
+          className="absolute right-[5%] lg:right-[15%] top-[15%] z-30"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }} // Timed to match laser crossing head (~15%)
         >
-            <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-emerald-500/20 rounded-lg">
-                    <Heart className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                    <h3 className="text-white font-bold text-sm">Somatic Twin</h3>
-                    <p className="text-xs text-slate-400">Biometric Stability</p>
-                </div>
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-4 rounded-2xl shadow-xl w-56 flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-wider">
+              <Brain className="w-4 h-4 text-blue-500" />
+              Cognitive (Mind)
             </div>
-            <div className="grid grid-cols-2 gap-2">
-                <div className="bg-slate-800 p-2 rounded-lg text-center">
-                    <div className="text-[10px] text-slate-500 uppercase">HRV</div>
-                    <div className="text-emerald-400 font-mono font-bold text-lg">98</div>
-                </div>
-                <div className="bg-slate-800 p-2 rounded-lg text-center">
-                    <div className="text-[10px] text-slate-500 uppercase">SpO2</div>
-                    <div className="text-emerald-400 font-mono font-bold text-lg">99%</div>
-                </div>
+            <div className="flex items-center justify-between mt-1">
+              <div className="relative w-14 h-14">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e8f0" strokeWidth="3" strokeLinecap="round" />
+                  <motion.path 
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 0.92 }}
+                    transition={{ duration: 1.5, delay: 0.8 }}
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                    fill="none" 
+                    stroke="#3b82f6" 
+                    strokeWidth="3" 
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600">92%</div>
+              </div>
+              <div className="text-right">
+                <div className="text-lg font-bold text-slate-800">Focus</div>
+                <div className="text-xs text-slate-400 font-medium">High Capacity</div>
+              </div>
             </div>
+          </div>
         </motion.div>
 
-        {/* 3. Environmental Twin (Air) - Appears when laser is bottom */}
+        {/* Bottom Card: Contextual (Environment) */}
         <motion.div 
-            className="absolute bottom-20 right-10 md:right-20 w-64 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-2xl z-30"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: [0, 1, 1, 0], x: [20, 0, 0, 20] }}
-            transition={{ duration: 8, repeat: Infinity, times: [0.5, 0.6, 0.8, 0.9] }} // Visible during bottom scan
+          className="absolute bottom-[10%] z-30"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.5 }} // Timed to match laser reaching bottom
         >
-            <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-amber-500/20 rounded-lg">
-                    <Wind className="w-5 h-5 text-amber-400" />
-                </div>
-                <div>
-                    <h3 className="text-white font-bold text-sm">Contextual Twin</h3>
-                    <p className="text-xs text-slate-400">Local Atmosphere</p>
-                </div>
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-3 pr-6 rounded-full shadow-xl flex items-center gap-4">
+            <div className="bg-emerald-100 p-2.5 rounded-full">
+              <Wind className="w-5 h-5 text-emerald-600" />
             </div>
-            <div className="flex items-center justify-between bg-slate-800 p-2 rounded-lg">
-                <div className="flex items-center gap-2">
-                    <Droplets className="w-4 h-4 text-slate-400" />
-                    <span className="text-xs text-slate-300">PM2.5</span>
-                </div>
-                <span className="text-amber-400 font-mono font-bold">35 µg/m³</span>
+            <div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Environmental Context</div>
+              <div className="text-sm font-bold text-slate-800">PM2.5: 12 µg/m³ <span className="text-emerald-500 font-normal ml-1">(Good)</span></div>
             </div>
+          </div>
         </motion.div>
 
+      </div>
+
+      {/* Footer Equation */}
+      <div className="absolute bottom-24 text-center w-full z-50 pointer-events-none">
+        <p className="font-serif italic text-slate-400 text-lg md:text-xl tracking-wide">
+          R_global = α(S) + β(C) + γ(E)
+        </p>
       </div>
 
     </section>

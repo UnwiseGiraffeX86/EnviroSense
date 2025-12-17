@@ -24,7 +24,7 @@ const SlideScience = () => {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl font-bold text-slate-800 tracking-tight"
         >
-          The Triple Twin
+          The Triple Digital Twin
         </motion.h2>
         <motion.p 
           initial={{ opacity: 0 }}
@@ -32,7 +32,7 @@ const SlideScience = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg md:text-xl text-slate-500 mt-2 font-medium tracking-widest uppercase"
         >
-          Somatic • Cognitive • Contextual
+          Modeling Body, Mind, and Environment
         </motion.p>
       </div>
 
@@ -49,8 +49,8 @@ const SlideScience = () => {
             style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.1))" }}
           >
             <defs>
-              <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
+              <linearGradient id="glassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
                 <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
               </linearGradient>
               <filter id="backdropBlur">
@@ -58,7 +58,7 @@ const SlideScience = () => {
               </filter>
             </defs>
             
-            {/* Body Path */}
+            {/* Body Path - Abstract Human Silhouette */}
             <path 
               d="M 100 40 
                  C 130 40 150 65 150 95 
@@ -73,9 +73,9 @@ const SlideScience = () => {
                  C 65 140 50 120 50 95 
                  C 50 65 70 40 100 40 Z"
               fill="url(#glassGradient)"
-              stroke="#cbd5e1"
-              strokeWidth="1.5"
-              className="backdrop-blur-sm"
+              stroke="rgba(255,255,255,0.8)"
+              strokeWidth="2"
+              className="backdrop-blur-md"
             />
           </svg>
 
@@ -84,41 +84,42 @@ const SlideScience = () => {
             <motion.div 
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-16 h-16 rounded-full bg-red-500/30 blur-xl absolute inset-0"
+              className="w-16 h-16 rounded-full bg-red-500/20 blur-xl absolute inset-0"
             />
             <motion.div 
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-8 h-8 rounded-full bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] relative z-10"
+              className="w-6 h-6 rounded-full bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] relative z-10"
             />
           </div>
 
-          {/* Layer 2: Cognitive (Mind) */}
+          {/* Layer 2: Cognitive (Head) */}
           <div className="absolute top-[18%] left-1/2 -translate-x-1/2 -translate-y-1/2">
             <motion.div 
-              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="w-24 h-24 rounded-full border-2 border-blue-400/50 shadow-[0_0_30px_rgba(59,130,246,0.4)] bg-blue-100/10"
+              animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-28 h-28 rounded-full border border-blue-400/30 shadow-[0_0_40px_rgba(59,130,246,0.2)] bg-blue-50/10"
             />
           </div>
 
           {/* Layer 3: Contextual (Particles) */}
           <div className="absolute inset-0 pointer-events-none">
-            {[...Array(12)].map((_, i) => (
+            {[...Array(15)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1.5 h-1.5 bg-green-400 rounded-full shadow-[0_0_5px_rgba(74,222,128,0.8)]"
+                className="absolute w-1 h-1 bg-emerald-400 rounded-full"
                 initial={{ 
-                  x: Math.random() * 300, 
-                  y: Math.random() * 600, 
+                  x: Math.random() * 200 + 50, 
+                  y: Math.random() * 500, 
                   opacity: 0 
                 }}
                 animate={{ 
-                  y: [null, Math.random() * -50],
-                  opacity: [0, 0.8, 0]
+                  y: [null, Math.random() * -100],
+                  opacity: [0, 0.6, 0],
+                  x: [null, Math.random() * 20 - 10]
                 }}
                 transition={{ 
-                  duration: 3 + Math.random() * 2, 
+                  duration: 4 + Math.random() * 3, 
                   repeat: Infinity, 
                   delay: Math.random() * 2 
                 }}
@@ -128,7 +129,7 @@ const SlideScience = () => {
 
           {/* The Scanning Laser */}
           <motion.div
-            className="absolute left-[-20%] right-[-20%] h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)] z-50"
+            className="absolute left-[-30%] right-[-30%] h-[2px] bg-emerald-500/80 shadow-[0_0_20px_rgba(16,185,129,0.8)] z-50"
             initial={{ top: "0%" }}
             animate={{ top: "100%" }}
             transition={{ 
@@ -136,70 +137,96 @@ const SlideScience = () => {
               repeat: Infinity, 
               ease: "linear" 
             }}
-          />
+          >
+             <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] font-mono text-emerald-600 bg-emerald-100 px-1 rounded-l">SCANNING</div>
+          </motion.div>
         </div>
 
         {/* --- Data Widgets (Floating Cards) --- */}
 
         {/* Left Card: Somatic (Chest) */}
         <motion.div 
-          className="absolute left-[10%] lg:left-[20%] top-[35%] z-30"
+          className="absolute left-[5%] lg:left-[15%] top-[35%] z-30"
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.4, duration: 0.5 }} // Timed to match laser crossing chest (~35%)
         >
-          <div className="bg-white/80 backdrop-blur-md border border-slate-200 p-4 rounded-xl shadow-lg w-48 flex flex-col gap-2">
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-4 rounded-2xl shadow-xl w-56 flex flex-col gap-2">
             <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-wider">
-              <Activity className="w-3 h-3 text-red-500" />
-              Somatic Load
+              <Activity className="w-4 h-4 text-red-500" />
+              Somatic (Heart)
             </div>
             <div className="flex items-end justify-between">
-              <span className="text-2xl font-bold text-slate-800">42<span className="text-sm text-slate-400 ml-1">ms</span></span>
-              <span className="text-xs font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">Warning</span>
+              <span className="text-3xl font-bold text-slate-800 tracking-tight">45<span className="text-sm text-slate-400 ml-1 font-medium">ms</span></span>
+              <span className="text-xs font-bold text-emerald-600 bg-emerald-50/80 px-2 py-1 rounded-full border border-emerald-100">Stable</span>
             </div>
             {/* Mini Sparkline */}
-            <div className="h-8 w-full flex items-end gap-0.5 mt-1">
-              {[40, 60, 45, 70, 30, 50, 35, 42].map((h, i) => (
-                <div key={i} className="flex-1 bg-red-400/20 rounded-t-sm relative overflow-hidden">
-                  <div style={{ height: `${h}%` }} className="absolute bottom-0 w-full bg-red-500 rounded-t-sm" />
+            <div className="h-8 w-full flex items-end gap-1 mt-2 opacity-80">
+              {[40, 60, 45, 70, 30, 50, 35, 42, 55, 48].map((h, i) => (
+                <div key={i} className="flex-1 bg-red-100 rounded-full relative overflow-hidden h-full flex items-end">
+                  <motion.div 
+                    initial={{ height: 0 }}
+                    whileInView={{ height: `${h}%` }}
+                    transition={{ duration: 0.5, delay: 1.5 + (i * 0.05) }}
+                    className="w-full bg-red-500 rounded-full" 
+                  />
                 </div>
               ))}
-            </div>
-            {/* Connector Line */}
-            <div className="absolute top-1/2 -right-12 w-12 h-[1px] bg-slate-300 hidden lg:block">
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-slate-400 rounded-full" />
             </div>
           </div>
         </motion.div>
 
         {/* Right Card: Cognitive (Head) */}
         <motion.div 
-          className="absolute right-[10%] lg:right-[20%] top-[15%] z-30"
+          className="absolute right-[5%] lg:right-[15%] top-[15%] z-30"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }} // Timed to match laser crossing head (~15%)
         >
-          <div className="bg-white/80 backdrop-blur-md border border-slate-200 p-4 rounded-xl shadow-lg w-48 flex flex-col gap-2">
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-4 rounded-2xl shadow-xl w-56 flex flex-col gap-2">
             <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-wider">
-              <Brain className="w-3 h-3 text-blue-500" />
-              Cognitive Reserve
+              <Brain className="w-4 h-4 text-blue-500" />
+              Cognitive (Mind)
             </div>
             <div className="flex items-center justify-between mt-1">
-              <div className="relative w-12 h-12">
+              <div className="relative w-14 h-14">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e8f0" strokeWidth="3" />
-                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" strokeWidth="3" strokeDasharray="85, 100" />
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e8f0" strokeWidth="3" strokeLinecap="round" />
+                  <motion.path 
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 0.92 }}
+                    transition={{ duration: 1.5, delay: 0.8 }}
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                    fill="none" 
+                    stroke="#3b82f6" 
+                    strokeWidth="3" 
+                    strokeLinecap="round"
+                  />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-blue-600">85%</div>
+                <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600">92%</div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-bold text-slate-800">Focus</div>
-                <div className="text-xs text-slate-400">Optimal</div>
+                <div className="text-lg font-bold text-slate-800">Focus</div>
+                <div className="text-xs text-slate-400 font-medium">High Capacity</div>
               </div>
             </div>
-            {/* Connector Line */}
-            <div className="absolute top-1/2 -left-12 w-12 h-[1px] bg-slate-300 hidden lg:block">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-slate-400 rounded-full" />
+          </div>
+        </motion.div>
+
+        {/* Bottom Card: Contextual (Environment) */}
+        <motion.div 
+          className="absolute bottom-[10%] z-30"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.5 }} // Timed to match laser reaching bottom
+        >
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 p-3 pr-6 rounded-full shadow-xl flex items-center gap-4">
+            <div className="bg-emerald-100 p-2.5 rounded-full">
+              <Wind className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Environmental Context</div>
+              <div className="text-sm font-bold text-slate-800">PM2.5: 12 µg/m³ <span className="text-emerald-500 font-normal ml-1">(Good)</span></div>
             </div>
           </div>
         </motion.div>
@@ -207,11 +234,12 @@ const SlideScience = () => {
       </div>
 
       {/* Footer Equation */}
-      <div className="absolute bottom-12 w-full text-center">
-        <p className="font-serif text-2xl text-slate-400 italic">
-          R<span className="text-sm align-sub">global</span> = α(S) + β(C) + γ(E)
+      <div className="absolute bottom-8 text-center w-full z-20">
+        <p className="font-serif italic text-slate-400 text-lg md:text-xl tracking-wide">
+          R_global = α(S) + β(C) + γ(E)
         </p>
       </div>
+
     </section>
   );
 };

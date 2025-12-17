@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import SlideArchitecture from "./SlideArchitecture";
 import SlideSecurity from "./SlideSecurity";
 import SlideScienceAnatomy from "./SlideScienceAnatomy";
-import SlideFutureInitialization from "./SlideFutureInitialization";
+import SlideFuture from "./SlideFuture";
 
 const Map = dynamic(() => import("@/components/Map"), { 
   ssr: false,
@@ -185,7 +185,7 @@ export default function HazelPresentationPage() {
         <SlideArchitecture />
         <SlideSecurity />
         <SlideScienceAnatomy />
-        <SlideFutureInitialization />
+        <SlideFuture />
       </div>
 
       {/* Presenter Dock */}

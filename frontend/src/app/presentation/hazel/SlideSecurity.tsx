@@ -2,24 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Unlock, User, ShieldCheck, EyeOff, Key } from "lucide-react";
+import { Lock, Unlock, User, ShieldCheck, EyeOff, Key, Cpu } from "lucide-react";
 
 const rows = [
-  { id: 1, hash: "0x7F3A9B2C...1A", real: "Patient ID: 1102 | Status: Critical" },
-  { id: 2, hash: "0x8E2B1C4D...9F", real: "Patient ID: 2391 | Status: Recovering" },
-  { id: 3, hash: "0x9D1C2E5F...8E", real: "Patient ID: 3842 | Status: Discharged" },
-  { id: 4, hash: "0xA1F3B4D2...7C", real: "Patient ID: 4920 | Status: Stable" }, // Target
-  { id: 5, hash: "0xB2E4C5F3...6B", real: "Patient ID: 5103 | Status: Critical" },
-  { id: 6, hash: "0xC3D5E6A4...5A", real: "Patient ID: 6219 | Status: Stable" },
+  { id: 1, hash: "0x7A4F91B2C8D3E4F5...[ENCRYPTED]", real: "Patient ID: 1102 | Status: Critical" },
+  { id: 2, hash: "0x8E2B1C4D5F6A7B8C...[ENCRYPTED]", real: "Patient ID: 2391 | Status: Recovering" },
+  { id: 3, hash: "0x9D1C2E5F3A4B6C7D...[ENCRYPTED]", real: "Patient ID: 3842 | Status: Discharged" },
+  { id: 4, hash: "0xA1F3B4D2E5C6F7A8...[ENCRYPTED]", real: "Patient ID: 4920 | Status: Stable" }, // Target
+  { id: 5, hash: "0xB2E4C5F3D6A7B8C9...[ENCRYPTED]", real: "Patient ID: 5103 | Status: Critical" },
+  { id: 6, hash: "0xC3D5E6A4B7C8D9E0...[ENCRYPTED]", real: "Patient ID: 6219 | Status: Stable" },
 ];
 
 export default function SlideSecurity() {
   const [isUnlocked, setIsUnlocked] = useState(false);
-
-  // Trigger animation sequence on mount/view
-  useEffect(() => {
-    // Reset for demo purposes if needed, but here we rely on whileInView
-  }, []);
 
   return (
     <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative bg-[#FDFBF7] overflow-hidden">
@@ -31,15 +26,15 @@ export default function SlideSecurity() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#3D3430] mb-3">Zero Trust Visibility.</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#3D3430] mb-3">The Living Security Terminal.</h2>
           <p className="text-lg text-[#3D3430]/60 font-mono max-w-2xl mx-auto">
-            The database engine itself filters the view. Unmatched rows don't just lock—they vanish.
+            Active denial by default. Liquid data flow on verification.
           </p>
         </motion.div>
       </div>
 
       {/* Main Visualization Area */}
-      <div className="relative w-full max-w-3xl h-[500px] flex flex-col items-center justify-center">
+      <div className="relative w-full max-w-3xl h-[600px] flex flex-col items-center justify-center">
         
         {/* The Database Stack */}
         <div className="relative w-full max-w-xl flex flex-col gap-3 z-20">
@@ -56,29 +51,48 @@ export default function SlideSecurity() {
               >
                 <motion.div
                   animate={isUnlocked && isTarget ? "unlocked" : "locked"}
+                  whileHover={!isTarget ? {
+                    borderColor: "rgba(239, 68, 68, 0.5)",
+                    x: [0, -2, 2, -2, 2, 0],
+                    color: "rgba(239, 68, 68, 0.8)",
+                    transition: { duration: 0.4 }
+                  } : {}}
                   variants={{
                     locked: { 
                       scale: 1, 
-                      backgroundColor: "rgba(226, 232, 240, 0.5)", // slate-200/50
-                      borderColor: "rgba(255, 255, 255, 0)",
-                      boxShadow: "none"
+                      backgroundColor: "rgba(226, 232, 240, 0.3)", // lighter slate
+                      borderColor: "rgba(0,0,0,0)",
+                      boxShadow: "none",
+                      opacity: 0.6
                     },
                     unlocked: { 
-                      scale: 1.05, 
+                      scale: 1.1, 
                       backgroundColor: "#FFFFFF", 
                       borderColor: "#10B981", // emerald-500
-                      boxShadow: "0 0 30px rgba(16,185,129,0.2)"
+                      boxShadow: "0 0 30px rgba(16,185,129,0.25)",
+                      opacity: 1,
+                      zIndex: 50 // Bring to front
                     }
                   }}
                   transition={{ duration: 0.5 }}
                   className={`
-                    h-14 w-full rounded-lg border backdrop-blur-sm flex items-center px-6 justify-between
-                    ${!isTarget && isUnlocked ? "opacity-40 blur-[1px]" : "opacity-100"}
+                    h-14 w-full rounded-lg border flex items-center px-6 justify-between relative overflow-hidden
+                    ${!isTarget ? "font-mono text-slate-400 cursor-not-allowed" : ""}
                   `}
                 >
+                  {/* Holographic Shimmer for Active Row */}
+                  {isUnlocked && isTarget && (
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 pointer-events-none"
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "200%" }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    />
+                  )}
+
                   {/* Content */}
-                  <div className="font-mono text-sm flex items-center gap-4">
-                    <span className={`text-xs font-bold ${isUnlocked && isTarget ? "text-emerald-600" : "text-slate-400"}`}>
+                  <div className="font-mono text-sm flex items-center gap-4 w-full overflow-hidden relative z-10">
+                    <span className={`text-xs font-bold shrink-0 ${isUnlocked && isTarget ? "text-emerald-600" : "text-inherit"}`}>
                       {isUnlocked && isTarget ? "ROW_04" : `ROW_0${index + 1}`}
                     </span>
                     
@@ -86,14 +100,22 @@ export default function SlideSecurity() {
                       key={isUnlocked ? "real" : "hash"}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className={isUnlocked && isTarget ? "text-[#3D3430] font-bold" : "text-slate-400 tracking-widest"}
+                      className={`truncate w-full ${isUnlocked && isTarget ? "text-[#3D3430]" : "text-inherit tracking-widest opacity-60"}`}
                     >
-                      {isUnlocked && isTarget ? row.real : row.hash}
+                      {isUnlocked && isTarget ? (
+                        <div className="flex items-center gap-2 whitespace-nowrap">
+                           <span className="font-extrabold text-slate-800 text-base">Patient ID: 4920</span>
+                           <span className="text-slate-300">|</span>
+                           <span className="text-emerald-600 font-bold">Status: Stable</span>
+                        </div>
+                      ) : (
+                        row.hash
+                      )}
                     </motion.span>
                   </div>
 
                   {/* Icon */}
-                  <div>
+                  <div className="shrink-0 ml-4 relative z-10">
                     {isUnlocked && isTarget ? (
                       <motion.div 
                         initial={{ scale: 0 }} 
@@ -103,41 +125,10 @@ export default function SlideSecurity() {
                         <Unlock className="w-4 h-4 text-emerald-600" />
                       </motion.div>
                     ) : (
-                      <Lock className="w-4 h-4 text-slate-400/50" />
+                      <Lock className="w-4 h-4 text-inherit opacity-50" />
                     )}
                   </div>
                 </motion.div>
-
-                {/* Floating Annotation for Target */}
-                {isTarget && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: isUnlocked ? 1 : 0, x: isUnlocked ? 0 : -20 }}
-                    transition={{ delay: 0.5 }}
-                    className="absolute -right-48 top-1/2 -translate-y-1/2 flex items-center gap-3"
-                  >
-                    <div className="w-12 h-px bg-emerald-500/50" />
-                    <div className="bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded text-xs font-bold text-emerald-700 shadow-sm">
-                      RLS Key Match: AUTHORIZED
-                    </div>
-                  </motion.div>
-                )}
-
-                 {/* Floating Annotation for Others */}
-                 {row.id === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: isUnlocked ? 1 : 0, x: isUnlocked ? 0 : -20 }}
-                    transition={{ delay: 0.7 }}
-                    className="absolute -right-44 top-1/2 -translate-y-1/2 flex items-center gap-3"
-                  >
-                    <div className="w-8 h-px bg-slate-300" />
-                    <div className="text-xs font-mono text-slate-400">
-                      Default Deny: INVISIBLE
-                    </div>
-                  </motion.div>
-                )}
-
               </motion.div>
             );
           })}
@@ -145,32 +136,52 @@ export default function SlideSecurity() {
 
         {/* The User Context (The Key) */}
         <motion.div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center"
           initial={{ y: 100, opacity: 0 }}
-          whileInView={{ y: -40, opacity: 1 }}
+          whileInView={{ y: 0, opacity: 1 }}
           onAnimationComplete={() => setIsUnlocked(true)}
-          transition={{ duration: 1, delay: 1, type: "spring" }}
+          transition={{ duration: 1, delay: 0.5, type: "spring" }}
         >
-           {/* Connection Line */}
-           <motion.div 
-             className="h-24 w-0.5 bg-gradient-to-t from-emerald-500 to-transparent absolute bottom-full left-1/2 -translate-x-1/2 origin-bottom"
-             initial={{ scaleY: 0 }}
-             animate={{ scaleY: isUnlocked ? 1 : 0 }}
-             transition={{ duration: 0.5, delay: 0.2 }}
-           />
+           {/* SVG Circuit Line Connection */}
+           <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-1 h-[160px] overflow-visible pointer-events-none z-0">
+             <svg width="20" height="100%" viewBox="0 0 20 100" preserveAspectRatio="none" className="overflow-visible">
+               {/* Background Track */}
+               <line x1="10" y1="100%" x2="10" y2="0" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="4 4" />
+               
+               {/* Liquid Data Pulse */}
+               {isUnlocked && (
+                 <motion.path
+                   d="M 10 100 L 10 0"
+                   stroke="#10B981"
+                   strokeWidth="3"
+                   strokeLinecap="round"
+                   strokeDasharray="10 10"
+                   initial={{ strokeDashoffset: 0 }}
+                   animate={{ strokeDashoffset: -20 }}
+                   transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+                 />
+               )}
+             </svg>
+           </div>
 
-           <div className="relative">
-             <div className="w-16 h-16 bg-[#3D3430] rounded-2xl flex items-center justify-center shadow-2xl border-4 border-[#FDFBF7] relative z-10">
-                <User className="w-8 h-8 text-white" />
-             </div>
+           <div className="relative z-10 bg-[#FDFBF7] p-2 rounded-xl"> {/* Background to hide line behind chip */}
+             {/* Chip Container */}
+             <motion.div 
+               className="w-16 h-16 bg-slate-800 rounded-lg flex items-center justify-center shadow-2xl border border-emerald-500/50 relative overflow-hidden"
+               animate={{ scale: [1, 1.05, 1] }}
+               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+             >
+                {/* Chip Pattern */}
+                <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(#10B981 1px, transparent 1px)', backgroundSize: '4px 4px' }}></div>
+                
+                <Cpu className="w-8 h-8 text-emerald-400 relative z-10" />
+             </motion.div>
+             
              {/* Badge */}
-             <div className="absolute -bottom-3 -right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-full border-2 border-[#FDFBF7] flex items-center gap-1">
-                <Key className="w-3 h-3" />
-                <span>ID:4920</span>
+             <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-emerald-900 text-emerald-400 text-[9px] font-mono px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1 shadow-lg">
+                SESSION_VERIFIED
              </div>
            </div>
-           
-           <p className="mt-4 text-xs font-bold text-[#3D3430]/50 uppercase tracking-widest">Authenticated User</p>
         </motion.div>
 
       </div>

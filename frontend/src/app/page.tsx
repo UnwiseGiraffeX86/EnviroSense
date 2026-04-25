@@ -77,35 +77,37 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="flex gap-3 mb-8"
         >
-          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <Wind className="w-3.5 h-3.5 text-brand-brown/40" />
-                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Your AQI</span>
+          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl flex flex-1 divide-x divide-brand-brown/10">
+            <div className="px-4 py-3 flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1.5">
+                  <Wind className="w-3.5 h-3.5 text-brand-brown/40" />
+                  <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Your AQI</span>
+                </div>
+                <span className="text-[10px] font-bold text-brand-green">+3</span>
               </div>
-              <span className="text-[10px] font-bold text-brand-green">+3</span>
+              <div className="text-2xl font-black text-brand-brown">82<span className="text-sm font-normal text-brand-brown/40">/100</span></div>
             </div>
-            <div className="text-2xl font-black text-brand-brown">82<span className="text-sm font-normal text-brand-brown/40">/100</span></div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5 text-brand-brown/40" />
-                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Breath Rate</span>
+            <div className="px-4 py-3 flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1.5">
+                  <Activity className="w-3.5 h-3.5 text-brand-brown/40" />
+                  <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Breath Rate</span>
+                </div>
+                <span className="text-[10px] font-bold text-brand-brown/40">stable</span>
               </div>
-              <span className="text-[10px] font-bold text-brand-brown/40">stable</span>
+              <div className="text-2xl font-black text-brand-brown">14 <span className="text-sm font-normal text-brand-brown/40">bpm</span></div>
             </div>
-            <div className="text-2xl font-black text-brand-brown">14 <span className="text-sm font-normal text-brand-brown/40">bpm</span></div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-brand-brown/40" />
-                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Sector PM2.5</span>
+            <div className="px-4 py-3 flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-brown/40" />
+                  <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Sector PM2.5</span>
+                </div>
+                <span className="text-[10px] font-bold text-brand-orange">↑ 12%</span>
               </div>
-              <span className="text-[10px] font-bold text-brand-orange">↑ 12%</span>
+              <div className="text-2xl font-black text-brand-brown">34.2 <span className="text-sm font-normal text-brand-brown/40">µg</span></div>
             </div>
-            <div className="text-2xl font-black text-brand-brown">34.2 <span className="text-sm font-normal text-brand-brown/40">µg</span></div>
           </div>
         </motion.div>
 

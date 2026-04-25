@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">EnviroSense</string>
+    <string name="title_activity_main">EnviroSense</string>
+    <string name="package_name">com.envirosense.app</string>
+    <string name="custom_url_scheme">com.envirosense.app</string>
+</resources>

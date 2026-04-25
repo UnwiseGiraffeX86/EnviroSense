@@ -19,7 +19,7 @@ const Map = dynamic(() => import("@/components/Map"), {
 
 // --- Placeholder Components ---
 
-import { getAirQuality } from "./actions";
+import { getAirQuality } from "./_actions";
 
 const SlideContext = () => {
   const [aqData, setAqData] = useState({

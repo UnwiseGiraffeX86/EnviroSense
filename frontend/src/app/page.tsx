@@ -3,7 +3,11 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   ShieldCheck, 
-  Play
+  ChevronDown,
+  Lock,
+  Wind,
+  Sparkles,
+  Activity
 } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -54,34 +58,88 @@ const Hero = () => {
           className="text-6xl lg:text-7xl font-bold text-brand-brown leading-[1.1] mb-6"
         >
           Breathe Smarter. <br />
-          <span className="text-brand-green">Live Safer.</span>
+          <span className="text-brand-green italic">Live Safer.</span>
         </motion.h1>
         
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl text-brand-brown/80 mb-10 leading-relaxed max-w-lg"
+          className="text-lg text-brand-brown/70 mb-8 leading-relaxed max-w-lg"
         >
-          The first Neuro-Symbolic health guardian that correlates your respiratory health with Bucharest&apos;s hyper-local air quality.
+          The first <span className="font-bold text-brand-brown">Neuro-Symbolic</span> health guardian that correlates your respiratory health with Bucharest&apos;s hyper-local air quality — in milliseconds.
         </motion.p>
+
+        {/* Live Stat Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="flex gap-3 mb-8"
+        >
+          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1.5">
+                <Wind className="w-3.5 h-3.5 text-brand-brown/40" />
+                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Your AQI</span>
+              </div>
+              <span className="text-[10px] font-bold text-brand-green">+3</span>
+            </div>
+            <div className="text-2xl font-black text-brand-brown">82<span className="text-sm font-normal text-brand-brown/40">/100</span></div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1.5">
+                <Activity className="w-3.5 h-3.5 text-brand-brown/40" />
+                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Breath Rate</span>
+              </div>
+              <span className="text-[10px] font-bold text-brand-brown/40">stable</span>
+            </div>
+            <div className="text-2xl font-black text-brand-brown">14 <span className="text-sm font-normal text-brand-brown/40">bpm</span></div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm border border-brand-brown/10 rounded-xl px-4 py-3 flex-1">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-brand-brown/40" />
+                <span className="text-[10px] font-bold text-brand-brown/40 uppercase tracking-wider">Sector PM2.5</span>
+              </div>
+              <span className="text-[10px] font-bold text-brand-orange">↑ 12%</span>
+            </div>
+            <div className="text-2xl font-black text-brand-brown">34.2 <span className="text-sm font-normal text-brand-brown/40">µg</span></div>
+          </div>
+        </motion.div>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex items-center gap-4"
+          className="flex items-center gap-4 mb-6"
         >
           <Link href="/chat">
-            <button className="flex items-center gap-2 bg-brand-green text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-brand-brown transition-all shadow-xl shadow-brand-green/20 group">
-              <ShieldCheck className="w-5 h-5" />
+            <button className="flex items-center gap-2 bg-brand-green text-white px-7 py-3.5 rounded-full font-semibold text-base hover:bg-brand-brown transition-all shadow-xl shadow-brand-green/20">
+              <Sparkles className="w-4 h-4" />
               Launch Sentinel
             </button>
           </Link>
-          <button className="flex items-center gap-2 border border-brand-brown/20 text-brand-brown px-8 py-4 rounded-full font-semibold text-lg hover:bg-brand-brown/5 transition-all">
-            <Play className="w-5 h-5" />
+          <button className="flex items-center gap-2 border border-brand-brown/20 text-brand-brown px-7 py-3.5 rounded-full font-semibold text-base hover:bg-brand-brown/5 transition-all">
+            <ChevronDown className="w-4 h-4" />
             How it Works
           </button>
+        </motion.div>
+
+        {/* Trust Badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex items-center gap-4 text-xs text-brand-brown/40"
+        >
+          <div className="flex items-center gap-1.5">
+            <Lock className="w-3 h-3" />
+            <span>Zero-Trust by design</span>
+          </div>
+          <div className="w-px h-3 bg-brand-brown/20" />
+          <span>Free for Bucharest residents · 2026 cohort</span>
         </motion.div>
       </div>
 
@@ -327,25 +385,27 @@ const FeatureShowcase = () => {
               <h3 className="text-3xl font-bold text-brand-brown mb-4">Analyze.</h3>
               <p className="text-brand-brown/70 text-lg">You log symptoms via secure chat. The AI correlates your data with the air you breathe, and cites every source.</p>
             </div>
-            <div className="flex-1 w-full order-2 md:order-none space-y-2">
-              {/* User message */}
-              <div className="flex justify-end">
-                <div className="bg-brand-green/10 rounded-2xl rounded-br-md px-4 py-2.5 max-w-[80%] border border-brand-green/20">
-                  <p className="text-brand-brown text-sm">Wheezy since this morning&apos;s run.</p>
+            <div className="flex-1 w-full order-2 md:order-none">
+              <div className="bg-white p-6 rounded-2xl shadow-lg border border-brand-brown/5 space-y-2">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="bg-brand-green/10 rounded-2xl rounded-br-md px-4 py-2.5 max-w-[80%] border border-brand-green/20">
+                    <p className="text-brand-brown text-sm">Wheezy since this morning&apos;s run.</p>
+                  </div>
                 </div>
-              </div>
-              {/* AI response */}
-              <div className="flex justify-start">
-                <div className="bg-white rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[85%] border border-brand-brown/10 shadow-sm">
-                  <p className="text-brand-brown text-sm">
-                    High PM2.5 spike at 07:14 in Sector 5.{" "}
-                    <span className="text-brand-green/70 text-xs font-medium">[citation]</span>
-                  </p>
+                {/* AI response */}
+                <div className="flex justify-start">
+                  <div className="bg-brand-brown/5 rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[85%]">
+                    <p className="text-brand-brown text-sm">
+                      High PM2.5 spike at 07:14 in Sector 5.{" "}
+                      <span className="text-brand-green/70 text-xs font-medium">[citation]</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-start">
-                <div className="bg-white rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[85%] border border-brand-brown/10 shadow-sm">
-                  <p className="text-brand-brown text-sm">Suggesting Herăstrău route tomorrow.</p>
+                <div className="flex justify-start">
+                  <div className="bg-brand-brown/5 rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[85%]">
+                    <p className="text-brand-brown text-sm">Suggesting Herăstrău route tomorrow.</p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -14,6 +14,8 @@ import {
   BucharestReality, 
   AITrust, 
   SentinelNetwork, 
+  CompoundRiskShowcase,
+  ChatPreview,
   ValidatedPerformance, 
   ZeroTrustFAQ 
 } from "@/components/landing/LandingSections";
@@ -309,6 +311,8 @@ export default function LandingPage() {
       <BucharestReality />
       <LiveMapSection />
       <SentinelNetwork />
+      <CompoundRiskShowcase />
+      <ChatPreview />
       <FeatureShowcase />
       <ValidatedPerformance />
       <ZeroTrustFAQ />

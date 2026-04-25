@@ -77,7 +77,7 @@ def generate_medical_profiles():
         "Albuterol Inhaler", "Lisinopril", "Metformin", "Cetirizine",
         "Ibuprofen", "Omeprazole", "Sertraline", "Melatonin"
     ]
-    
+
     blood_types = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
 
     new_records = []

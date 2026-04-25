@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import SymptomTriage from '@/components/chat/SymptomTriage';
-import DoctorDashboard from '@/components/chat/DoctorDashboard';
 import ProfileForm from '@/components/chat/ProfileForm';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -29,7 +28,6 @@ type Message = {
 type Consultation = {
   id: string;
   patient_id: string;
-  doctor_id?: string;
   status: string;
   initial_symptoms: string;
   ai_analysis?: {
@@ -49,12 +47,10 @@ type Consultation = {
 
 export default function ChatInterface() {
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState('patient'); // 'patient' or 'doctor'
   const [symptoms, setSymptoms] = useState('');
   const [activeConsultation, setActiveConsultation] = useState<Consultation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [doctorQueue, setDoctorQueue] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [aiAnalyzing, setAiAnalyzing] = useState(false);
   const [showChat, setShowChat] = useState(false);
@@ -87,50 +83,6 @@ export default function ChatInterface() {
     }
   }, [activeConsultation]);
 
-  // Realtime for Doctor Queue
-  useEffect(() => {
-    if (role === 'doctor') {
-      const channel = supabase
-        .channel('public:consultations')
-        .on('postgres_changes', {
-          event: '*',
-          schema: 'public',
-          table: 'consultations'
-        }, (payload: any) => {
-          if (payload.eventType === 'INSERT' && payload.new.status === 'waiting_doctor') {
-            fetchNewConsultation(payload.new.id);
-          } else if (payload.eventType === 'UPDATE') {
-             if (payload.new.status === 'waiting_doctor') {
-                fetchNewConsultation(payload.new.id);
-             } else if (payload.new.status === 'active' && payload.new.doctor_id !== user?.id) {
-                // Remove from queue if taken by another doctor
-                setDoctorQueue(prev => prev.filter(c => c.id !== payload.new.id));
-             }
-          }
-        })
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
-  }, [role, user]);
-
-  const fetchNewConsultation = async (id: string) => {
-    const { data } = await supabase
-      .from('consultations')
-      .select('*, profiles!patient_id(full_name)')
-      .eq('id', id)
-      .single();
-    
-    if (data) {
-      setDoctorQueue(prev => {
-        if (prev.find(c => c.id === data.id)) return prev;
-        return [...prev, data as unknown as Consultation];
-      });
-    }
-  };
-
   const checkUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
@@ -147,18 +99,11 @@ export default function ChatInterface() {
       .maybeSingle();
       
     if (profile) {
-      setRole(profile.role || 'patient');
-      
       // Check if profile is complete
       if (!profile.full_name || profile.full_name === 'New User') {
         setShowProfileForm(true);
       }
-
-      if (profile.role === 'doctor') {
-        fetchDoctorQueue();
-      } else {
-        fetchActiveConsultation(user.id);
-      }
+      fetchActiveConsultation(user.id);
     } else {
       // Profile doesn't exist (e.g. first time Google login)
       // Create it now
@@ -199,22 +144,6 @@ export default function ChatInterface() {
         setShowChat(true);
       }
     }
-  };
-
-  const fetchDoctorQueue = async () => {
-    // Explicitly define the relationship to avoid ambiguity
-    // We want to join profiles on patient_id
-    const { data, error } = await supabase
-      .from('consultations')
-      .select('*, profiles!patient_id(full_name)')
-      .eq('status', 'waiting_doctor')
-      .order('created_at', { ascending: true });
-      
-    if (error) {
-      console.error("Error fetching queue:", error);
-    }
-    
-    if (data) setDoctorQueue(data as unknown as Consultation[]);
   };
 
   const fetchMessages = async () => {
@@ -293,37 +222,14 @@ export default function ChatInterface() {
     await supabase
       .from('consultations')
       .update({
-        status: 'waiting_doctor',
+        status: 'active',
         ai_analysis: analysis
       })
       .eq('id', consultation.id);
 
-    setActiveConsultation({ ...consultation, status: 'waiting_doctor', ai_analysis: analysis } as Consultation);
+    setActiveConsultation({ ...consultation, status: 'active', ai_analysis: analysis } as Consultation);
     setAiAnalyzing(false);
-  };
-
-  const acceptCase = async (consultationId: string) => {
-    if (!user) return;
-    await supabase
-      .from('consultations')
-      .update({
-        status: 'active',
-        doctor_id: user.id
-      })
-      .eq('id', consultationId);
-      
-    // Add system message
-    await supabase.from('messages').insert({
-      consultation_id: consultationId,
-      sender_id: user.id,
-      content: "Doctor has joined the chat.",
-      is_system_message: true
-    });
-
-    // Refresh
-    const { data } = await supabase.from('consultations').select('*').eq('id', consultationId).single();
-    setActiveConsultation(data as Consultation);
-    setDoctorQueue(prev => prev.filter(c => c.id !== consultationId));
+    setShowChat(true);
   };
 
   const sendMessage = async (text: string = newMessage) => {
@@ -344,20 +250,6 @@ export default function ChatInterface() {
 
   if (showProfileForm && user) {
     return <ProfileForm userId={user.id} email={user.email || ''} onComplete={handleProfileComplete} />;
-  }
-
-  // DOCTOR VIEW
-  if (role === 'doctor') {
-    return (
-      <DoctorDashboard 
-        queue={doctorQueue}
-        activeCase={activeConsultation}
-        onAcceptCase={acceptCase}
-        onSelectCase={setActiveConsultation}
-        messages={messages}
-        onSendMessage={sendMessage}
-      />
-    );
   }
 
   // PATIENT VIEW
@@ -400,8 +292,7 @@ export default function ChatInterface() {
             <div className="flex justify-start">
               <div className="bg-gray-700 p-2 rounded max-w-[70%] border border-blue-500/30">
                 <p className="font-bold text-blue-400 text-xs mb-1">AI Assistant</p>
-                I have analyzed your symptoms. Based on current air quality (PM2.5: {activeConsultation?.ai_analysis?.weather_context?.pm25}), 
-                I recommend a consultation. I have forwarded your case to a specialist. Please wait for a doctor to join.
+                I have analyzed your symptoms. Based on current air quality (PM2.5: {activeConsultation?.ai_analysis?.weather_context?.pm25}), {activeConsultation?.ai_analysis?.weather_context?.note}. How else can I assist you today?
               </div>
             </div>
 
@@ -415,22 +306,16 @@ export default function ChatInterface() {
           </div>
 
           {/* Input */}
-          {activeConsultation?.status === 'active' ? (
-            <div className="flex gap-2">
-              <input 
-                className="flex-1 bg-gray-700 rounded p-2 text-white"
-                value={newMessage}
-                onChange={e => setNewMessage(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && sendMessage()}
-                placeholder="Message your doctor..."
-              />
-              <button onClick={() => sendMessage()} className="bg-blue-500 px-4 rounded">Send</button>
-            </div>
-          ) : (
-            <div className="text-center text-gray-500 p-2 bg-gray-800 rounded">
-              Waiting for a doctor to accept your case...
-            </div>
-          )}
+          <div className="flex gap-2">
+            <input 
+              className="flex-1 bg-gray-700 rounded p-2 text-white"
+              value={newMessage}
+              onChange={e => setNewMessage(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendMessage()}
+              placeholder="Message your AI Assistant..."
+            />
+            <button onClick={() => sendMessage()} className="bg-blue-500 px-4 rounded">Send</button>
+          </div>
         </div>
       )}
     </div>

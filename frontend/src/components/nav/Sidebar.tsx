@@ -7,12 +7,9 @@ import {
   LayoutDashboard, 
   NotebookPen, 
   Map as MapIcon, 
-  UserCog, 
-  Stethoscope,
-  Plus
+  UserCog
 } from "lucide-react";
 import { motion } from "framer-motion";
-import TriageModal from "@/components/patient/TriageModal";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -24,7 +21,6 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
-  const [isTriageOpen, setIsTriageOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -71,19 +67,7 @@ export default function Sidebar() {
               );
             })}
           </nav>
-
-          {/* Emergency Action */}
-          <div className="mt-auto">
-            <button 
-              onClick={() => setIsTriageOpen(true)}
-              className="w-12 h-12 flex items-center justify-center bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors border border-red-100 group shadow-sm"
-              title="Triage"
-            >
-              <Stethoscope className="w-6 h-6 group-hover:scale-110 transition-transform" />
-            </button>
-          </div>
         </aside>
-        <TriageModal isOpen={isTriageOpen} onClose={() => setIsTriageOpen(false)} />
       </>
     );
   }
@@ -105,16 +89,6 @@ export default function Sidebar() {
             <span className="text-[10px] font-medium mt-1">Map</span>
           </Link>
 
-          {/* Triage Button (Mobile Center) */}
-          <div className="-mt-8">
-            <button 
-              onClick={() => setIsTriageOpen(true)}
-              className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-lg shadow-red-200 text-white hover:scale-105 transition-transform"
-            >
-              <Stethoscope className="w-7 h-7" />
-            </button>
-          </div>
-
           {/* Tracker */}
           <Link href="/tracker" className={`flex flex-col items-center p-2 ${pathname === '/tracker' ? 'text-[#00A36C]' : 'text-[#562C2C]/60'}`}>
             <NotebookPen className="w-6 h-6" />
@@ -128,7 +102,6 @@ export default function Sidebar() {
           </Link>
         </div>
       </nav>
-      <TriageModal isOpen={isTriageOpen} onClose={() => setIsTriageOpen(false)} />
     </>
   );
 }

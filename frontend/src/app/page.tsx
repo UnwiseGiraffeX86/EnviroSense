@@ -3,8 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   ShieldCheck, 
-  Play, 
-  UserPlus
+  Play
 } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -32,7 +31,6 @@ const Navbar = () => (
       <div className="flex items-center gap-6 text-sm font-medium text-brand-brown/80">
         <Link href="#mission" className="hover:text-brand-green transition-colors">Mission</Link>
         <Link href="#map" className="hover:text-brand-green transition-colors">Live Map</Link>
-        <Link href="/doctor" className="hover:text-brand-green transition-colors">For Doctors</Link>
         <Link href="/auth" className="hover:text-brand-green transition-colors">Login</Link>
       </div>
       <Link href="/auth?mode=signup">
@@ -251,26 +249,23 @@ const FeatureShowcase = () => {
             </div>
             <div className="md:pl-24 flex-1">
               <span className="text-brand-brown font-bold tracking-wider text-sm uppercase mb-2 block">Step 03</span>
-              <h3 className="text-3xl font-bold text-brand-brown mb-4">Connect.</h3>
-              <p className="text-brand-brown/70 text-lg">We triage and connect you to specialists instantly if risks are detected.</p>
+              <h3 className="text-3xl font-bold text-brand-brown mb-4">Act.</h3>
+              <p className="text-brand-brown/70 text-lg">Our AI Sentinel instantly triages your symptoms and delivers actionable insights.</p>
             </div>
             <div className="flex-1 w-full">
               <div className="bg-brand-brown text-brand-cream p-6 rounded-2xl shadow-lg relative overflow-hidden">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 bg-brand-cream/10 rounded-full flex items-center justify-center">
-                    <UserPlus className="w-6 h-6 text-brand-cream" />
+                    <ShieldCheck className="w-6 h-6 text-brand-cream" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Dr. Ionescu</h4>
-                    <p className="text-brand-cream/60 text-sm">Pulmonology Specialist</p>
+                    <h4 className="font-bold text-lg">AI Sentinel</h4>
+                    <p className="text-brand-cream/60 text-sm">Health Guardian</p>
                   </div>
                 </div>
                 <div className="flex gap-2 mt-4">
                   <button className="flex-1 bg-brand-green py-2 rounded-lg text-sm font-semibold hover:bg-brand-green/90 transition-colors">
-                    Connect Now
-                  </button>
-                  <button className="px-4 py-2 border border-brand-cream/20 rounded-lg text-sm hover:bg-brand-cream/10 transition-colors">
-                    Profile
+                    View Insights
                   </button>
                 </div>
               </div>

@@ -113,36 +113,36 @@ export const BucharestReality = () => {
   );
 };
 
-// --- 2. Medical Trust Strip (Authority) ---
-export const MedicalTrust = () => {
+// --- 2. AI Trust Strip (Authority) ---
+export const AITrust = () => {
   return (
     <div className="bg-white border-y border-brand-brown/10 py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-20">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-3">
             <div className="bg-brand-green/10 p-2 rounded-lg">
-              <Stethoscope className="w-6 h-6 text-brand-green" />
+              <Activity className="w-6 h-6 text-brand-green" />
             </div>
-            <span className="text-brand-brown font-bold text-lg">Medical Advisory Board</span>
+            <span className="text-brand-brown font-bold text-lg">AI Foundation Engine</span>
           </div>
           
           <div className="h-8 w-px bg-brand-brown/20 hidden md:block" />
           
           <p className="text-brand-brown/60 font-medium text-sm md:text-base">
-            Protocols in course of validation by Pulmonologists. Data secured by EU Directives.
+            Powered by advanced LLMs and secured by EU Directives. Real-time telemetry from OpenAQ.
           </p>
 
           <div className="flex items-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Placeholder Logos */}
-            <span className="font-serif font-bold text-xl text-brand-brown">MEDLIFE</span>
-            <span className="font-sans font-black text-xl text-brand-brown tracking-tighter">REGINA MARIA</span>
-            <span className="font-mono font-bold text-lg text-brand-brown">SANADOR</span>
+            <span className="font-serif font-bold text-xl text-brand-brown">OPENAI</span>
+            <span className="font-sans font-black text-xl text-brand-brown tracking-tighter">OPENAQ</span>
+            <span className="font-mono font-bold text-lg text-brand-brown">SUPABASE</span>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 
 // --- 3. Sentinel Network (Data Transparency) ---
 export const SentinelNetwork = () => {
@@ -241,7 +241,7 @@ export const ZeroTrustFAQ = () => {
   const faqs = [
     {
       q: "Who sees my health data?",
-      a: "Only you and your assigned doctor. We use Row Level Security (RLS) in our database, meaning even our system administrators cannot query your specific health records. It is a Zero-Trust architecture by design."
+      a: "Only you. We use Row Level Security (RLS) in our database, meaning even our system administrators cannot query your specific health records. It is a Zero-Trust architecture by design."
     },
     {
       q: "How do you calculate risk?",

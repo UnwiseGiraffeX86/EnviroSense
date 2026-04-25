@@ -12,7 +12,7 @@ import NeuroTree from "@/components/NeuroTree";
 
 import { 
   BucharestReality, 
-  MedicalTrust, 
+  AITrust, 
   SentinelNetwork, 
   ValidatedPerformance, 
   ZeroTrustFAQ 
@@ -305,7 +305,7 @@ export default function LandingPage() {
     <main className="bg-brand-cream min-h-screen selection:bg-brand-green selection:text-white">
       <Navbar />
       <Hero />
-      <MedicalTrust />
+      <AITrust />
       <BucharestReality />
       <LiveMapSection />
       <SentinelNetwork />

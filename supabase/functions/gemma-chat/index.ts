@@ -103,7 +103,7 @@ function buildSensorSnapshot(ctx: any): string {
   return lines.join("\n");
 }
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemma-4-27b-it:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemma-4-26b-a4b-it:generateContent";
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {

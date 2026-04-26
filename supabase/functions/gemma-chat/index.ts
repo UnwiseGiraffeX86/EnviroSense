@@ -165,7 +165,7 @@ serve(async (req) => {
       const errorBody = await response.text();
       console.error("[Gemma4] API error:", response.status, errorBody);
       
-      let clientMsg = \`AI service error (\${response.status}). Please try again.\`;
+      let clientMsg = `AI service error (${response.status}). Please try again.`;
       if (response.status === 429) {
         clientMsg = "Rate limit reached. The free tier has request limits — please wait a moment and try again.";
       }

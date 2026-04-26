@@ -73,99 +73,156 @@ export type DashboardData = {
 };
 
 // ============================================================
-// MOCK WATCH DATA GENERATOR
-// Designed to be swapped 1:1 with Health Connect / Fitbit API
+// LIVE WATCH DATA SIMULATOR
+// Stateful — values drift smoothly each tick for stage demos.
+// Designed to be swapped 1:1 with Health Connect / Fitbit API.
 // ============================================================
+
+/** Persistent state that drifts between ticks instead of regenerating */
+let _liveState: WatchData | null = null;
+let _sessionSleep: WatchData['sleepStages'] | null = null;
+let _sessionSleepScore: number | null = null;
+
+/** Clamp a value between min and max */
+function clamp(v: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, v));
+}
+
+/** Small random walk: current value ± maxDelta, clamped */
+function drift(current: number, maxDelta: number, min: number, max: number): number {
+  const d = (Math.random() - 0.5) * 2 * maxDelta;
+  return clamp(current + d, min, max);
+}
 
 function generateMockWatchData(pm25: number): WatchData {
   const now = new Date();
   const hour = now.getHours();
-
-  // Circadian heart rate: lower at night (60-70), higher during day (70-90)
   const isNight = hour < 6 || hour > 22;
-  const baseHR = isNight ? 62 : 75;
-  const hrVariance = (Math.sin(hour * 0.26) * 10) + (Math.random() * 6 - 3);
-  const heartRate = Math.round(Math.max(52, Math.min(110, baseHR + hrVariance)));
 
-  // HRV inversely correlates with PM2.5 pollution
-  const baseHRV = isNight ? 65 : 45;
-  const pollutionPenalty = Math.min(pm25 * 0.4, 20);
-  const hrvMs = Math.round(Math.max(15, baseHRV - pollutionPenalty + (Math.random() * 10 - 5)));
+  // ── First call: seed everything ──────────────────────────
+  if (!_liveState) {
+    const baseHR = isNight ? 62 : 75;
+    const hrVariance = Math.sin(hour * 0.26) * 10 + (Math.random() * 6 - 3);
+    const heartRate = Math.round(clamp(baseHR + hrVariance, 52, 110));
 
-  // SpO2: slightly reduced when PM2.5 > 15 (WHO threshold)
-  const baseSpo2 = 97;
-  const spo2Penalty = pm25 > 15 ? Math.min((pm25 - 15) * 0.05, 3) : 0;
-  const spo2 = Math.round(Math.max(91, Math.min(100, baseSpo2 - spo2Penalty + (Math.random() * 1 - 0.5))));
+    const baseHRV = isNight ? 65 : 45;
+    const hrvMs = Math.round(clamp(baseHRV - Math.min(pm25 * 0.4, 20) + (Math.random() * 10 - 5), 15, 90));
 
-  // cEDA stress: higher in afternoon, correlates with pollution
-  const baseStress = 25 + (Math.sin((hour - 6) * 0.26) * 15);
-  const stressPollution = pm25 > 25 ? (pm25 - 25) * 0.5 : 0;
-  const edaStressLevel = Math.round(Math.max(5, Math.min(95, baseStress + stressPollution + (Math.random() * 10 - 5))));
+    const baseSpo2 = 97;
+    const spo2Penalty = pm25 > 15 ? Math.min((pm25 - 15) * 0.05, 3) : 0;
+    const spo2 = Math.round(clamp(baseSpo2 - spo2Penalty + (Math.random() - 0.5), 91, 100));
 
-  // Skin temp delta: slight variation
-  const skinTempDelta = Math.round((Math.sin(hour * 0.13) * 0.8 + (Math.random() * 0.4 - 0.2)) * 10) / 10;
+    const baseStress = 25 + Math.sin((hour - 6) * 0.26) * 15;
+    const stressPollution = pm25 > 25 ? (pm25 - 25) * 0.5 : 0;
+    const edaStressLevel = Math.round(clamp(baseStress + stressPollution + (Math.random() * 10 - 5), 5, 95));
 
-  // Steps: cumulative throughout the day
-  const dayProgress = Math.max(0, (hour - 7)) / 15;
-  const steps = Math.round(Math.max(0, dayProgress * 8500 + (Math.random() * 1000)));
+    const skinTempDelta = Math.round((Math.sin(hour * 0.13) * 0.8 + (Math.random() * 0.4 - 0.2)) * 10) / 10;
 
-  // Sleep data (from last night)
-  const totalSleep = 420 + Math.round(Math.random() * 60 - 30); // ~7h ± 30min
-  const deep = Math.round(totalSleep * (0.15 + Math.random() * 0.08));
-  const rem = Math.round(totalSleep * (0.20 + Math.random() * 0.05));
-  const awake = Math.round(10 + Math.random() * 20);
-  const light = totalSleep - deep - rem - awake;
-  const sleepScore = Math.round(Math.max(40, Math.min(100, 70 + (deep / totalSleep) * 40 - (awake / totalSleep) * 30 + (Math.random() * 10 - 5))));
+    const dayProgress = Math.max(0, (hour - 7)) / 15;
+    const steps = Math.round(Math.max(0, dayProgress * 8500 + Math.random() * 1000));
 
-  // Daily readiness: fuses sleep + HRV + previous recovery
-  const dailyReadiness = Math.round(Math.max(20, Math.min(100,
-    sleepScore * 0.4 + (hrvMs / 80) * 100 * 0.35 + (100 - edaStressLevel) * 0.25
-  )));
+    // Sleep is fixed per session (it's from last night)
+    const totalSleep = 420 + Math.round(Math.random() * 60 - 30);
+    const deep = Math.round(totalSleep * (0.15 + Math.random() * 0.08));
+    const rem = Math.round(totalSleep * (0.20 + Math.random() * 0.05));
+    const awake = Math.round(10 + Math.random() * 20);
+    const light = totalSleep - deep - rem - awake;
+    _sessionSleep = { light, deep, rem, awake };
+    _sessionSleepScore = Math.round(clamp(70 + (deep / totalSleep) * 40 - (awake / totalSleep) * 30 + (Math.random() * 10 - 5), 40, 100));
 
-  // Cardio load
-  const cardioLoad: WatchData['cardioLoad'] =
-    steps < 3000 ? 'low' :
-    steps < 8000 ? 'optimal' :
-    steps < 15000 ? 'high' : 'overreaching';
+    const dailyReadiness = Math.round(clamp(
+      _sessionSleepScore * 0.4 + (hrvMs / 80) * 100 * 0.35 + (100 - edaStressLevel) * 0.25, 20, 100
+    ));
 
-  // Heart rate history (24 data points — one per hour for last 24h)
-  const heartRateHistory: number[] = [];
-  for (let i = 0; i < 24; i++) {
-    const h = (hour - 23 + i + 24) % 24;
-    const hIsNight = h < 6 || h > 22;
-    const hBase = hIsNight ? 60 : 73;
-    const hVar = Math.sin(h * 0.26) * 8 + (Math.random() * 6 - 3);
-    heartRateHistory.push(Math.round(Math.max(50, Math.min(105, hBase + hVar))));
+    const cardioLoad: WatchData['cardioLoad'] =
+      steps < 3000 ? 'low' : steps < 8000 ? 'optimal' : steps < 15000 ? 'high' : 'overreaching';
+
+    // Seed HR history
+    const heartRateHistory: number[] = [];
+    for (let i = 0; i < 24; i++) {
+      const h = (hour - 23 + i + 24) % 24;
+      const hBase = (h < 6 || h > 22) ? 60 : 73;
+      const hVar = Math.sin(h * 0.26) * 8 + (Math.random() * 6 - 3);
+      heartRateHistory.push(Math.round(clamp(hBase + hVar, 50, 105)));
+    }
+
+    const ambientTemp = Math.round((22 + Math.sin(hour * 0.26) * 3 + Math.random()) * 10) / 10;
+    const ambientHumidity = Math.round(45 + Math.sin(hour * 0.13) * 10 + Math.random() * 5);
+    const ambientPressure = Math.round((1013 + Math.sin(hour * 0.1) * 3 + Math.random() * 2) * 10) / 10;
+    const ambientLight = Math.round(isNight ? (5 + Math.random() * 15) : (200 + Math.sin((hour - 6) * 0.39) * 300 + Math.random() * 50));
+
+    _liveState = {
+      heartRate, heartRateHistory, hrvMs, spo2,
+      ecgStatus: 'normal', edaStressLevel, skinTempDelta, steps,
+      sleepScore: _sessionSleepScore, sleepStages: _sessionSleep,
+      dailyReadiness, cardioLoad,
+      ambientTemp, ambientHumidity, ambientPressure, ambientLight,
+      lastSynced: new Date().toISOString(),
+    };
+    return _liveState;
   }
 
-  // HectorWatch board ambient sensors
-  const ambientTemp = Math.round((22 + Math.sin(hour * 0.26) * 3 + Math.random() * 1) * 10) / 10;
-  const ambientHumidity = Math.round(45 + Math.sin(hour * 0.13) * 10 + Math.random() * 5);
-  const ambientPressure = Math.round((1013 + Math.sin(hour * 0.1) * 3 + Math.random() * 2) * 10) / 10;
-  const ambientLight = Math.round(
-    isNight ? (5 + Math.random() * 15) : (200 + Math.sin((hour - 6) * 0.39) * 300 + Math.random() * 50)
-  );
+  // ── Subsequent calls: smooth drift ───────────────────────
+  const prev = _liveState;
 
-  return {
-    heartRate,
-    heartRateHistory,
-    hrvMs,
-    spo2,
-    ecgStatus: 'normal',
-    edaStressLevel,
-    skinTempDelta,
-    steps,
-    sleepScore,
-    sleepStages: { light, deep, rem, awake },
-    dailyReadiness,
-    cardioLoad,
-    ambientTemp,
-    ambientHumidity,
-    ambientPressure,
-    ambientLight,
-    lastSynced: new Date(Date.now() - Math.round(Math.random() * 30000)).toISOString(),
+  // HR: walk ±1-3 bpm, bias slightly toward circadian baseline
+  const hrTarget = isNight ? 62 : 75;
+  const hrBias = (hrTarget - prev.heartRate) * 0.05; // gentle pull toward baseline
+  const heartRate = Math.round(drift(prev.heartRate + hrBias, 2, 50, 115));
+
+  // Shift HR history: drop oldest, append current
+  const heartRateHistory = [...prev.heartRateHistory.slice(1), heartRate];
+
+  // HRV: walk ±1-2 ms, pollution pulls it down
+  const hrvTarget = (isNight ? 65 : 45) - Math.min(pm25 * 0.4, 20);
+  const hrvBias = (hrvTarget - prev.hrvMs) * 0.03;
+  const hrvMs = Math.round(drift(prev.hrvMs + hrvBias, 1.5, 15, 90));
+
+  // SpO2: walk ±0.3, very stable
+  const spo2Target = pm25 > 15 ? 97 - Math.min((pm25 - 15) * 0.05, 3) : 97;
+  const spo2Bias = (spo2Target - prev.spo2) * 0.05;
+  const spo2 = Math.round(clamp(prev.spo2 + spo2Bias + (Math.random() - 0.5) * 0.6, 91, 100));
+
+  // Stress: walk ±2
+  const stressTarget = 25 + Math.sin((hour - 6) * 0.26) * 15 + (pm25 > 25 ? (pm25 - 25) * 0.5 : 0);
+  const stressBias = (stressTarget - prev.edaStressLevel) * 0.04;
+  const edaStressLevel = Math.round(drift(prev.edaStressLevel + stressBias, 2, 5, 95));
+
+  // Skin temp: walk ±0.05°
+  const skinTempDelta = Math.round(drift(prev.skinTempDelta, 0.05, -2, 2) * 10) / 10;
+
+  // Steps: only goes up (slowly during demo)
+  const steps = prev.steps + Math.round(Math.random() * 15);
+
+  // Sleep & readiness: stable per session
+  const sleepScore = _sessionSleepScore!;
+  const sleepStages = _sessionSleep!;
+
+  // Readiness: recalc from current vitals
+  const dailyReadiness = Math.round(clamp(
+    sleepScore * 0.4 + (hrvMs / 80) * 100 * 0.35 + (100 - edaStressLevel) * 0.25, 20, 100
+  ));
+
+  const cardioLoad: WatchData['cardioLoad'] =
+    steps < 3000 ? 'low' : steps < 8000 ? 'optimal' : steps < 15000 ? 'high' : 'overreaching';
+
+  // Ambient sensors: drift gently
+  const ambientTemp = Math.round(drift(prev.ambientTemp, 0.1, 18, 32) * 10) / 10;
+  const ambientHumidity = Math.round(drift(prev.ambientHumidity, 0.5, 30, 75));
+  const ambientPressure = Math.round(drift(prev.ambientPressure, 0.2, 1005, 1025) * 10) / 10;
+  const ambientLight = Math.round(drift(prev.ambientLight, 5, 0, 800));
+
+  _liveState = {
+    heartRate, heartRateHistory, hrvMs, spo2,
+    ecgStatus: 'normal', edaStressLevel, skinTempDelta, steps,
+    sleepScore, sleepStages, dailyReadiness, cardioLoad,
+    ambientTemp, ambientHumidity, ambientPressure, ambientLight,
+    lastSynced: new Date().toISOString(),
   };
+
+  return _liveState;
 }
+
 
 // ============================================================
 // MOCK 24H STATION HISTORY GENERATOR
@@ -486,7 +543,7 @@ export const useDashboardData = () => {
     };
   }, [data.profile?.sector]);
 
-  // Periodic watch data refresh (simulate real-time wearable sync every 30s)
+  // Periodic watch data refresh (live simulation — ticks every 3s for stage demos)
   useEffect(() => {
     if (!data.airQuality) return;
     
@@ -496,7 +553,7 @@ export const useDashboardData = () => {
         ...prev,
         watchData: generateMockWatchData(currentPm25),
       }));
-    }, 30000); // Every 30 seconds
+    }, 3000); // Every 3 seconds — smooth drift for presentations
 
     return () => clearInterval(interval);
   }, [data.airQuality?.pm25]);

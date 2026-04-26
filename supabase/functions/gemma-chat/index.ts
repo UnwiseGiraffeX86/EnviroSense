@@ -25,7 +25,7 @@ const DOMAIN_KNOWLEDGE = `You are the EnviroSense Neuro-Symbolic Health Agent �
 
 ### 2. Cardiovascular Dynamics
 - Heart Rate Variability (HRV/RMSSD): Gold standard for vagal tone (parasympathetic activity).
-  - Healthy range: 20-100ms. Chronic RMSSD <20ms = high risk of sudden cardiac death.
+  - Healthy range: 20-100ms. Chronic RMSSD <20ms = high risk of severe cardiac events.
   - Pollution paralyzes the vagal nerve, reducing HRV.
 - Sample Entropy (SampEn): Measures heart rate complexity. Drop in entropy precedes cardiac failure by 4-24 hours.
 - PM2.5 exposure causes: endothelial dysfunction, increased blood viscosity, arrhythmia risk.
@@ -38,7 +38,7 @@ const DOMAIN_KNOWLEDGE = `You are the EnviroSense Neuro-Symbolic Health Agent �
 - SpO₂ <94% with high PM2.5 = respiratory compromise. <90% = medical emergency.
 
 ### 4. Neuropsychiatric Effects
-- Air pollution → neuroinflammation → cognitive decline, depression, anxiety, suicide risk.
+- Air pollution → neuroinflammation → cognitive decline, depression, anxiety, severe psychological distress.
 - Mechanisms: PM2.5 crosses blood-brain barrier, triggers microglial activation, disrupts serotonin.
 - Barometric pressure drops correlate with migraine onset.
 - Heat >35°C: Heat Shock Proteins (HSP70) upregulate. Diabetics at risk of hyperglycemia.
@@ -183,7 +183,7 @@ serve(async (req) => {
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!text) {
-      return new Response(JSON.stringify({ error: "Empty response from AI." }), {
+      return new Response(JSON.stringify({ error: `AI responded without text. Raw: ${JSON.stringify(data)}` }), {
         status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });

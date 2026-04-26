@@ -103,7 +103,7 @@ function buildSensorSnapshot(ctx: any): string {
   return lines.join("\n");
 }
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemma-3-27b-it:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemma-4-27b-it:generateContent";
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -116,7 +116,7 @@ serve(async (req) => {
     if (!userMessage) {
       return new Response(
         JSON.stringify({ error: 'Missing userMessage' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -124,8 +124,8 @@ serve(async (req) => {
     if (!apiKey) {
       console.error("GEMINI_API_KEY secret is missing");
       return new Response(
-        JSON.stringify({ error: "AI service not configured on the server." }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: "AI service not configured on the server. Please add your GEMINI_API_KEY to Supabase." }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -174,7 +174,7 @@ serve(async (req) => {
       }
 
       return new Response(JSON.stringify({ error: clientMsg }), {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
@@ -184,7 +184,7 @@ serve(async (req) => {
     
     if (!text) {
       return new Response(JSON.stringify({ error: "Empty response from AI." }), {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
@@ -196,7 +196,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Edge Function Error:', error);
     return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

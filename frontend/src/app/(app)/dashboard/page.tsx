@@ -105,7 +105,13 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4">
           {/* AI Chat */}
           <div className="h-[380px] lg:h-[320px]">
-            <AIChatWidget />
+            <AIChatWidget 
+              watchData={watchData}
+              stationData={stationData}
+              weather={weather}
+              pm25={airQuality?.pm25 || 0}
+              pm10={airQuality?.pm10 || 0}
+            />
           </div>
 
           {/* Compound Risk */}

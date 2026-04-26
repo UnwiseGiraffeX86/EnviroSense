@@ -180,7 +180,10 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    // Gemma 4 includes reasoning parts ("thought": true). We filter those out and join the actual text.
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const text = parts.filter((p: any) => !p.thought).map((p: any) => p.text).join("").trim();
     
     if (!text) {
       return new Response(JSON.stringify({ error: `AI responded without text. Raw: ${JSON.stringify(data)}` }), {
